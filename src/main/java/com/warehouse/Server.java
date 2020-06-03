@@ -11,6 +11,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Http server for storage app
+ */
 public class Server {
 
     public static void main(String[] args) {
@@ -20,25 +23,25 @@ public class Server {
     private ThreadPoolExecutor pool;
 
     private Server() {
-        //Init pool
+        // Init pool
         pool = new ThreadPoolExecutor(
                 4, Runtime.getRuntime().availableProcessors() + 1, 5, TimeUnit.SECONDS,
                 new ArrayBlockingQueue<Runnable>(100), Executors.defaultThreadFactory(),
                 new RejectedHandler()
         );
 
-        //Init database connection
+        // Init database connection
         try {
             DataBaseConnector.initConnector();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        //Server start-up
+        // Server start-up
         try {
             HttpServer server = HttpServer.create();
 
-            //Server contexts
-            //TODO Maybe Enum for this shit?
+            // Server contexts
+            // TODO Maybe Enum for this shit?
             server.createContext("/warehouse/user/products", new ProductHandler());
             server.createContext("/warehouse/user/groups", new GroupHandler());
             server.createContext("/warehouse/admin/manufacturers", new ManufacturerHandler());
