@@ -1,7 +1,5 @@
 package com.warehouse.DAO;
 
-import com.warehouse.ConnectionPool;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,42 +11,30 @@ public class DataBaseConnector {
 
     private static DataBaseConnector connector;
 
-    public static DataBaseConnector getInstance() {
-        if(connector == null)
-            initConnector();
+    public static DataBaseConnector getConnector() {
         return connector;
     }
 
-    public static void initConnector() {
+    public static void initConnector() throws ClassNotFoundException {
         if(connector == null)
             connector = new DataBaseConnector();
     }
 
-    private ConnectionPool pool;
-
-    private DataBaseConnector() {
+    private DataBaseConnector() throws ClassNotFoundException {
         try {
             Class.forName("org.postgresql.Driver");
-            pool = ConnectionPool.create(URL, USERNAME, PASSWORD);
         } catch (ClassNotFoundException e) {
             System.err.println("Database driver loading problem!");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.err.println("Database pool creating problem!");
-            e.printStackTrace();
+            throw e;
         }
     }
 
-    public Connection getConnection() {
-        return pool.getConnection();
-    }
-
-    public void releaseConnection(Connection connection) {
+    public Connection getConnection() throws SQLException {
         try {
-            pool.releaseConnection(connection);
-        } catch (SQLException e) {
-            System.err.println("Problem with releasing connection");
-            e.printStackTrace();
+            return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } catch (SQLException e){
+            System.err.println("Database connection problem!");
+            throw e;
         }
     }
 }
