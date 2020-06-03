@@ -59,5 +59,4 @@ public class Role {
                 ", \nis_super = " + isSuper +
                 " \n}\n";
     }
-
 }
