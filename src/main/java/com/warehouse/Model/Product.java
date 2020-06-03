@@ -119,7 +119,4 @@ public class Product {
                 "\ndescription = " + description +
                 "\n}\n";
     }
-
-
-
 }

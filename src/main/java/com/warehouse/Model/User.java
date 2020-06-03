@@ -16,8 +16,6 @@ public class User {
         this.roleId = roleId;
     }
 
-
-
     public int getId() {
         return id;
     }
@@ -73,5 +71,4 @@ public class User {
                 ", \nrole_id = " + roleId +
                 " \n}\n";
     }
-
 }

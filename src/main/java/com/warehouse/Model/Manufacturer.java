@@ -1,5 +1,7 @@
 package com.warehouse.Model;
 
+import java.util.Objects;
+
 public class Manufacturer {
 
     private int id;
@@ -25,4 +27,25 @@ public class Manufacturer {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Manufacturer manufacturer = (Manufacturer) obj;
+        return id == manufacturer.id &&
+                Objects.equals(name, manufacturer.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
+    public String toString() {
+        return "Permission { \nid = " + id +
+                ", \nname = " + name +
+                " \n}\n";
+    }
+
 }

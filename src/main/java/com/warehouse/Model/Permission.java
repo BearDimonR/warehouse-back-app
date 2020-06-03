@@ -58,5 +58,4 @@ public class Permission {
                 ", \nis_super = " + isSuper +
                 " }\n";
     }
-
 }
