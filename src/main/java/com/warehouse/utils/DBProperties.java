@@ -1,4 +1,4 @@
-package com.warehouse;
+package com.warehouse.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;

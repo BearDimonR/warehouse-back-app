@@ -1,10 +1,9 @@
 package com.warehouse.DAO;
 
 import com.warehouse.ConnectionPool;
-import com.warehouse.DBProperties;
+import com.warehouse.utils.DBProperties;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DataBaseConnector {
