@@ -33,6 +33,7 @@ public class Server {
 
         // Init database connection
         DataBaseConnector.initConnector();
+
         // Server start-up
         try {
             HttpServer server = HttpServer.create();
