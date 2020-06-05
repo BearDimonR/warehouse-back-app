@@ -31,11 +31,11 @@ public class Server {
         );
 
         // Init database connection
-        try {
+       /* try {*/
             DataBaseConnector.initConnector();
-        } catch (ClassNotFoundException e) {
+       /* } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
         // Server start-up
         try {
             HttpServer server = HttpServer.create();
