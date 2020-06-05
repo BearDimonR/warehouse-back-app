@@ -1,15 +1,16 @@
 package com.warehouse.DAO;
 
 import com.warehouse.ConnectionPool;
+import com.warehouse.DBProperties;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DataBaseConnector {
-    private final static  String URL = "jdbc:postgresql://localhost:5432/storage";
-    private final static String USERNAME = "server";
-    private final static String PASSWORD = "admin";
+    private final static  String URL = DBProperties.getProperty("db_url");
+    private final static String USERNAME = DBProperties.getProperty("username");
+    private final static String PASSWORD = DBProperties.getProperty("password");
 
     private static DataBaseConnector connector;
 
