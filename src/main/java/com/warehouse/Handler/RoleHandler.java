@@ -57,12 +57,12 @@ public class RoleHandler implements HttpHandler {
         } catch (IOException e) {
             exchange.sendResponseHeaders(500, 0);
             exchange.close();
-            System.err.println("Problem with getting role streams!");
+            System.err.println("Problem with getting roles streams!");
             throw e;
         } catch (SQLException e) {
             exchange.sendResponseHeaders(500, 0);
             exchange.close();
-            System.err.println("Problem with server response when getting role");
+            System.err.println("Problem with server response when getting roles");
         }
     }
 
@@ -86,7 +86,7 @@ public class RoleHandler implements HttpHandler {
         } catch (InvalidParameterException e) {
             exchange.sendResponseHeaders(404, 0);
             exchange.close();
-            System.err.println("Trying to access not created user");
+            System.err.println("Trying to access not created role");
         } catch (SQLException e) {
             exchange.sendResponseHeaders(500, 0);
             exchange.close();
@@ -104,10 +104,10 @@ public class RoleHandler implements HttpHandler {
             exchange.sendResponseHeaders(200, 0);
             exchange.close();
         } catch (SQLException e) {
-            // check if it exception about unique name
+            // check if exception about unique name
             if(e.getSQLState().equals("23505")) {
                 exchange.sendResponseHeaders(409, 0);
-                System.err.println("Such name already used!");
+                System.err.println("Such role name already used!");
             }
             else {
                 exchange.sendResponseHeaders(500, 0);
@@ -131,15 +131,15 @@ public class RoleHandler implements HttpHandler {
         } catch (InvalidParameterException e) {
             exchange.sendResponseHeaders(404, 0);
             exchange.close();
-            System.err.println("Trying to access not created user");
+            System.err.println("Trying to access not created role");
         } catch (SQLException e) {
             if(e.getSQLState().equals("23505")) {
                 exchange.sendResponseHeaders(409, 0);
-                System.err.println("Such name already used!");
+                System.err.println("Such role name already used!");
             }
             else {
                 exchange.sendResponseHeaders(500, 0);
-                System.err.println("Problem with server response when creating role");
+                System.err.println("Problem with server response when editing role");
             }
             exchange.close();
         }
@@ -150,8 +150,7 @@ public class RoleHandler implements HttpHandler {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
             // decode input array
-            Role role = JsonProceed.getGson().fromJson(new String(input), Role.class);
-            if(!RoleDAO.getInstance().delete(role))
+            if(!RoleDAO.getInstance().delete(Long.valueOf(new String(input))))
                 exchange.sendResponseHeaders(404, 0);
             else
                 exchange.sendResponseHeaders(200, 0);
