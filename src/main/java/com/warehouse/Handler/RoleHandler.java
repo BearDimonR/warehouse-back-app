@@ -2,6 +2,7 @@ package com.warehouse.Handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
 import com.warehouse.DAO.RoleDAO;
 import com.warehouse.JsonProceed;
 import com.warehouse.Model.Role;
@@ -161,6 +162,4 @@ public class RoleHandler implements HttpHandler {
             System.err.println("Problem with server response when deleting role");
         }
     }
-
-
 }
