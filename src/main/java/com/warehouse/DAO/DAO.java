@@ -14,5 +14,5 @@ public interface DAO<T> {
 
     boolean update(T t, String[] params) throws SQLException;
 
-    boolean delete(T t) throws SQLException;
+    boolean delete(long id) throws SQLException;
 }
