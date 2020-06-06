@@ -20,7 +20,7 @@ public class RoleDAO implements DAO<Role> {
         return instance;
     }
 
-    Connection connection;
+    private Connection connection;
 
     private RoleDAO() {}
 
@@ -47,7 +47,6 @@ public class RoleDAO implements DAO<Role> {
         ResultSet res = preparedStatement.executeQuery();
         DataBaseConnector.getInstance().releaseConnection(connection);
         connection = null;
-        //TODO RETURN ARRAY OF ROLES
         List<Role> roles = new ArrayList<>();
         while (res.next()) {
             roles.add(new Role(
@@ -64,7 +63,7 @@ public class RoleDAO implements DAO<Role> {
         PreparedStatement preparedStatement =
                 connection.prepareStatement("INSERT INTO role (name, is_super) VALUES (?,?)");
         preparedStatement.setString(1, role.getName());
-        preparedStatement.setBoolean(2, role.isIs_super());
+        preparedStatement.setBoolean(2, role.is_super());
         int res = preparedStatement.executeUpdate();
         DataBaseConnector.getInstance().releaseConnection(connection);
         connection = null;
@@ -77,7 +76,7 @@ public class RoleDAO implements DAO<Role> {
         PreparedStatement preparedStatement =
                 connection.prepareStatement("UPDATE role SET name = ?, is_super = ? WHERE id = ?");
         preparedStatement.setString(1, role.getName());
-        preparedStatement.setBoolean(2, role.isIs_super());
+        preparedStatement.setBoolean(2, role.is_super());
         preparedStatement.setLong(3, role.getId());
         int res = preparedStatement.executeUpdate();
         DataBaseConnector.getInstance().releaseConnection(connection);
@@ -86,10 +85,10 @@ public class RoleDAO implements DAO<Role> {
     }
 
     @Override
-    public synchronized boolean delete(Role role) throws SQLException {
+    public synchronized boolean delete(long id) throws SQLException {
         connection = DataBaseConnector.getInstance().getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM role WHERE id = ?");
-        preparedStatement.setLong(1, role.getId());
+        preparedStatement.setLong(1, id);
         int res = preparedStatement.executeUpdate();
         DataBaseConnector.getInstance().releaseConnection(connection);
         connection = null;
