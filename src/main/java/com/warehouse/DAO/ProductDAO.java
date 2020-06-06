@@ -151,19 +151,25 @@ public class ProductDAO implements DAO<Product> {
         TreeMap<Product, Integer> productMap = new TreeMap<>();
         List<Product> productList = new ArrayList<>();
         List<ResultSet> resArr = new ArrayList<>();
-        int fields = 0;
-
+        int fields = 0, groupId = 0, manufacturerId = 0;
+//TODO get by String name ID
         if (name != null) {
             fields++;
             resArr.add(filter.filterByName(name));
         }
         if (group != null) {
             fields++;
-            resArr.add(filter.filterByGroup(1));
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM group_products WHERE name=" + group);
+            ResultSet resultSet = ps.executeQuery();
+            groupId = resultSet.getInt(1);
+            resArr.add(filter.filterByGroup(groupId));
         }
         if (manufacturer != null) {
             fields++;
-            resArr.add(filter.filterByManufacturer(1));
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM manufacturer WHERE name=" + manufacturer);
+            ResultSet resultSet = ps.executeQuery();
+            manufacturerId = resultSet.getInt(1);
+            resArr.add(filter.filterByManufacturer(manufacturerId));
         }
 
         for (int i = 0; i < resArr.size(); i++) {
