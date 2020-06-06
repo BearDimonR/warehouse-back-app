@@ -5,6 +5,8 @@ public class Role {
     String name;
     boolean is_super;
 
+    public Role() {}
+
     public Role(long id, String name, boolean is_super) {
         this.id = id;
         this.name = name;
@@ -33,5 +35,14 @@ public class Role {
 
     public void setIs_super(boolean is_super) {
         this.is_super = is_super;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", is_super=" + is_super +
+                '}';
     }
 }

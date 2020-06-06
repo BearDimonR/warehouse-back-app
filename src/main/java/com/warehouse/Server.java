@@ -3,6 +3,7 @@ package com.warehouse;
 import com.warehouse.DAO.DataBaseConnector;
 import com.sun.net.httpserver.HttpServer;
 import com.warehouse.Handler.*;
+import com.warehouse.Model.Role;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -31,11 +32,8 @@ public class Server {
         );
 
         // Init database connection
-       /* try {*/
-            DataBaseConnector.initConnector();
-       /* } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }*/
+        DataBaseConnector.initConnector();
+
         // Server start-up
         try {
             HttpServer server = HttpServer.create();
