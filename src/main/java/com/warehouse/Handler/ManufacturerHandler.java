@@ -1,13 +1,11 @@
 package com.warehouse.Handler;
 
-import com.sun.jdi.LongValue;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.warehouse.DAO.ManufacturerDAO;
 import com.warehouse.DAO.RoleDAO;
 import com.warehouse.JsonProceed;
 import com.warehouse.Model.Manufacturer;
-import com.warehouse.Model.Role;
 import com.warehouse.utils.QueryParser;
 
 import java.io.IOException;
@@ -16,7 +14,6 @@ import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class ManufacturerHandler implements HttpHandler {
@@ -110,11 +107,14 @@ public class ManufacturerHandler implements HttpHandler {
             if (e.getSQLState().equals("23505")) {
                 exchange.sendResponseHeaders(409, 0);
                 System.err.println("Such manufacturer name already used!");
+                e.printStackTrace();
             } else {
                 exchange.sendResponseHeaders(500, 0);
                 System.err.println("Problem with server response when creating manufacturer");
             }
             exchange.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
