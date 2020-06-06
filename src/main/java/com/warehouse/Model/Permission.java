@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Permission {
-    private int id;
+    private long id;
     private String name;
     private boolean isSuper;
 }

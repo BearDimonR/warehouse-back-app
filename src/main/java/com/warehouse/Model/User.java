@@ -11,7 +11,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class User {
 
-    private int id;
+    private long id;
     private String name;
     private String password;
     private int roleId;
