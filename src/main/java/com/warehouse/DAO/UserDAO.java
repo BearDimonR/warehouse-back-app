@@ -28,7 +28,7 @@ public class UserDAO implements DAO<User> {
     @Override
     public synchronized Optional<User> get(long id) throws SQLException {
         connection = DataBaseConnector.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE id = ?");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account WHERE id = ?");
         preparedStatement.setLong(1, id);
         ResultSet res = preparedStatement.executeQuery();
         DataBaseConnector.getInstance().releaseConnection(connection);
@@ -45,7 +45,7 @@ public class UserDAO implements DAO<User> {
     @Override
     public synchronized List<User> getAll() throws SQLException {
         connection = DataBaseConnector.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account");
         ResultSet res = preparedStatement.executeQuery();
         DataBaseConnector.getInstance().releaseConnection(connection);
         connection = null;
@@ -59,7 +59,7 @@ public class UserDAO implements DAO<User> {
     @Override
     public synchronized boolean save(User user) throws SQLException {
         connection = DataBaseConnector.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user (name , password, role_is) VALUES  (?,?,?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user_account (name , password, role_is) VALUES  (?,?,?)");
 
         preparedStatement.setString(1, user.getName());
         preparedStatement.setString(2, user.getPassword());
@@ -74,7 +74,7 @@ public class UserDAO implements DAO<User> {
     @Override
     public synchronized boolean update(User user, String[] params) throws SQLException {
         connection = DataBaseConnector.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE user SET name=?,password=?,role_id=? WHERE id=?");
+        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE user_account SET name=?,password=?,role_id=? WHERE id=?");
         preparedStatement.setString(1, user.getName());
         preparedStatement.setString(2, user.getPassword());
         preparedStatement.setInt(3, user.getRoleId());
@@ -89,7 +89,7 @@ public class UserDAO implements DAO<User> {
     @Override
     public synchronized boolean delete(long id) throws SQLException {
         connection = DataBaseConnector.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM user WHERE id=?");
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM user_account WHERE id=?");
         preparedStatement.setLong(1, id);
 
         int res = preparedStatement.executeUpdate();
