@@ -11,4 +11,5 @@ import lombok.ToString;
 @ToString
 public class Manufacturer {
 private long id;
+private String name;
 }
