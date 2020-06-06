@@ -3,6 +3,7 @@ package com.warehouse;
 import com.warehouse.DAO.DataBaseConnector;
 import com.sun.net.httpserver.HttpServer;
 import com.warehouse.Handler.*;
+import com.warehouse.Model.Role;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -13,13 +14,13 @@ import java.util.concurrent.TimeUnit;
 
 public class Server {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
         new Server();
     }
 
     private ThreadPoolExecutor pool;
 
-    private Server() {
+    private Server() throws ClassNotFoundException {
         //Init pool
         pool = new ThreadPoolExecutor(
                 4, Runtime.getRuntime().availableProcessors() + 1, 5, TimeUnit.SECONDS,
@@ -27,13 +28,10 @@ public class Server {
                 new RejectedHandler()
         );
 
-        //Init database connection
-        try {
-            DataBaseConnector.initConnector();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        //Server start-up
+        // Init database connection
+        DataBaseConnector.initConnector();
+
+        // Server start-up
         try {
             HttpServer server = HttpServer.create();
 
