@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.TreeMap;
 
 public class ProductDAO implements DAO<Product> {
     public static ProductDAO instance;
@@ -123,4 +124,77 @@ public class ProductDAO implements DAO<Product> {
         return res != 0;
     }
 
+    public synchronized List<Product> filter(String name, String group, String manufacturer) throws SQLException {
+        Filter filter = new Filter() {
+            @Override
+            public ResultSet filterByName(String name) throws SQLException {
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM product WHERE name LIKE '?%'");
+                return preparedStatement.executeQuery();
+            }
+
+            @Override
+            public ResultSet filterByGroup(int groupId) throws SQLException {
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM product WHERE group_products_id LIKE '" + groupId + "%'");
+                return preparedStatement.executeQuery();
+            }
+
+            @Override
+            public ResultSet filterByManufacturer(int manufacturerId) throws SQLException {
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM product WHERE manufacturer_id LIKE '" + manufacturerId + "%'");
+                preparedStatement.executeQuery();
+                return preparedStatement.executeQuery();
+            }
+        };
+
+        connection = DataBaseConnector.getInstance().getConnection();
+
+        TreeMap<Product, Integer> productMap = new TreeMap<>();
+        List<Product> productList = new ArrayList<>();
+        List<ResultSet> resArr = new ArrayList<>();
+        int fields = 0;
+
+        if (name != null) {
+            fields++;
+            resArr.add(filter.filterByName(name));
+        }
+        if (group != null) {
+            fields++;
+            resArr.add(filter.filterByGroup(1));
+        }
+        if (manufacturer != null) {
+            fields++;
+            resArr.add(filter.filterByManufacturer(1));
+        }
+
+        for (int i = 0; i < resArr.size(); i++) {
+            while (resArr.get(i).next()) {
+                Product product = new Product(
+                        resArr.get(i).getLong(1),
+                        resArr.get(i).getString(2),
+                        resArr.get(i).getDouble(3),
+                        resArr.get(i).getDouble(4),
+                        resArr.get(i).getDouble(5),
+                        resArr.get(i).getString(6),
+                        resArr.get(i).getInt(7),
+                        resArr.get(i).getInt(8),
+                        resArr.get(i).getString(9));
+                if (!productMap.containsKey(product)) productMap.put(product, 1);
+                else {
+                    productMap.replace(product, 1 + productMap.get(product));
+                    if (productMap.get(product) == fields) productList.add(product);
+                }
+            }
+        }
+        return productList;
+    }
+
 }
+
+interface Filter {
+    ResultSet filterByName(String name) throws SQLException;
+
+    ResultSet filterByGroup(int group) throws SQLException;
+
+    ResultSet filterByManufacturer(int manufacturer) throws SQLException;
+}
+
