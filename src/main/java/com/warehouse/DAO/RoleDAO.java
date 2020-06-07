@@ -1,5 +1,6 @@
 package com.warehouse.DAO;
 
+
 import com.warehouse.Model.Role;
 import com.warehouse.Model.RolePermissionConnection;
 
@@ -44,6 +45,21 @@ public class RoleDAO implements DAO<Role> {
             DataBaseConnector.getInstance().releaseConnection(connection);
             connection = null;
         }
+	}
+
+    public Optional<Role> getUserRole(long userId) throws SQLException {
+        connection = DataBaseConnector.getInstance().getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM role WHERE id = (SELECT role_id FROM user_account WHERE id = ?)");
+        preparedStatement.setLong(1, userId);
+        ResultSet res = preparedStatement.executeQuery();
+        DataBaseConnector.getInstance().releaseConnection(connection);
+        connection = null;
+        if (res.next())
+            return Optional.of(new Role(
+                    res.getLong(1),
+                    res.getString(2),
+                    res.getBoolean(3)));
+        return Optional.empty();
     }
 
     @Override
