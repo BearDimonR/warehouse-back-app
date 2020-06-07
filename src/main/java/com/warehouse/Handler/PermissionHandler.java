@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class PermissionHandler implements HttpHandler {
@@ -24,10 +25,10 @@ public class PermissionHandler implements HttpHandler {
                 getPermission(exchange);
                 break;
             case "PUT":
-                updatePermission(exchange);
+                putPermission(exchange);
                 break;
             case "POST":
-                createPermission(exchange);
+                postPermission(exchange);
                 break;
             case "DELETE":
                 deletePermission(exchange);
@@ -38,11 +39,11 @@ public class PermissionHandler implements HttpHandler {
     }
 
     private void getPermission(HttpExchange exchange) throws IOException {
-        long id = Splitter.getId(exchange.getRequestURI());
-        if(id == -1)
+        Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
+        if(params.isEmpty())
             getAllPermissions(exchange);
         else
-            getPermission(exchange, id);
+            getPermission(exchange, Long.parseLong(params.get("id")));
     }
 
     private void getAllPermissions(HttpExchange exchange) throws IOException {
@@ -95,7 +96,7 @@ public class PermissionHandler implements HttpHandler {
         }
     }
 
-    private void updatePermission(HttpExchange exchange) throws IOException {
+    private void putPermission(HttpExchange exchange) throws IOException {
         try {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
@@ -122,7 +123,7 @@ public class PermissionHandler implements HttpHandler {
         }
     }
 
-    private void createPermission(HttpExchange exchange) throws IOException {
+    private void postPermission(HttpExchange exchange) throws IOException {
         try {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
