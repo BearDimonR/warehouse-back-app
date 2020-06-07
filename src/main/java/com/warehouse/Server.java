@@ -45,6 +45,7 @@ public class Server {
             server.createContext("/warehouse/admin/manufacturers", new ManufacturerHandler());
             server.createContext("/warehouse/admin/users", new UserHandler());
             server.createContext("/warehouse/admin/roles", new RoleHandler());
+            server.createContext("/warehouse/admin/roles/permissions", new RolePermissionHandler());
             server.createContext("/warehouse/admin/permissions", new PermissionHandler());
 
             server.bind(new InetSocketAddress(8089), 0);
