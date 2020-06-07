@@ -2,10 +2,10 @@ package com.warehouse.Handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.warehouse.DAO.PermissionDAO;
 import com.warehouse.DAO.UserDAO;
 import com.warehouse.JsonProceed;
 import com.warehouse.Model.User;
+import com.warehouse.Splitter;
 import com.warehouse.utils.QueryParser;
 
 import java.io.IOException;
@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class UserHandler implements HttpHandler {
@@ -38,20 +39,45 @@ public class UserHandler implements HttpHandler {
     }
 
     private void getUser(HttpExchange exchange) throws IOException {
-        Optional<String> id = Optional.ofNullable(QueryParser.parse(exchange.getRequestURI().getQuery()).get("id"));
+        Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
+        if(params.isEmpty())
+            getAllUsers(exchange);
+        else
+            getUser(exchange, Long.parseLong(params.get("id")));
+    }
+
+    private void getAllUsers(HttpExchange exchange) throws IOException {
         try {
-            String json = "";
-            if (id.isEmpty()) {
-                List<User> user = UserDAO.getInstance().getAll();
-                json = JsonProceed.getGson().toJson(user);
-            } else {
-                Optional<User> permission = UserDAO.getInstance().get(Long.valueOf(id.get()));
-                json = JsonProceed.getGson().toJson(permission.get());
-            }
-            exchange.sendResponseHeaders(200, 0);
-            //TODO Encrypt User
+            List<User> user = UserDAO.getInstance().getAll();
             OutputStream os = exchange.getResponseBody();
-            os.write(json.getBytes());
+            String userJson = JsonProceed.getGson().toJson(user);
+            exchange.sendResponseHeaders(200, 0);
+            //Encrypt get User
+            os.write(userJson.getBytes());
+            os.flush();
+            exchange.close();
+        } catch (IOException e) {
+            exchange.sendResponseHeaders(500, 0);
+            exchange.close();
+            System.err.println("Problem with getting get User streams!");
+            throw e;
+        } catch (SQLException e) {
+            exchange.sendResponseHeaders(500, 0);
+            exchange.close();
+            System.err.println("Problem with server response when getting get User");
+        }
+    }
+
+    private void getUser(HttpExchange exchange, long id) throws IOException {
+        try {
+            Optional<User> user = UserDAO.getInstance().get(id);
+            if (user.isEmpty())
+                throw new InvalidParameterException();
+            OutputStream os = exchange.getResponseBody();
+            String userJson = JsonProceed.getGson().toJson(user.get());
+            exchange.sendResponseHeaders(200, 0);
+            //Encrypt User
+            os.write(userJson.getBytes());
             os.flush();
             exchange.close();
         } catch (IOException e) {
@@ -59,6 +85,10 @@ public class UserHandler implements HttpHandler {
             exchange.close();
             System.err.println("Problem with getting User streams!");
             throw e;
+        } catch (InvalidParameterException e) {
+            exchange.sendResponseHeaders(404, 0);
+            exchange.close();
+            System.err.println("Trying to access not created User");
         } catch (SQLException e) {
             exchange.sendResponseHeaders(500, 0);
             exchange.close();

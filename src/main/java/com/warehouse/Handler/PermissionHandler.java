@@ -3,9 +3,9 @@ package com.warehouse.Handler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.warehouse.DAO.PermissionDAO;
-import com.warehouse.DAO.RoleDAO;
 import com.warehouse.JsonProceed;
 import com.warehouse.Model.Permission;
+import com.warehouse.Splitter;
 import com.warehouse.utils.QueryParser;
 
 import java.io.IOException;
@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class PermissionHandler implements HttpHandler {
@@ -24,10 +25,10 @@ public class PermissionHandler implements HttpHandler {
                 getPermission(exchange);
                 break;
             case "PUT":
-                updatePermission(exchange);
+                putPermission(exchange);
                 break;
             case "POST":
-                createPermission(exchange);
+                postPermission(exchange);
                 break;
             case "DELETE":
                 deletePermission(exchange);
@@ -38,20 +39,21 @@ public class PermissionHandler implements HttpHandler {
     }
 
     private void getPermission(HttpExchange exchange) throws IOException {
-        Optional<String> id = Optional.ofNullable(QueryParser.parse(exchange.getRequestURI().getQuery()).get("id"));
+        Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
+        if(params.isEmpty())
+            getAllPermissions(exchange);
+        else
+            getPermission(exchange, Long.parseLong(params.get("id")));
+    }
+
+    private void getAllPermissions(HttpExchange exchange) throws IOException {
         try {
-            String json = "";
-            if (id.isEmpty()) {
-                List<Permission> permission = PermissionDAO.getInstance().getAll();
-                json = JsonProceed.getGson().toJson(permission);
-            } else {
-                Optional<Permission> permission = PermissionDAO.getInstance().get(Long.valueOf(id.get()));
-                json = JsonProceed.getGson().toJson(permission.get());
-            }
-            exchange.sendResponseHeaders(200, 0);
-            //TODO Encrypt permission
+            List<Permission> permission = PermissionDAO.getInstance().getAll();
             OutputStream os = exchange.getResponseBody();
-            os.write(json.getBytes());
+            String permissionJson = JsonProceed.getGson().toJson(permission);
+            exchange.sendResponseHeaders(200, 0);
+            //Encrypt permission
+            os.write(permissionJson.getBytes());
             os.flush();
             exchange.close();
         } catch (IOException e) {
@@ -66,7 +68,35 @@ public class PermissionHandler implements HttpHandler {
         }
     }
 
-    private void updatePermission(HttpExchange exchange) throws IOException {
+    private void getPermission(HttpExchange exchange, long id) throws IOException {
+        try {
+            Optional<Permission> permission = PermissionDAO.getInstance().get(id);
+            if (permission.isEmpty())
+                throw new InvalidParameterException();
+            OutputStream os = exchange.getResponseBody();
+            String permissionJson = JsonProceed.getGson().toJson(permission.get());
+            exchange.sendResponseHeaders(200, 0);
+            //Encrypt permission
+            os.write(permissionJson.getBytes());
+            os.flush();
+            exchange.close();
+        } catch (IOException e) {
+            exchange.sendResponseHeaders(500, 0);
+            exchange.close();
+            System.err.println("Problem with getting permission streams!");
+            throw e;
+        } catch (InvalidParameterException e) {
+            exchange.sendResponseHeaders(404, 0);
+            exchange.close();
+            System.err.println("Trying to access not created permission");
+        } catch (SQLException e) {
+            exchange.sendResponseHeaders(500, 0);
+            exchange.close();
+            System.err.println("Problem with server response when getting permission");
+        }
+    }
+
+    private void putPermission(HttpExchange exchange) throws IOException {
         try {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
@@ -93,7 +123,7 @@ public class PermissionHandler implements HttpHandler {
         }
     }
 
-    private void createPermission(HttpExchange exchange) throws IOException {
+    private void postPermission(HttpExchange exchange) throws IOException {
         try {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
