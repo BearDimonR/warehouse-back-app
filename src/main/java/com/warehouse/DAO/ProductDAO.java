@@ -152,7 +152,7 @@ public class ProductDAO implements DAO<Product> {
         List<Product> productList = new ArrayList<>();
         List<ResultSet> resArr = new ArrayList<>();
         int fields = 0, groupId = 0, manufacturerId = 0;
-//TODO get by String name ID
+
         if (name != null) {
             fields++;
             resArr.add(filter.filterByName(name));
@@ -171,7 +171,7 @@ public class ProductDAO implements DAO<Product> {
             manufacturerId = resultSet.getInt(1);
             resArr.add(filter.filterByManufacturer(manufacturerId));
         }
-
+//todo check is correct ? 'cycle while'
         for (int i = 0; i < resArr.size(); i++) {
             while (resArr.get(i).next()) {
                 Product product = new Product(
