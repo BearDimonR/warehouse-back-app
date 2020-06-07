@@ -1,15 +1,13 @@
 package com.warehouse.Handler;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.warehouse.DAO.UserDAO;
 import com.warehouse.JsonProceed;
-import com.warehouse.Model.Credentials;
-import com.warehouse.Model.Manufacturer;
-import com.warehouse.Model.Token;
 import com.warehouse.Model.User;
+import com.warehouse.Model.auth.AuthenticatedUserDTO;
+import com.warehouse.Model.auth.Credentials;
 import com.warehouse.auth.Authentifaication;
 
 import java.io.IOException;
@@ -38,11 +36,10 @@ public class LoginHandler implements HttpHandler {
             Credentials credentials = JsonProceed.getGson().fromJson(new String(input), Credentials.class);
             Optional<User> loggedInUser = UserDAO.getInstance().getByCredentials(credentials);
             if (!loggedInUser.isEmpty()) {
-                Optional<Token> token = Authentifaication.generateJWTToken(loggedInUser.get());
-                if (!token.isEmpty()) {
-                    byte[] response = token.get().getToken().getBytes();
-                    String json = new Gson().toJson(token.get());
-                    System.out.println(json);
+                Optional<AuthenticatedUserDTO> user = Authentifaication.generateJWTToken(loggedInUser.get());
+                Authentifaication.authentificate(user.get().getToken()).get().stream().forEach(a -> System.out.println(a));
+                if (!user.isEmpty()) {
+                    byte[] response = new Gson().toJson(user.get()).getBytes();
                     exchange.sendResponseHeaders(200, response.length);
                     OutputStream os = exchange.getResponseBody();
                     os.write(response);
