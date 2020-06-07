@@ -6,7 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.warehouse.DAO.RoleDAO;
 import com.warehouse.JsonProceed;
 import com.warehouse.Model.Role;
-import com.warehouse.Splitter;
+import com.warehouse.utils.QueryParser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class RoleHandler implements HttpHandler {
@@ -38,11 +39,11 @@ public class RoleHandler implements HttpHandler {
     }
 
     private void getRole(HttpExchange exchange) throws IOException {
-        long id = Splitter.getId(exchange.getRequestURI());
-        if(id == -1)
+        Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
+        if(params.isEmpty())
             getAllRoles(exchange);
         else
-            getRole(exchange, id);
+            getRole(exchange, Long.parseLong(params.get("id")));
     }
 
     private void getAllRoles(HttpExchange exchange) throws IOException {
@@ -95,7 +96,7 @@ public class RoleHandler implements HttpHandler {
         }
     }
 
-    private void putRole(HttpExchange exchange) throws IOException {
+    private void postRole(HttpExchange exchange) throws IOException {
         try {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
@@ -118,7 +119,7 @@ public class RoleHandler implements HttpHandler {
         }
     }
 
-    private void postRole(HttpExchange exchange) throws IOException {
+    private void putRole(HttpExchange exchange) throws IOException {
         try {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
@@ -148,10 +149,8 @@ public class RoleHandler implements HttpHandler {
 
     private void deleteRole(HttpExchange exchange) throws IOException {
         try {
-            InputStream is = exchange.getRequestBody();
-            byte[] input = is.readAllBytes();
-            // decode input array
-            if(!RoleDAO.getInstance().delete(Long.valueOf(new String(input))))
+            Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
+            if(!RoleDAO.getInstance().delete(Long.parseLong(params.get("id"))))
                 exchange.sendResponseHeaders(404, 0);
             else
                 exchange.sendResponseHeaders(200, 0);
@@ -160,6 +159,10 @@ public class RoleHandler implements HttpHandler {
             exchange.sendResponseHeaders(500, 0);
             exchange.close();
             System.err.println("Problem with server response when deleting role");
+        } catch (NullPointerException e) {
+            exchange.sendResponseHeaders(400, 0);
+            exchange.close();
+            System.err.println("Null pointer in getting id");
         }
     }
 }

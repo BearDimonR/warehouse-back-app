@@ -1,5 +1,7 @@
 package com.warehouse.DAO;
 
+import com.warehouse.Model.Permission;
+import com.warehouse.Model.auth.Credentials;
 import com.warehouse.Model.User;
 
 import java.sql.Connection;
@@ -42,6 +44,7 @@ public class UserDAO implements DAO<User> {
         return Optional.empty();
     }
 
+
     @Override
     public synchronized List<User> getAll() throws SQLException {
         connection = DataBaseConnector.getInstance().getConnection();
@@ -54,6 +57,23 @@ public class UserDAO implements DAO<User> {
             user.add(new User(res.getLong(1), res.getString(2), res.getString(3), res.getInt(4)));
         }
         return user;
+    }
+
+    public synchronized Optional<User> getByCredentials(Credentials credentials) throws SQLException {
+        connection = DataBaseConnector.getInstance().getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account WHERE name = ? AND password = ?");
+        preparedStatement.setString(1, credentials.getName());
+        preparedStatement.setString(2, credentials.getPassword());
+        ResultSet res = preparedStatement.executeQuery();
+        DataBaseConnector.getInstance().releaseConnection(connection);
+        connection = null;
+        if (res.next())
+            return Optional.of(new User(
+                    res.getLong(1),
+                    res.getString(2),
+                    res.getString(3),
+                    res.getInt(4)));
+        return Optional.empty();
     }
 
     @Override

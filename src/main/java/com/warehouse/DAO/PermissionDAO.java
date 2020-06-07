@@ -39,6 +39,23 @@ public class PermissionDAO implements DAO<Permission> {
         return Optional.empty();
     }
 
+    public synchronized Optional<List<Permission>> getUsersPermissions(Long userId) throws SQLException {
+        connection = DataBaseConnector.getInstance().getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM permission JOIN role_permission_connection ON permission.id = role_permission_connection.permission_id WHERE role_id = (SELECT role_id FROM user_account WHERE id = ?)");
+        preparedStatement.setLong(1, userId);
+        ResultSet res = preparedStatement.executeQuery();
+        DataBaseConnector.getInstance().releaseConnection(connection);
+        connection = null;
+        List<Permission> permissions = new ArrayList<>();
+        while (res.next()) {
+            permissions.add(new Permission(
+                    res.getLong(1),
+                    res.getString(2),
+                    res.getBoolean(3)));
+        }
+        return Optional.of(permissions);
+    }
+
     @Override
     public synchronized List<Permission> getAll() throws SQLException {
         connection = DataBaseConnector.getInstance().getConnection();
@@ -47,7 +64,7 @@ public class PermissionDAO implements DAO<Permission> {
         DataBaseConnector.getInstance().releaseConnection(connection);
         connection = null;
         List<Permission> permissions = new ArrayList<>();
-        while(res.next()) {
+        while (res.next()) {
             permissions.add(new Permission(res.getLong(1), res.getString(2), res.getBoolean(3)));
         }
         return permissions;
