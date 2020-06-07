@@ -1,6 +1,7 @@
 package com.warehouse.DAO;
 
-import com.warehouse.Model.Credentials;
+import com.warehouse.Model.Permission;
+import com.warehouse.Model.auth.Credentials;
 import com.warehouse.Model.User;
 
 import java.sql.Connection;
