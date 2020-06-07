@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class UserHandler implements HttpHandler {
@@ -38,11 +39,11 @@ public class UserHandler implements HttpHandler {
     }
 
     private void getUser(HttpExchange exchange) throws IOException {
-        long id = Splitter.getId(exchange.getRequestURI());
-        if(id == -1)
+        Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
+        if(params.isEmpty())
             getAllUsers(exchange);
         else
-            getUser(exchange, id);
+            getUser(exchange, Long.parseLong(params.get("id")));
     }
 
     private void getAllUsers(HttpExchange exchange) throws IOException {

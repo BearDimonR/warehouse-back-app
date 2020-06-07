@@ -24,7 +24,7 @@ public class PermissionDAO implements DAO<Permission> {
 
 
     @Override
-    public synchronized Optional<Permission> get(long id) throws SQLException {
+    public Optional<Permission> get(long id) throws SQLException {
         try {
             connection = DataBaseConnector.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM permission WHERE id = ?");
@@ -42,7 +42,7 @@ public class PermissionDAO implements DAO<Permission> {
         }
     }
 
-    public synchronized Optional<List<Permission>> getUsersPermissions(Long userId) throws SQLException {
+    public Optional<List<Permission>> getUsersPermissions(Long userId) throws SQLException {
         try {
             connection = DataBaseConnector.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM permission JOIN role_permission_connection ON permission.id = role_permission_connection.permission_id WHERE role_id = (SELECT role_id FROM user_account WHERE id = ?)");
@@ -65,7 +65,7 @@ public class PermissionDAO implements DAO<Permission> {
     }
 
     @Override
-    public synchronized List<Permission> getAll() throws SQLException {
+    public List<Permission> getAll() throws SQLException {
         try {
             connection = DataBaseConnector.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM permission");
@@ -83,7 +83,7 @@ public class PermissionDAO implements DAO<Permission> {
     }
 
     @Override
-    public synchronized boolean save(Permission permission) throws SQLException {
+    public boolean save(Permission permission) throws SQLException {
         try {
             connection = DataBaseConnector.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO permission (name , is_super) VALUES  (?,?)");
@@ -100,7 +100,7 @@ public class PermissionDAO implements DAO<Permission> {
     }
 
     @Override
-    public synchronized boolean update(Permission permission, String[] params) throws SQLException {
+    public boolean update(Permission permission, String[] params) throws SQLException {
         try {
             connection = DataBaseConnector.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE permission SET name=?,is_super=? WHERE id=?");
@@ -117,7 +117,7 @@ public class PermissionDAO implements DAO<Permission> {
     }
 
     @Override
-    public synchronized boolean delete(long id) throws SQLException {
+    public boolean delete(long id) throws SQLException {
         try {
             connection = DataBaseConnector.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM permission WHERE id=?");
