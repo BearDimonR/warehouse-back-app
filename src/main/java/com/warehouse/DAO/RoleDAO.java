@@ -16,14 +16,15 @@ public class RoleDAO implements DAO<Role> {
     public static RoleDAO instance;
 
     public synchronized static RoleDAO getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new RoleDAO();
         return instance;
     }
 
     private Connection connection;
 
-    private RoleDAO() {}
+    private RoleDAO() {
+    }
 
     @Override
     public Optional<Role> get(long id) throws SQLException {
@@ -33,11 +34,26 @@ public class RoleDAO implements DAO<Role> {
         ResultSet res = preparedStatement.executeQuery();
         DataBaseConnector.getInstance().releaseConnection(connection);
         connection = null;
-        if(res.next())
+        if (res.next())
             return Optional.of(new Role(
-                res.getLong(1),
-                res.getString(2),
-                res.getBoolean(3)));
+                    res.getLong(1),
+                    res.getString(2),
+                    res.getBoolean(3)));
+        return Optional.empty();
+    }
+
+    public Optional<Role> getUserRole(long userId) throws SQLException {
+        connection = DataBaseConnector.getInstance().getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM role WHERE id = (SELECT role_id FROM user_account WHERE id = ?)");
+        preparedStatement.setLong(1, userId);
+        ResultSet res = preparedStatement.executeQuery();
+        DataBaseConnector.getInstance().releaseConnection(connection);
+        connection = null;
+        if (res.next())
+            return Optional.of(new Role(
+                    res.getLong(1),
+                    res.getString(2),
+                    res.getBoolean(3)));
         return Optional.empty();
     }
 
