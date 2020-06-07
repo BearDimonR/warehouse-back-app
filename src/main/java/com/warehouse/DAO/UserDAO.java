@@ -44,6 +44,7 @@ public class UserDAO implements DAO<User> {
         return Optional.empty();
     }
 
+
     @Override
     public synchronized List<User> getAll() throws SQLException {
         connection = DataBaseConnector.getInstance().getConnection();
