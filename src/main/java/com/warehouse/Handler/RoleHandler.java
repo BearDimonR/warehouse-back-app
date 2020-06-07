@@ -6,7 +6,6 @@ import com.sun.net.httpserver.HttpHandler;
 import com.warehouse.DAO.RoleDAO;
 import com.warehouse.JsonProceed;
 import com.warehouse.Model.Role;
-import com.warehouse.Model.RolePermissionConnection;
 import com.warehouse.utils.QueryParser;
 
 import java.io.IOException;
@@ -98,43 +97,6 @@ public class RoleHandler implements HttpHandler {
     }
 
     private void postRole(HttpExchange exchange) throws IOException {
-        try {
-            if (Boolean.parseBoolean(exchange.getRequestHeaders().get("add_permission").get(0)))
-                postRolePermission(exchange);
-            else
-                postRoleInfo(exchange);
-        } catch (NullPointerException | IndexOutOfBoundsException e){
-            exchange.sendResponseHeaders(400, 0);
-            exchange.close();
-            System.err.println("Problem with checking headers in postRole");
-        }
-    }
-
-    private void postRolePermission(HttpExchange exchange) throws IOException {
-        try {
-            InputStream is = exchange.getRequestBody();
-            byte[] input = is.readAllBytes();
-            // decode input array
-            RolePermissionConnection connection =
-                    JsonProceed.getGson().fromJson(new String(input), RolePermissionConnection.class);
-            RoleDAO.getInstance().connect(connection);
-            exchange.sendResponseHeaders(200, 0);
-            exchange.close();
-        } catch (SQLException e) {
-            // check if exception about unique name
-            if(e.getSQLState().equals("23505")) {
-                exchange.sendResponseHeaders(409, 0);
-                System.err.println("Such role name already used!");
-            }
-            else {
-                exchange.sendResponseHeaders(500, 0);
-                System.err.println("Problem with server response when adding role-permission connection");
-            }
-            exchange.close();
-        }
-    }
-
-    private void postRoleInfo(HttpExchange exchange) throws IOException {
         try {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
