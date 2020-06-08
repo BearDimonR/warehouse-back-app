@@ -6,6 +6,8 @@ import com.warehouse.DAO.GroupDAO;
 import com.warehouse.JsonProceed;
 import com.warehouse.Model.Group;
 import com.warehouse.utils.QueryParser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,27 +19,51 @@ import java.util.Map;
 import java.util.Optional;
 
 public class GroupHandler implements HttpHandler {
+
+    Logger groupLogger = LogManager.getLogger(RolePermissionHandler.class);
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        switch (exchange.getRequestMethod()) {
-            case "GET":
-                getGroup(exchange);
-                break;
-            case "PUT":
-                putGroup(exchange);
-                break;
-            case "POST":
-                postGroup(exchange);
-                break;
-            case "DELETE":
-                deleteGroup(exchange);
-                break;
-            default:
-                System.err.println("Undefined request method!");
+        try {
+            switch (exchange.getRequestMethod()) {
+                case "GET":
+                    getGroup(exchange);
+                    break;
+                case "PUT":
+                    putGroup(exchange);
+                    break;
+                case "POST":
+                    postGroup(exchange);
+                    break;
+                case "DELETE":
+                    deleteGroup(exchange);
+                    break;
+                default:
+                    groupLogger.error("Undefined request method: " + exchange.getRequestMethod());
+                    exchange.sendResponseHeaders(400, -1);
+            }
+        } catch (IOException e) {
+            exchange.sendResponseHeaders(500, -1);
+            groupLogger.error("Problem with group streams\n\t" + e.getMessage());
+        } catch (InvalidParameterException e) {
+            exchange.sendResponseHeaders(404, -1);
+            groupLogger.error("Trying to access group with wrong id");
+        } catch (SQLException e) {
+            if (e.getSQLState().equals("23505")) {
+                exchange.sendResponseHeaders(409, -1);
+                groupLogger.error("Not unique group name\n\t" + e.getMessage());
+            } else {
+                exchange.sendResponseHeaders(500, -1);
+                groupLogger.error("Problem with server response\n\t" + e.getMessage());
+            }
+        } catch (Exception e) {
+            groupLogger.error("Undefined exception\n\t" + e.getMessage());
+        } finally {
+            exchange.close();
         }
     }
 
-    private void getGroup(HttpExchange exchange) throws IOException {
+    private void getGroup(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
         Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
         if(params.isEmpty())
             getAllGroups(exchange);
@@ -45,8 +71,7 @@ public class GroupHandler implements HttpHandler {
             getGroup(exchange, Long.parseLong(params.get("id")));
     }
 
-    private void getAllGroups(HttpExchange exchange) throws IOException {
-        try {
+    private void getAllGroups(HttpExchange exchange) throws IOException, SQLException {
             List<Group> groups = GroupDAO.getInstance().getAll();
             OutputStream os = exchange.getResponseBody();
             String groupJson = JsonProceed.getGson().toJson(groups);
@@ -54,21 +79,9 @@ public class GroupHandler implements HttpHandler {
             //Encrypt groups
             os.write(groupJson.getBytes());
             os.flush();
-            exchange.close();
-        } catch (IOException e) {
-            exchange.sendResponseHeaders(500, 0);
-            exchange.close();
-            System.err.println("Problem with getting groups streams!");
-            throw e;
-        } catch (SQLException e) {
-            exchange.sendResponseHeaders(500, 0);
-            exchange.close();
-            System.err.println("Problem with server response when getting groups");
-        }
     }
 
-    private void getGroup(HttpExchange exchange, long id) throws IOException {
-        try {
+    private void getGroup(HttpExchange exchange, long id) throws IOException, InvalidParameterException, SQLException {
             Optional<Group> group = GroupDAO.getInstance().get(id);
             if (group.isEmpty())
                 throw new InvalidParameterException();
@@ -78,49 +91,18 @@ public class GroupHandler implements HttpHandler {
             //Encrypt group
             os.write(groupJson.getBytes());
             os.flush();
-            exchange.close();
-        } catch (IOException e) {
-            exchange.sendResponseHeaders(500, 0);
-            exchange.close();
-            System.err.println("Problem with getting group streams!");
-            throw e;
-        } catch (InvalidParameterException e) {
-            exchange.sendResponseHeaders(404, 0);
-            exchange.close();
-            System.err.println("Trying to access not created group");
-        } catch (SQLException e) {
-            exchange.sendResponseHeaders(500, 0);
-            exchange.close();
-            System.err.println("Problem with server response when getting group");
-        }
     }
 
-    private void postGroup(HttpExchange exchange) throws IOException {
-        try {
+    private void postGroup(HttpExchange exchange) throws IOException, SQLException {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
             // decode input array
             Group group = JsonProceed.getGson().fromJson(new String(input), Group.class);
             GroupDAO.getInstance().save(group);
-            exchange.sendResponseHeaders(200, 0);
-            exchange.close();
-        } catch (SQLException e) {
-            // check if exception about unique name
-            e.printStackTrace();
-            if(e.getSQLState().equals("23505")) {
-                exchange.sendResponseHeaders(409, 0);
-                System.err.println("Such group name already used!");
-            }
-            else {
-                exchange.sendResponseHeaders(500, 0);
-                System.err.println("Problem with server response when creating group");
-            }
-            exchange.close();
-        }
+            exchange.sendResponseHeaders(200, -1);
     }
 
-    private void putGroup(HttpExchange exchange) throws IOException {
-        try {
+    private void putGroup(HttpExchange exchange) throws IOException, InvalidParameterException, SQLException {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
             // decode input array
@@ -128,41 +110,14 @@ public class GroupHandler implements HttpHandler {
             if (!GroupDAO.getInstance().update(group, null))
                 throw new InvalidParameterException();
             else
-                exchange.sendResponseHeaders(200, 0);
-            exchange.close();
-        } catch (InvalidParameterException e) {
-            exchange.sendResponseHeaders(404, 0);
-            exchange.close();
-            System.err.println("Trying to access not created group");
-        } catch (SQLException e) {
-            if(e.getSQLState().equals("23505")) {
-                exchange.sendResponseHeaders(409, 0);
-                System.err.println("Such group name already used!");
-            }
-            else {
-                exchange.sendResponseHeaders(500, 0);
-                System.err.println("Problem with server response when editing group");
-            }
-            exchange.close();
-        }
+                exchange.sendResponseHeaders(200, -1);
     }
 
-    private void deleteGroup(HttpExchange exchange) throws IOException {
-        try {
+    private void deleteGroup(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
             Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
             if(!GroupDAO.getInstance().delete(Long.parseLong(params.get("id"))))
-                exchange.sendResponseHeaders(404, 0);
+                throw new InvalidParameterException();
             else
-                exchange.sendResponseHeaders(200, 0);
-            exchange.close();
-        } catch (SQLException e) {
-            exchange.sendResponseHeaders(500, 0);
-            exchange.close();
-            System.err.println("Problem with server response when deleting group");
-        } catch (NullPointerException e) {
-            exchange.sendResponseHeaders(400, 0);
-            exchange.close();
-            System.err.println("Null pointer in getting id");
-        }
+                exchange.sendResponseHeaders(200, -1);
     }
 }
