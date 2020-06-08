@@ -8,7 +8,7 @@ import com.warehouse.JsonProceed;
 import com.warehouse.Model.User;
 import com.warehouse.Model.auth.AuthenticatedUserDTO;
 import com.warehouse.Model.auth.Credentials;
-import com.warehouse.auth.Authentifaication;
+import com.warehouse.Authentication.Authentication;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,9 +16,10 @@ import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class LoginHandler implements HttpHandler {
+public class LoginHandler implements HttpHandler, CORSEnabled {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        enableCORS(exchange);
         switch (exchange.getRequestMethod()) {
             case "POST":
                 login(exchange);
@@ -30,20 +31,18 @@ public class LoginHandler implements HttpHandler {
 
     private void login(HttpExchange exchange) {
         try {
-            InputStream is = exchange.getRequestBody();
-            byte[] input = is.readAllBytes();
+            byte[] input = exchange.getRequestBody().readAllBytes();
             //TODO decode input array
-            Credentials credentials = JsonProceed.getGson().fromJson(new String(input), Credentials.class);
-            Optional<User> loggedInUser = UserDAO.getInstance().getByCredentials(credentials);
-            if (!loggedInUser.isEmpty()) {
-                Optional<AuthenticatedUserDTO> user = Authentifaication.generateJWTToken(loggedInUser.get());
-                Authentifaication.authentificate(user.get().getToken()).get().stream().forEach(a -> System.out.println(a));
-                if (!user.isEmpty()) {
+            Optional<User> userByCredentials = UserDAO.getInstance().getByCredentials(JsonProceed.getGson().fromJson(new String(input), Credentials.class));
+            if (userByCredentials.isPresent()) {
+                Optional<AuthenticatedUserDTO> user = Authentication.generateLoginResponse(userByCredentials.get());
+                if (user.isPresent()) {
                     byte[] response = new Gson().toJson(user.get()).getBytes();
                     exchange.sendResponseHeaders(200, response.length);
                     OutputStream os = exchange.getResponseBody();
                     os.write(response);
                     os.close();
+                    exchange.close();
                 }
             } else {
                 exchange.sendResponseHeaders(403, -1);
