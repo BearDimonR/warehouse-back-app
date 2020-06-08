@@ -3,7 +3,8 @@ package com.warehouse;
 import com.warehouse.DAO.DataBaseConnector;
 import com.sun.net.httpserver.HttpServer;
 import com.warehouse.Handler.*;
-import com.warehouse.Model.Role;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -14,17 +15,19 @@ import java.util.concurrent.TimeUnit;
 
 public class Server {
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) {
         new Server();
     }
 
-    private ThreadPoolExecutor pool;
+    private Server() {
+        // Init logger
+        Logger root = LogManager.getRootLogger();
+        root.info("Starting-up server...");
 
-    private Server() throws ClassNotFoundException {
-        //Init pool
-        pool = new ThreadPoolExecutor(
+        // Init pool
+        ThreadPoolExecutor pool = new ThreadPoolExecutor(
                 4, Runtime.getRuntime().availableProcessors() + 1, 5, TimeUnit.SECONDS,
-                new ArrayBlockingQueue<Runnable>(100), Executors.defaultThreadFactory(),
+                new ArrayBlockingQueue<>(100), Executors.defaultThreadFactory(),
                 new RejectedHandler()
         );
 
@@ -49,9 +52,9 @@ public class Server {
             server.bind(new InetSocketAddress(8089), 0);
             server.setExecutor(pool);
             server.start();
-            System.out.println("Server was started: " + server.getAddress());
+            root.info("Server start-up successful: " + server.getAddress());
         } catch (IOException e) {
-            e.printStackTrace();
+            root.trace("Server exception", e);
         }
     }
 }
