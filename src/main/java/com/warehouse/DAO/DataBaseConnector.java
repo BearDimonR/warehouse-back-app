@@ -1,7 +1,7 @@
 package com.warehouse.DAO;
 
 import com.warehouse.ConnectionPool;
-import com.warehouse.utils.DBProperties;
+import com.warehouse.Utils.DBProperties;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package com.warehouse.utils;
+package com.warehouse.Utils;
 
 import java.util.Arrays;
 import java.util.HashMap;

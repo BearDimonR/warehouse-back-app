@@ -3,10 +3,9 @@ package com.warehouse.Handler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.warehouse.DAO.PermissionDAO;
-import com.warehouse.DAO.RoleDAO;
 import com.warehouse.JsonProceed;
 import com.warehouse.Model.Permission;
-import com.warehouse.utils.QueryParser;
+import com.warehouse.Utils.QueryParser;
 
 import java.io.IOException;
 import java.io.InputStream;

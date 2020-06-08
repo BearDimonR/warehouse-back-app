@@ -5,7 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.warehouse.DAO.GroupDAO;
 import com.warehouse.JsonProceed;
 import com.warehouse.Model.Group;
-import com.warehouse.utils.QueryParser;
+import com.warehouse.Utils.QueryParser;
 
 import java.io.IOException;
 import java.io.InputStream;
