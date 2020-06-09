@@ -89,10 +89,7 @@ public class GroupDAO implements DAO<Group> {
             preparedStatement.setString(1, group.getName());
             preparedStatement.setString(2, group.getDescription());
             preparedStatement.setLong(3, group.getId());
-            int res = preparedStatement.executeUpdate();
-            DataBaseConnector.getInstance().releaseConnection(connection);
-            connection = null;
-            return res != 0;
+            return preparedStatement.executeUpdate() != 0;
         } finally {
             DataBaseConnector.getInstance().releaseConnection(connection);
             connection = null;

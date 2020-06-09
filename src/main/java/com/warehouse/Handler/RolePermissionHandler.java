@@ -6,7 +6,7 @@ import com.warehouse.DAO.RolePermissionDAO;
 import com.warehouse.JsonProceed;
 import com.warehouse.Model.RolePermissionConnection;
 import com.warehouse.Model.RolePermissions;
-import com.warehouse.utils.QueryParser;
+import com.warehouse.Utils.QueryParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

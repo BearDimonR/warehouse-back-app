@@ -7,9 +7,9 @@ import com.warehouse.DAO.RoleDAO;
 import com.warehouse.JsonProceed;
 import com.warehouse.Model.Manufacturer;
 import com.warehouse.Authentication.Authentication;
+import com.warehouse.Utils.QueryParser;
 import com.warehouse.exceptions.AuthRequiredException;
 import com.warehouse.exceptions.NoPermissionException;
-import com.warehouse.utils.QueryParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,6 +24,8 @@ import java.util.Optional;
 
 
 public class ManufacturerHandler implements HttpHandler, CORSEnabled {
+
+    Logger manufacturerLogger = LogManager.getLogger(ManufacturerHandler.class);
 
 @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -64,15 +66,14 @@ public class ManufacturerHandler implements HttpHandler, CORSEnabled {
                 exchange.sendResponseHeaders(500, -1);
                 manufacturerLogger.error("Problem with server response\n\t" + e.getMessage());
             }
-        } catch (Exception e) {
-            manufacturerLogger.error("Undefined exception\n\t" + e.getMessage());
-        } 
-        catch (NoPermissionException e) {
+        } catch (NoPermissionException e) {
             exchange.sendResponseHeaders(403, -1);
             manufacturerLogger.error("Not enough permissions.\n\t" + e.getMessage());
         } catch (AuthRequiredException e) {
             exchange.sendResponseHeaders(401, -1);
             manufacturerLogger.error("Authentication failed.\n\t" + e.getMessage());
+        } catch (Exception e) {
+            manufacturerLogger.error("Undefined exception\n\t" + e.getMessage());
         } finally {
             exchange.close();
         }

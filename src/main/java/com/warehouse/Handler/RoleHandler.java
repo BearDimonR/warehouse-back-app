@@ -6,7 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.warehouse.DAO.RoleDAO;
 import com.warehouse.JsonProceed;
 import com.warehouse.Model.Role;
-import com.warehouse.utils.QueryParser;
+import com.warehouse.Utils.QueryParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

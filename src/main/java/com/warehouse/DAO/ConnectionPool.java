@@ -1,4 +1,4 @@
-package com.warehouse;
+package com.warehouse.DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

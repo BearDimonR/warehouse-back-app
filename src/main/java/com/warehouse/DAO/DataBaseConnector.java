@@ -1,6 +1,5 @@
 package com.warehouse.DAO;
 
-import com.warehouse.ConnectionPool;
 import com.warehouse.Utils.DBProperties;
 
 import java.sql.Connection;
