@@ -91,7 +91,7 @@ public class Authentication {
                                 .setExpiration(Date.from(now.plus(60, ChronoUnit.MINUTES)))
                                 .signWith(Keys.hmacShaKeyFor(SECRET))
                                 .compact(),
-                        new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(Date.from(now.plus(60, ChronoUnit.MINUTES)))
+                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date.from(now.plus(60, ChronoUnit.MINUTES)))
                         ,
                         role.get().getName(),
                         permissions.get().stream().map(a -> a.getName()).collect(Collectors.toList()))
