@@ -6,9 +6,13 @@ import com.warehouse.DAO.ManufacturerDAO;
 import com.warehouse.DAO.RoleDAO;
 import com.warehouse.JsonProceed;
 import com.warehouse.Model.Manufacturer;
+import com.warehouse.Authentication.Authentication;
+import com.warehouse.exceptions.AuthRequiredException;
+import com.warehouse.exceptions.NoPermissionException;
 import com.warehouse.utils.QueryParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,31 +22,35 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class ManufacturerHandler implements HttpHandler {
 
-    Logger manufacturerLogger = LogManager.getLogger(ManufacturerHandler.class);
+public class ManufacturerHandler implements HttpHandler, CORSEnabled {
 
-    @Override
+@Override
     public void handle(HttpExchange exchange) throws IOException {
-        try{
-        switch (exchange.getRequestMethod()) {
-            case "GET":
-                getManufacturer(exchange);
-                break;
-            case "PUT":
-                updateManufacturer(exchange);
-                break;
-            case "POST":
-                createManufacturer(exchange);
-                break;
-            case "DELETE":
-                deleteManufacturer(exchange);
-                break;
-            default:
-                manufacturerLogger.error("Undefined request method: " + exchange.getRequestMethod());
-                exchange.sendResponseHeaders(400, -1);
-        }
-        } catch (IOException e) {
+        enableCORS(exchange);
+        try {
+            switch (exchange.getRequestMethod()) {
+                case "GET":
+                    if (Authentication.hasPermission(exchange, "user_delete"))
+                        getManufacturer(exchange);
+                    break;
+                case "PUT":
+                    if (Authentication.hasPermission(exchange, "manufacturer_update"))
+                        updateManufacturer(exchange);
+                    break;
+                case "POST":
+                    if (Authentication.hasPermission(exchange, "manufacturer_create"))
+                        createManufacturer(exchange);
+                    break;
+                case "DELETE":
+                    if (Authentication.hasPermission(exchange, "manufacturer_delete"))
+                        deleteManufacturer(exchange);
+                    break;
+                default:
+                    manufacturerLogger.error("Undefined request method: " + exchange.getRequestMethod());
+                    exchange.sendResponseHeaders(400, -1);
+            }
+        }catch (IOException e) {
             exchange.sendResponseHeaders(500, -1);
             manufacturerLogger.error("Problem with manufacturer streams\n\t" + e.getMessage());
         } catch (InvalidParameterException e) {
@@ -58,13 +66,20 @@ public class ManufacturerHandler implements HttpHandler {
             }
         } catch (Exception e) {
             manufacturerLogger.error("Undefined exception\n\t" + e.getMessage());
+        } 
+        catch (NoPermissionException e) {
+            exchange.sendResponseHeaders(403, -1);
+            manufacturerLogger.error("Not enough permissions.\n\t" + e.getMessage());
+        } catch (AuthRequiredException e) {
+            exchange.sendResponseHeaders(401, -1);
+            manufacturerLogger.error("Authentication failed.\n\t" + e.getMessage());
         } finally {
             exchange.close();
         }
     }
-
     private void getManufacturer(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
         Optional<String> id = Optional.ofNullable(QueryParser.parse(exchange.getRequestURI().getQuery()).get("id"));
+
             String json = "";
             if (id.isEmpty()) {
                 List<Manufacturer> manufacturers = ManufacturerDAO.getInstance().getAll();

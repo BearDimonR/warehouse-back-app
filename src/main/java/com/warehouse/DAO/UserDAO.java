@@ -89,7 +89,7 @@ public class UserDAO implements DAO<User> {
     public boolean save(User user) throws SQLException {
         try {
             connection = DataBaseConnector.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user_account (name , password, role_is) VALUES  (?,?,?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user_account (name , password, role_id) VALUES  (?,?,?)");
 
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
