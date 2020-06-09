@@ -30,7 +30,7 @@ public class MeasureDAO implements DAO<Measure> {
     @Override
     public List<Measure> getAll() throws SQLException {
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
+            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM measure");
             ResultSet res = preparedStatement.executeQuery();
             List<Measure> measures = new ArrayList<>();
@@ -39,7 +39,7 @@ public class MeasureDAO implements DAO<Measure> {
             }
             return measures;
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
+            DataBaseConnector.getConnector().releaseConnection(connection);
             connection = null;
         }
     }

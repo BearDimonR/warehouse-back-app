@@ -55,14 +55,15 @@ public class Server {
 
                 //Server contexts
                 //TODO Maybe Enum for this shit?
-                server.createContext("/warehouse/user/products", new ProductHandler());
-                server.createContext("/warehouse/user/groups", new GroupHandler());
-                server.createContext("/warehouse/admin/manufacturers", new ManufacturerHandler());
-                server.createContext("/warehouse/admin/users", new UserHandler());
-                server.createContext("/warehouse/admin/roles", new RoleHandler());
-                server.createContext("/warehouse/admin/roles/permissions", new RolePermissionHandler());
-                server.createContext("/warehouse/admin/permissions", new PermissionHandler());
-                server.createContext("/warehouse/login", new LoginHandler());
+                server.createContext("/products", new ProductHandler());
+                server.createContext("/groups", new GroupHandler());
+                server.createContext("/manufacturers", new ManufacturerHandler());
+                server.createContext("/users", new UserHandler());
+                server.createContext("/roles", new RoleHandler());
+                server.createContext("/roles/permissions", new RolePermissionHandler());
+                server.createContext("/permissions", new PermissionHandler());
+                server.createContext("/measures", new MeasureHandler());
+                server.createContext("/login", new LoginHandler());
 
                 server.bind(new InetSocketAddress(8089), 0);
                 server.setExecutor(pool);
