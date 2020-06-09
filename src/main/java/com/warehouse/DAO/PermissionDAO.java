@@ -48,7 +48,6 @@ public class PermissionDAO implements DAO<Permission> {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM permission JOIN role_permission_connection ON permission.id = role_permission_connection.permission_id WHERE role_id = (SELECT role_id FROM user_account WHERE id = ?)");
             preparedStatement.setLong(1, userId);
             ResultSet res = preparedStatement.executeQuery();
-            DataBaseConnector.getInstance().releaseConnection(connection);
             connection = null;
             List<Permission> permissions = new ArrayList<>();
             while (res.next()) {
