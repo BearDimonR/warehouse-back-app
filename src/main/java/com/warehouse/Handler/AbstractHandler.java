@@ -25,8 +25,8 @@ abstract class AbstractHandler implements HttpHandler, CORSEnabled {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         logger.info("Got request: " + exchange.getRequestMethod());
-        enableCORS(exchange);
         try {
+            enableCORS(exchange);
             switch (exchange.getRequestMethod()) {
                 case "GET":
                     if (Authentication.hasPermission(exchange, getPermission))
@@ -43,6 +43,8 @@ abstract class AbstractHandler implements HttpHandler, CORSEnabled {
                 case "DELETE":
                     if (Authentication.hasPermission(exchange, deletePermission))
                         delete(exchange);
+                    break;
+                case "OPTIONS":
                     break;
                 default:
                     logger.error("Undefined request method: " + exchange.getRequestMethod() + ".");
