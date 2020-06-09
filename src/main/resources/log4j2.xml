@@ -2,13 +2,13 @@
 
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%-5p] %d %c - %m%n \t\t at %c.%M(%F:%L)%n"/>
+            <PatternLayout pattern="[%-5p] - [%t] - (%d) %c - %m%n \t\t\t\t at %c.%M(%F:%L)%n"/>
         </Console>
 
         <RollingRandomAccessFile name="Files" fileName="logs/server.log"
                                  filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
             <PatternLayout>
-                <Pattern>[%-5p] %d %c - %m%n \t\t at %c.%M(%F:%L)%n</Pattern>
+                <Pattern>[%-5p] - [%t] - (%d) %c - %m%n \t\t\t\t at %c.%M(%F:%L)%n</Pattern>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
