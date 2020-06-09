@@ -19,10 +19,10 @@ import java.util.Optional;
 public class ProductHandler extends AbstractHandler {
 
     public ProductHandler() {
-        getPermission = "";
-        updatePermission = "";
-        createPermission = "";
-        deletePermission = "";
+        getPermission = "product_read";
+        updatePermission = "product_edit";
+        createPermission = "product_create";
+        deletePermission = "product_delete";
 
         logger = LogManager.getLogger(ProductHandler.class);
         model = Product.class;

@@ -20,10 +20,10 @@ import java.util.Optional;
 public class UserHandler extends AbstractHandler {
 
     public UserHandler() {
-        getPermission = "";
-        updatePermission = "";
-        createPermission = "";
-        deletePermission = "";
+        getPermission = "user_read";
+        updatePermission = "user_edit";
+        createPermission = "user_create";
+        deletePermission = "user_delete";
 
         logger = LogManager.getLogger(UserHandler.class);
         model = User.class;

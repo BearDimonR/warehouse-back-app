@@ -20,10 +20,10 @@ import java.util.Optional;
 public class ManufacturerHandler extends AbstractHandler {
 
     public ManufacturerHandler() {
-        getPermission = "";
-        updatePermission = "";
-        createPermission = "";
-        deletePermission = "";
+        getPermission = "manufacturer_read";
+        updatePermission = "manufacturer_edit";
+        createPermission = "manufacturer_create";
+        deletePermission = "manufacturer_edit";
 
         logger = LogManager.getLogger(ManufacturerHandler.class);
         model = Manufacturer.class;

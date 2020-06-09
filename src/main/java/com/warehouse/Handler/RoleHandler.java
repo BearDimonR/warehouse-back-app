@@ -21,10 +21,10 @@ import java.util.Optional;
 public class RoleHandler extends AbstractHandler {
 
     public RoleHandler() {
-        getPermission = "";
-        updatePermission = "";
-        createPermission = "";
-        deletePermission = "";
+        getPermission = "role_read";
+        updatePermission = "role_edit";
+        createPermission = "role_create";
+        deletePermission = "role_delete";
 
         logger = LogManager.getLogger(RoleHandler.class);
         model = Role.class;

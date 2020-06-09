@@ -20,10 +20,10 @@ import java.util.Optional;
 public class GroupHandler extends AbstractHandler {
 
     public GroupHandler() {
-        getPermission = "";
-        updatePermission = "";
-        createPermission = "";
-        deletePermission = "";
+        getPermission = "group_read";
+        updatePermission = "group_edit";
+        createPermission = "group_create";
+        deletePermission = "group_delete";
 
         logger = LogManager.getLogger(GroupHandler.class);
         model = Group.class;

@@ -18,10 +18,10 @@ import java.util.Map;
 public class RolePermissionHandler extends AbstractHandler {
 
     public RolePermissionHandler() {
-        getPermission = "";
+        getPermission = "read_permission_role_connection";
         updatePermission = "";
-        createPermission = "";
-        deletePermission = "";
+        createPermission = "assign_permission_to_role";
+        deletePermission = "unassign_permission_from_role";
 
         logger = LogManager.getLogger(RolePermissionHandler.class);
         model = RolePermissionConnection.class;

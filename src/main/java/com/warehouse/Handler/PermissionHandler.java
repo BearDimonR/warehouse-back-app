@@ -20,10 +20,10 @@ import java.util.Optional;
 public class PermissionHandler extends AbstractHandler {
 
     public PermissionHandler() {
-        getPermission = "";
-        updatePermission = "";
-        createPermission = "";
-        deletePermission = "";
+        getPermission = "permission_read";
+        updatePermission = "permission_edit";
+        createPermission = "permission_create";
+        deletePermission = "permission_delete";
 
         logger = LogManager.getLogger(PermissionHandler.class);
         model = Permission.class;
