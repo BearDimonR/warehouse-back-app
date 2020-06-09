@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.warehouse.Authentication.Authentication;
 import com.warehouse.exceptions.AuthRequiredException;
 import com.warehouse.exceptions.NoPermissionException;
+import com.warehouse.exceptions.NotImplementedException;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ abstract class AbstractHandler implements HttpHandler, CORSEnabled {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        logger.info("Got request: " + exchange.getRequestMethod());
         enableCORS(exchange);
         try {
             switch (exchange.getRequestMethod()) {
@@ -69,12 +71,25 @@ abstract class AbstractHandler implements HttpHandler, CORSEnabled {
         } catch (Exception e) {
             logger.error("Undefined exception.\n\t" + e.getMessage());
         } finally {
+            logger.info("Finish request: " + exchange.getRequestMethod() + " with " + exchange.getResponseCode());
             exchange.close();
         }
     }
 
-    protected void get(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {}
-    protected void create(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {}
-    protected void update(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {}
-    protected void delete(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {}
+    protected void get(HttpExchange exchange)
+            throws IOException, SQLException, InvalidParameterException, NotImplementedException {
+        throw new NotImplementedException();
+    }
+    protected void create(HttpExchange exchange)
+            throws IOException, SQLException, InvalidParameterException, NotImplementedException {
+        throw new NotImplementedException();
+    }
+    protected void update(HttpExchange exchange)
+            throws IOException, SQLException, InvalidParameterException, NotImplementedException {
+        throw new NotImplementedException();
+    }
+    protected void delete(HttpExchange exchange)
+            throws IOException, SQLException, InvalidParameterException, NotImplementedException {
+        throw new NotImplementedException();
+    }
 }
