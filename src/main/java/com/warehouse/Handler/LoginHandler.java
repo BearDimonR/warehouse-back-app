@@ -9,6 +9,7 @@ import com.warehouse.Model.auth.AuthenticatedUserDTO;
 import com.warehouse.Model.auth.Credentials;
 import com.warehouse.Authentication.Authentication;
 import com.warehouse.exceptions.AuthWrongException;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,14 +18,20 @@ import java.util.Optional;
 
 public class LoginHandler extends AbstractHandler {
 
+    public LoginHandler() {
+        logger = LogManager.getLogger(LoginHandler.class);
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
-            logger.info("Login request");
+            logger.info("Login request: " + exchange.getRequestMethod());
             enableCORS(exchange);
             switch (exchange.getRequestMethod()) {
                 case "POST":
                     login(exchange);
+                    break;
+                case "OPTIONS":
                     break;
                 default:
                     logger.warn("Undefined request method!");
@@ -57,7 +64,7 @@ public class LoginHandler extends AbstractHandler {
                 os.write(response);
                 os.close();
             }
-            else throw new AuthWrongException();
+            //else throw new AuthWrongException();
         } else
             throw new AuthWrongException();
 
