@@ -1,6 +1,5 @@
 package com.warehouse.DAO;
 
-import com.warehouse.Model.Permission;
 import com.warehouse.Model.auth.Credentials;
 import com.warehouse.Model.User;
 
@@ -30,7 +29,7 @@ public class UserDAO implements DAO<User> {
     @Override
     public Optional<User> get(long id) throws SQLException {
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
+            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account WHERE id = ?");
             preparedStatement.setLong(1, id);
             ResultSet res = preparedStatement.executeQuery();
@@ -42,7 +41,7 @@ public class UserDAO implements DAO<User> {
                         res.getInt(4)));
             return Optional.empty();
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
+            DataBaseConnector.getConnector().releaseConnection(connection);
             connection = null;
         }
     }
@@ -51,7 +50,7 @@ public class UserDAO implements DAO<User> {
     @Override
     public List<User> getAll() throws SQLException {
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
+            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account");
             ResultSet res = preparedStatement.executeQuery();
             List<User> user = new ArrayList<>();
@@ -60,14 +59,14 @@ public class UserDAO implements DAO<User> {
             }
             return user;
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
+            DataBaseConnector.getConnector().releaseConnection(connection);
             connection = null;
         }
     }
 
     public Optional<User> getByCredentials(Credentials credentials) throws SQLException {
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
+            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account WHERE name = ? AND password = ?");
             preparedStatement.setString(1, credentials.getName());
             preparedStatement.setString(2, credentials.getPassword());
@@ -80,7 +79,7 @@ public class UserDAO implements DAO<User> {
                         res.getInt(4)));
             return Optional.empty();
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
+            DataBaseConnector.getConnector().releaseConnection(connection);
             connection = null;
         }
     }
@@ -88,7 +87,7 @@ public class UserDAO implements DAO<User> {
     @Override
     public boolean save(User user) throws SQLException {
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
+            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user_account (name , password, role_id) VALUES  (?,?,?)");
 
             preparedStatement.setString(1, user.getName());
@@ -98,7 +97,7 @@ public class UserDAO implements DAO<User> {
             int res = preparedStatement.executeUpdate();
             return res != 0;
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
+            DataBaseConnector.getConnector().releaseConnection(connection);
             connection = null;
         }
     }
@@ -106,7 +105,7 @@ public class UserDAO implements DAO<User> {
     @Override
     public boolean update(User user, String[] params) throws SQLException {
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
+            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE user_account SET name=?,password=?,role_id=? WHERE id=?");
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
@@ -116,7 +115,7 @@ public class UserDAO implements DAO<User> {
             int res = preparedStatement.executeUpdate();
             return res != 0;
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
+            DataBaseConnector.getConnector().releaseConnection(connection);
             connection = null;
         }
     }
@@ -124,16 +123,16 @@ public class UserDAO implements DAO<User> {
     @Override
     public boolean delete(long id) throws SQLException {
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
+            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM user_account WHERE id=?");
             preparedStatement.setLong(1, id);
 
             int res = preparedStatement.executeUpdate();
-            DataBaseConnector.getInstance().releaseConnection(connection);
+            DataBaseConnector.getConnector().releaseConnection(connection);
             connection = null;
             return res != 0;
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
+            DataBaseConnector.getConnector().releaseConnection(connection);
             connection = null;
         }
     }

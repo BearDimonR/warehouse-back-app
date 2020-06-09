@@ -26,7 +26,7 @@ public class RolePermissionDAO {
 
     public RolePermissions get(long id) throws SQLException {
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
+            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement
                     ("SELECT * FROM permission WHERE id IN " +
                             "(SELECT permission_id FROM role_permission_connection WHERE role_id = ?)");
@@ -40,14 +40,14 @@ public class RolePermissionDAO {
             }
             return new RolePermissions(id, permissions);
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
+            DataBaseConnector.getConnector().releaseConnection(connection);
             connection = null;
         }
     }
 
     public boolean save(RolePermissionConnection rolePermissionConnection) throws SQLException {
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
+            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement
                             ("INSERT INTO role_permission_connection (role_id, permission_id) VALUES (?,?)");
@@ -55,21 +55,21 @@ public class RolePermissionDAO {
             preparedStatement.setLong(2, rolePermissionConnection.getPermissionId());
             return preparedStatement.executeUpdate() != 0;
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
+            DataBaseConnector.getConnector().releaseConnection(connection);
             connection = null;
         }
     }
 
     public boolean delete(RolePermissionConnection rolePermissionConnection) throws SQLException {
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
+            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement
                     ("DELETE FROM role_permission_connection WHERE (role_id=? AND permission_id = ?) ");
             preparedStatement.setLong(1, rolePermissionConnection.getRoleId());
             preparedStatement.setLong(2, rolePermissionConnection.getPermissionId());
             return preparedStatement.executeUpdate() != 0;
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
+            DataBaseConnector.getConnector().releaseConnection(connection);
             connection = null;
         }
     }

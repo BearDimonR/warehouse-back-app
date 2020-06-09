@@ -27,11 +27,11 @@ public class ManufacturerDAO implements DAO<Manufacturer> {
 
     @Override
     public Optional<Manufacturer> get(long id) throws SQLException {
-        connection = DataBaseConnector.getInstance().getConnection();
+        connection = DataBaseConnector.getConnector().getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM manufacturer WHERE id = ?");
         preparedStatement.setLong(1, id);
         ResultSet res = preparedStatement.executeQuery();
-        DataBaseConnector.getInstance().releaseConnection(connection);
+        DataBaseConnector.getConnector().releaseConnection(connection);
         connection = null;
         if (res.next())
             return Optional.of(new Manufacturer(
@@ -42,10 +42,10 @@ public class ManufacturerDAO implements DAO<Manufacturer> {
 
     @Override
     public List<Manufacturer> getAll() throws SQLException {
-        connection = DataBaseConnector.getInstance().getConnection();
+        connection = DataBaseConnector.getConnector().getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM manufacturer");
         ResultSet res = preparedStatement.executeQuery();
-        DataBaseConnector.getInstance().releaseConnection(connection);
+        DataBaseConnector.getConnector().releaseConnection(connection);
         connection = null;
         List<Manufacturer> manufacturers = new ArrayList<>();
         while (res.next()) {
@@ -58,36 +58,36 @@ public class ManufacturerDAO implements DAO<Manufacturer> {
 
     @Override
     public synchronized boolean save(Manufacturer manufacturer) throws SQLException {
-        connection = DataBaseConnector.getInstance().getConnection();
+        connection = DataBaseConnector.getConnector().getConnection();
         PreparedStatement preparedStatement =
                 connection.prepareStatement("INSERT INTO manufacturer (name) VALUES (?)");
         preparedStatement.setString(1, manufacturer.getName());
         int res = preparedStatement.executeUpdate();
-        DataBaseConnector.getInstance().releaseConnection(connection);
+        DataBaseConnector.getConnector().releaseConnection(connection);
         connection = null;
         return res != 0;
     }
 
     @Override
     public synchronized boolean update(Manufacturer manufacturer, String[] params) throws SQLException {
-        connection = DataBaseConnector.getInstance().getConnection();
+        connection = DataBaseConnector.getConnector().getConnection();
         PreparedStatement preparedStatement =
                 connection.prepareStatement("UPDATE manufacturer SET name = ? WHERE id = ?");
         preparedStatement.setString(1, manufacturer.getName());
         preparedStatement.setLong(2, manufacturer.getId());
         int res = preparedStatement.executeUpdate();
-        DataBaseConnector.getInstance().releaseConnection(connection);
+        DataBaseConnector.getConnector().releaseConnection(connection);
         connection = null;
         return res != 0;
     }
 
     @Override
     public synchronized boolean delete(long id) throws SQLException {
-        connection = DataBaseConnector.getInstance().getConnection();
+        connection = DataBaseConnector.getConnector().getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM manufacturer WHERE id = ?");
         preparedStatement.setLong(1, id);
         int res = preparedStatement.executeUpdate();
-        DataBaseConnector.getInstance().releaseConnection(connection);
+        DataBaseConnector.getConnector().releaseConnection(connection);
         connection = null;
         return res != 0;
     }
