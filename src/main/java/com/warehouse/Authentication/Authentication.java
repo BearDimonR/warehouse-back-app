@@ -63,15 +63,15 @@ public class Authentication {
 
     public static boolean hasPermission(HttpExchange exchange, String permission) throws SQLException, AuthRequiredException, NoPermissionException {
         Optional<List<String>> userPermissions = Authentication.getUserPermissions(exchange);
-        if (userPermissions.isPresent()) {
-            return userPermissions.get().contains(permission);
+        if (userPermissions.isPresent() && userPermissions.get().contains(permission)) {
+                return true;
+            }
+            throw new NoPermissionException("user do not have permission '"+permission+"'");
         }
-        throw new NoPermissionException();
-    }
 
-    public static boolean hasPermissions(HttpExchange exchange, List<String> permissionsToCheck) throws SQLException, AuthRequiredException, NoPermissionException {
-        Optional<List<String>> userPermissions = Authentication.getUserPermissions(exchange);
-        if (userPermissions.isPresent()) {
+        public static boolean hasPermissions(HttpExchange exchange, List<String> permissionsToCheck) throws SQLException, AuthRequiredException, NoPermissionException {
+            Optional<List<String>> userPermissions = Authentication.getUserPermissions(exchange);
+            if (userPermissions.isPresent()) {
             if (permissionsToCheck.stream().filter(a -> !userPermissions.get().contains(a)).count() != 0) return false;
             return true;
         }
