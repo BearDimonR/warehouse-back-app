@@ -36,8 +36,7 @@ public class PermissionHandler extends AbstractHandler {
         if (params.isEmpty()) {
             List<Permission> permissions = PermissionDAO.getInstance().getAll();
             json = JsonProceed.getGson().toJson(permissions);
-        }
-        else {
+        } else {
             Optional<Permission> permission = PermissionDAO.getInstance().get(Long.parseLong(params.get("id")));
             if (permission.isEmpty())
                 throw new InvalidParameterException();
@@ -53,34 +52,36 @@ public class PermissionHandler extends AbstractHandler {
 
     @Override
     protected void update(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
-            InputStream is = exchange.getRequestBody();
-            byte[] input = is.readAllBytes();
-            //TODO decode input array
-            Permission permission = JsonProceed.getGson().fromJson(new String(input), Permission.class);
-            if (!PermissionDAO.getInstance().update(permission, null))
-                throw new InvalidParameterException();
-            else
-                exchange.sendResponseHeaders(200, 0);
+        InputStream is = exchange.getRequestBody();
+        byte[] input = is.readAllBytes();
+        //TODO decode input array
+        Permission permission = JsonProceed.getGson().fromJson(new String(input), Permission.class);
+        if (!PermissionDAO.getInstance().update(permission, null))
+            throw new InvalidParameterException();
+        else
+            exchange.sendResponseHeaders(200, 0);
     }
 
     @Override
-    protected long create(HttpExchange exchange) throws IOException, SQLException {
-            InputStream is = exchange.getRequestBody();
-            byte[] input = is.readAllBytes();
-            //TODO decode input array
-            Permission permission = JsonProceed.getGson().fromJson(new String(input), Permission.class);
-            long id = PermissionDAO.getInstance().save(permission);
-            exchange.sendResponseHeaders(200, 0);
-            return id;
+    protected void create(HttpExchange exchange) throws IOException, SQLException {
+        InputStream is = exchange.getRequestBody();
+        byte[] input = is.readAllBytes();
+        //TODO decode input array
+        Permission permission = JsonProceed.getGson().fromJson(new String(input), Permission.class);
+        long id = PermissionDAO.getInstance().save(permission);
+        exchange.sendResponseHeaders(200, 0);
+        OutputStream os = exchange.getResponseBody();
+        os.write(String.valueOf(id).getBytes());
+        os.flush();
     }
 
     @Override
     protected void delete(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
-            Optional<String> id = Optional.ofNullable(QueryParser.parse(exchange.getRequestURI().getQuery()).get("id"));
-            //TODO decode input array
-            if (!PermissionDAO.getInstance().delete(Long.parseLong(id.get())))
-                throw new InvalidParameterException();
-            else
-                exchange.sendResponseHeaders(200, 0);
+        Optional<String> id = Optional.ofNullable(QueryParser.parse(exchange.getRequestURI().getQuery()).get("id"));
+        //TODO decode input array
+        if (!PermissionDAO.getInstance().delete(Long.parseLong(id.get())))
+            throw new InvalidParameterException();
+        else
+            exchange.sendResponseHeaders(200, 0);
     }
 }
