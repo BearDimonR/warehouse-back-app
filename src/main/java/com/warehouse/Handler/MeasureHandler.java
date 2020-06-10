@@ -22,7 +22,7 @@ public class MeasureHandler extends AbstractHandler {
         deletePermission = "";
 
         logger = LogManager.getLogger(MeasureHandler.class);
-        model = Role.class;
+        model = Measure.class;
     }
 
     @Override
