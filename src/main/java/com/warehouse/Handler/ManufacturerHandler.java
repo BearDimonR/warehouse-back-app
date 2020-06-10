@@ -76,7 +76,7 @@ public class ManufacturerHandler extends AbstractHandler {
     protected void delete(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
         Optional<String> id = Optional.ofNullable(QueryParser.parse(exchange.getRequestURI().getQuery()).get("id"));
         //TODO decode input array
-        if (!RoleDAO.getInstance().delete(Long.valueOf(id.get())))
+        if (!ManufacturerDAO.getInstance().delete(Long.valueOf(id.get())))
             throw new InvalidParameterException();
         else
             exchange.sendResponseHeaders(200, 0);
