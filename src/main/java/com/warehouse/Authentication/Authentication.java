@@ -17,6 +17,7 @@ import io.jsonwebtoken.security.Keys;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.text.html.Option;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -46,7 +47,10 @@ public class Authentication {
                         .setSigningKey(SECRET)
                         .parseClaimsJws(jwt);
                 Long userId = result.getBody().get("id", Long.class);
-                return Optional.of(PermissionDAO.getInstance().getUsersPermissions(userId).get().stream().map(a -> a.getName()).collect(Collectors.toList()));
+                Optional<List<Permission>> permissions = PermissionDAO.getInstance().getUsersPermissions(userId);
+                if (permissions.isPresent())
+                    return Optional.of(permissions.get().stream().map(a -> a.getName()).collect(Collectors.toList()));
+                return Optional.empty();
             } else {
                 logger.warn("Bad token prefix: " + jwt);
                 throw new AuthRequiredException("Bad token prefix");
