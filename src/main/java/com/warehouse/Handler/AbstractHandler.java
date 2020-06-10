@@ -91,7 +91,7 @@ abstract class AbstractHandler implements HttpHandler, CORSEnabled {
         throw new NotImplementedException();
     }
 
-    protected long create(HttpExchange exchange)
+    protected void create(HttpExchange exchange)
             throws IOException, SQLException, InvalidParameterException, NotImplementedException {
         throw new NotImplementedException();
     }

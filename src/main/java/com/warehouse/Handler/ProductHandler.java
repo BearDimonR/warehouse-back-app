@@ -35,8 +35,7 @@ public class ProductHandler extends AbstractHandler {
         if (params.isEmpty()) {
             List<Product> products = ProductDAO.getInstance().getAll();
             json = JsonProceed.getGson().toJson(products);
-        }
-        else {
+        } else {
             Optional<Product> product = ProductDAO.getInstance().get(Long.parseLong(params.get("id")));
             if (product.isEmpty())
                 throw new InvalidParameterException();
@@ -62,23 +61,25 @@ public class ProductHandler extends AbstractHandler {
     }
 
     @Override
-    protected long create(HttpExchange exchange) throws IOException, SQLException {
-            InputStream is = exchange.getRequestBody();
-            byte[] input = is.readAllBytes();
-            // decode input array
-            Product product = JsonProceed.getGson().fromJson(new String(input), Product.class);
-            long id = ProductDAO.getInstance().save(product);
-            exchange.sendResponseHeaders(200, 0);
-            return id;
+    protected void create(HttpExchange exchange) throws IOException, SQLException {
+        InputStream is = exchange.getRequestBody();
+        byte[] input = is.readAllBytes();
+        // decode input array
+        Product product = JsonProceed.getGson().fromJson(new String(input), Product.class);
+        long id = ProductDAO.getInstance().save(product);
+        exchange.sendResponseHeaders(200, 0);
+        OutputStream os = exchange.getResponseBody();
+        os.write(String.valueOf(id).getBytes());
+        os.flush();
     }
 
     @Override
     protected void delete(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
-            Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
-            if(!ProductDAO.getInstance().delete(Long.parseLong(params.get("id"))))
-                throw new InvalidParameterException();
-            else
-                exchange.sendResponseHeaders(200, 0);
+        Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
+        if (!ProductDAO.getInstance().delete(Long.parseLong(params.get("id"))))
+            throw new InvalidParameterException();
+        else
+            exchange.sendResponseHeaders(200, 0);
     }
-    
+
 }
