@@ -45,51 +45,62 @@ abstract class AbstractHandler implements HttpHandler, CORSEnabled {
                         delete(exchange);
                     break;
                 case "OPTIONS":
+                    options(exchange);
                     break;
                 default:
                     logger.error("Undefined request method: " + exchange.getRequestMethod() + ".");
-                    exchange.sendResponseHeaders(400, -1);
+                    exchange.sendResponseHeaders(400, 0);
             }
-        }catch (IOException e) {
-            exchange.sendResponseHeaders(500, -1);
+        } catch (IOException e) {
+            exchange.sendResponseHeaders(500, 0);
             logger.error("Problem with" + model + "streams.\n\t" + e.getMessage());
         } catch (InvalidParameterException e) {
-            exchange.sendResponseHeaders(404, -1);
+            exchange.sendResponseHeaders(404, 0);
             logger.error("Trying to access " + model + " with wrong id.");
         } catch (SQLException e) {
             if (e.getSQLState().equals("23505")) {
-                exchange.sendResponseHeaders(409, -1);
+                exchange.sendResponseHeaders(409, 0);
                 logger.error("Unique problem " + model + " can be name or id...\n\t" + e.getMessage());
             } else {
-                exchange.sendResponseHeaders(500, -1);
+                exchange.sendResponseHeaders(500, 0);
                 logger.error("Problem with server response.\n\t" + e.getMessage());
             }
         } catch (NoPermissionException e) {
-            exchange.sendResponseHeaders(403, -1);
+            exchange.sendResponseHeaders(403, 0);
             logger.error("Not enough permissions.\n\t" + e.getMessage());
         } catch (AuthRequiredException e) {
-            exchange.sendResponseHeaders(401, -1);
+            exchange.sendResponseHeaders(401, 0);
             logger.error("Authentication failed.\n\t" + e.getMessage());
         } catch (Exception e) {
             logger.error("Undefined exception.\n\t" + e.getMessage());
+            e.printStackTrace();
         } finally {
             logger.info("Finish request: " + exchange.getRequestMethod() + " with " + exchange.getResponseCode());
             exchange.close();
         }
     }
 
+    protected void options(HttpExchange exchange) throws IOException {
+        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "*");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type,Authorization");
+        exchange.sendResponseHeaders(200, 0);
+    }
+
     protected void get(HttpExchange exchange)
             throws IOException, SQLException, InvalidParameterException, NotImplementedException {
         throw new NotImplementedException();
     }
+
     protected void create(HttpExchange exchange)
             throws IOException, SQLException, InvalidParameterException, NotImplementedException {
         throw new NotImplementedException();
     }
+
     protected void update(HttpExchange exchange)
             throws IOException, SQLException, InvalidParameterException, NotImplementedException {
         throw new NotImplementedException();
     }
+
     protected void delete(HttpExchange exchange)
             throws IOException, SQLException, InvalidParameterException, NotImplementedException {
         throw new NotImplementedException();

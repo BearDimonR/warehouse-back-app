@@ -60,7 +60,7 @@ public class PermissionHandler extends AbstractHandler {
             if (!PermissionDAO.getInstance().update(permission, null))
                 throw new InvalidParameterException();
             else
-                exchange.sendResponseHeaders(200, -1);
+                exchange.sendResponseHeaders(200, 0);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class PermissionHandler extends AbstractHandler {
             Permission permission = JsonProceed.getGson().fromJson(new String(input), Permission.class);
             if(!PermissionDAO.getInstance().save(permission))
                 throw new InvalidParameterException();
-            exchange.sendResponseHeaders(200, -1);
+            exchange.sendResponseHeaders(200, 0);
     }
 
     @Override
@@ -81,6 +81,6 @@ public class PermissionHandler extends AbstractHandler {
             if (!PermissionDAO.getInstance().delete(Long.parseLong(id.get())))
                 throw new InvalidParameterException();
             else
-                exchange.sendResponseHeaders(200, -1);
+                exchange.sendResponseHeaders(200, 0);
     }
 }

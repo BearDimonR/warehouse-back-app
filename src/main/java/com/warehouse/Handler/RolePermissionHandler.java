@@ -49,7 +49,7 @@ public class RolePermissionHandler extends AbstractHandler {
                     JsonProceed.getGson().fromJson(new String(input), RolePermissionConnection.class);
             if(!RolePermissionDAO.getInstance().save(rolePermissionConnection))
                 throw new InvalidParameterException();
-            exchange.sendResponseHeaders(200, -1);
+            exchange.sendResponseHeaders(200, 0);
     }
 
     @Override
@@ -61,6 +61,6 @@ public class RolePermissionHandler extends AbstractHandler {
                             Long.parseLong(params.get("permissionId")))))
                 throw new InvalidParameterException();
             else
-                exchange.sendResponseHeaders(200, -1);
+                exchange.sendResponseHeaders(200, 0);
     }
 }

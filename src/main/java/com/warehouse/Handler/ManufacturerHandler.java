@@ -56,7 +56,7 @@ public class ManufacturerHandler extends AbstractHandler {
             if (!ManufacturerDAO.getInstance().update(manufacturer, null))
                 throw new InvalidParameterException();
             else
-                exchange.sendResponseHeaders(200, -1);
+                exchange.sendResponseHeaders(200, 0);
     }
     @Override
     protected void create(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
@@ -66,7 +66,7 @@ public class ManufacturerHandler extends AbstractHandler {
             Manufacturer manufacturer = JsonProceed.getGson().fromJson(new String(input), Manufacturer.class);
             if(!ManufacturerDAO.getInstance().save(manufacturer))
                 throw new InvalidParameterException();
-            exchange.sendResponseHeaders(200, -1);
+            exchange.sendResponseHeaders(200, 0);
 
     }
 
@@ -77,6 +77,6 @@ public class ManufacturerHandler extends AbstractHandler {
             if (!RoleDAO.getInstance().delete(Long.valueOf(id.get())))
                 throw new InvalidParameterException();
             else
-                exchange.sendResponseHeaders(200, -1);
+                exchange.sendResponseHeaders(200, 0);
     }
 }

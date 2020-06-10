@@ -21,15 +21,13 @@ public class UserDAO implements DAO<User> {
         return instance;
     }
 
-    Connection connection;
-
     private UserDAO() {
     }
 
     @Override
     public Optional<User> get(long id) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account WHERE id = ?");
             preparedStatement.setLong(1, id);
             ResultSet res = preparedStatement.executeQuery();
@@ -42,15 +40,14 @@ public class UserDAO implements DAO<User> {
             return Optional.empty();
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
 
     @Override
     public List<User> getAll() throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account");
             ResultSet res = preparedStatement.executeQuery();
             List<User> user = new ArrayList<>();
@@ -60,13 +57,12 @@ public class UserDAO implements DAO<User> {
             return user;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     public Optional<User> getByCredentials(Credentials credentials) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account WHERE name = ? AND password = ?");
             preparedStatement.setString(1, credentials.getName());
             preparedStatement.setString(2, credentials.getPassword());
@@ -80,14 +76,13 @@ public class UserDAO implements DAO<User> {
             return Optional.empty();
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public boolean save(User user) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user_account (name , password, role_id) VALUES  (?,?,?)");
 
             preparedStatement.setString(1, user.getName());
@@ -98,14 +93,13 @@ public class UserDAO implements DAO<User> {
             return res != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public boolean update(User user, String[] params) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE user_account SET name=?,password=?,role_id=? WHERE id=?");
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
@@ -116,24 +110,20 @@ public class UserDAO implements DAO<User> {
             return res != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public boolean delete(long id) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM user_account WHERE id=?");
             preparedStatement.setLong(1, id);
 
             int res = preparedStatement.executeUpdate();
-            DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
             return res != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 }

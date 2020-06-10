@@ -21,17 +21,14 @@ public class RoleDAO implements DAO<Role> {
         return instance;
     }
 
-    private Connection connection;
-
     private RoleDAO() {
     }
 
     @Override
     public Optional<Role> get(long id) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-
-            connection = DataBaseConnector.getConnector().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM role WHERE id = ?");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM role WHERE id = ?");
             preparedStatement.setLong(1, id);
             ResultSet res = preparedStatement.executeQuery();
             if (res.next())
@@ -42,13 +39,12 @@ public class RoleDAO implements DAO<Role> {
             return Optional.empty();
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
 	}
 
     public Optional<Role> getUserRole(long userId) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement
                     ("SELECT * FROM role WHERE id = (SELECT role_id FROM user_account WHERE id = ?)");
             preparedStatement.setLong(1, userId);
@@ -61,14 +57,13 @@ public class RoleDAO implements DAO<Role> {
             return Optional.empty();
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public List<Role> getAll() throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM role");
             ResultSet res = preparedStatement.executeQuery();
             List<Role> roles = new ArrayList<>();
@@ -81,14 +76,13 @@ public class RoleDAO implements DAO<Role> {
             return roles;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public synchronized boolean save(Role role) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("INSERT INTO role (name, is_super) VALUES (?,?)");
             preparedStatement.setString(1, role.getName());
@@ -96,14 +90,13 @@ public class RoleDAO implements DAO<Role> {
             return preparedStatement.executeUpdate() != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public synchronized boolean update(Role role, String[] params) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE role SET name = ?, is_super = ? WHERE id = ?");
             preparedStatement.setString(1, role.getName());
@@ -112,20 +105,18 @@ public class RoleDAO implements DAO<Role> {
             return preparedStatement.executeUpdate() != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public synchronized boolean delete(long id) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM role WHERE id = ?");
             preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 }

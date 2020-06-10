@@ -20,15 +20,13 @@ public class GroupDAO implements DAO<Group> {
         return instance;
     }
 
-    private Connection connection;
-
     private GroupDAO() {
     }
 
     @Override
     public Optional<Group> get(long id) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM group_products WHERE id = ?");
             preparedStatement.setLong(1, id);
             ResultSet res = preparedStatement.executeQuery();
@@ -40,14 +38,13 @@ public class GroupDAO implements DAO<Group> {
             return Optional.empty();
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public List<Group> getAll() throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM group_products");
             ResultSet res = preparedStatement.executeQuery();
             List<Group> groups = new ArrayList<>();
@@ -60,14 +57,13 @@ public class GroupDAO implements DAO<Group> {
             return groups;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public boolean save(Group group) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("INSERT INTO group_products (name, description) VALUES (?,?)");
             preparedStatement.setString(1, group.getName());
@@ -76,14 +72,13 @@ public class GroupDAO implements DAO<Group> {
             return res != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public boolean update(Group group, String[] params) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE group_products SET name = ?, description = ? WHERE id = ?");
             preparedStatement.setString(1, group.getName());
@@ -92,21 +87,19 @@ public class GroupDAO implements DAO<Group> {
             return preparedStatement.executeUpdate() != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public boolean delete(long id) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM group_products WHERE id = ?");
             preparedStatement.setLong(1, id);
             int res = preparedStatement.executeUpdate();
             return res != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 }

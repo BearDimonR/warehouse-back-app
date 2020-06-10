@@ -4,7 +4,6 @@ import com.sun.net.httpserver.HttpExchange;
 
 import com.warehouse.DAO.RoleDAO;
 import com.warehouse.JsonProceed;
-import com.warehouse.Model.Manufacturer;
 import com.warehouse.Model.Role;
 import com.warehouse.Utils.QueryParser;
 import org.apache.logging.log4j.LogManager;
@@ -60,7 +59,7 @@ public class RoleHandler extends AbstractHandler {
         if (!RoleDAO.getInstance().update(role, null))
             throw new InvalidParameterException();
         else
-            exchange.sendResponseHeaders(200, -1);
+            exchange.sendResponseHeaders(200, 0);
     }
 
     @Override
@@ -71,7 +70,7 @@ public class RoleHandler extends AbstractHandler {
         Role role = JsonProceed.getGson().fromJson(new String(input), Role.class);
         if(!RoleDAO.getInstance().save(role))
             throw new InvalidParameterException();
-        exchange.sendResponseHeaders(200, -1);
+        exchange.sendResponseHeaders(200, 0);
     }
 
     @Override
@@ -80,6 +79,6 @@ public class RoleHandler extends AbstractHandler {
         if (!RoleDAO.getInstance().delete(Long.parseLong(params.get("id"))))
             throw new InvalidParameterException();
         else
-            exchange.sendResponseHeaders(200, -1);
+            exchange.sendResponseHeaders(200, 0);
     }
 }

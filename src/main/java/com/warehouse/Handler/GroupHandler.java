@@ -59,7 +59,7 @@ public class GroupHandler extends AbstractHandler {
         if (!GroupDAO.getInstance().update(group, null))
             throw new InvalidParameterException();
         else
-            exchange.sendResponseHeaders(200, -1);
+            exchange.sendResponseHeaders(200, 0);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class GroupHandler extends AbstractHandler {
             Group group = JsonProceed.getGson().fromJson(new String(input), Group.class);
             if(!GroupDAO.getInstance().save(group))
                 throw new InvalidParameterException();
-            exchange.sendResponseHeaders(200, -1);
+            exchange.sendResponseHeaders(200, 0);
     }
 
     @Override
@@ -79,6 +79,6 @@ public class GroupHandler extends AbstractHandler {
             if(!GroupDAO.getInstance().delete(Long.parseLong(params.get("id"))))
                 throw new InvalidParameterException();
             else
-                exchange.sendResponseHeaders(200, -1);
+                exchange.sendResponseHeaders(200, 0);
     }
 }

@@ -58,7 +58,7 @@ public class ProductHandler extends AbstractHandler {
         if (!ProductDAO.getInstance().update(product, null))
             throw new InvalidParameterException();
         else
-            exchange.sendResponseHeaders(200, -1);
+            exchange.sendResponseHeaders(200, 0);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ProductHandler extends AbstractHandler {
             Product product = JsonProceed.getGson().fromJson(new String(input), Product.class);
             if(!ProductDAO.getInstance().save(product))
                 throw new InvalidParameterException();
-            exchange.sendResponseHeaders(200, -1);
+            exchange.sendResponseHeaders(200, 0);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class ProductHandler extends AbstractHandler {
             if(!ProductDAO.getInstance().delete(Long.parseLong(params.get("id"))))
                 throw new InvalidParameterException();
             else
-                exchange.sendResponseHeaders(200, -1);
+                exchange.sendResponseHeaders(200, 0);
     }
     
 }

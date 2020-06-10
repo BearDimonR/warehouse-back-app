@@ -20,15 +20,13 @@ public class ProductDAO implements DAO<Product> {
         return instance;
     }
 
-    Connection connection;
-
     private ProductDAO() {
     }
 
     @Override
     public Optional<Product> get(long id) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM product WHERE id = ?");
             preparedStatement.setLong(1, id);
             ResultSet res = preparedStatement.executeQuery();
@@ -47,14 +45,13 @@ public class ProductDAO implements DAO<Product> {
             return Optional.empty();
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public List<Product> getAll() throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM product");
             ResultSet res = preparedStatement.executeQuery();
             List<Product> product = new ArrayList<>();
@@ -73,14 +70,13 @@ public class ProductDAO implements DAO<Product> {
             return product;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public boolean save(Product product) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO product (name , price, amount, total_cost, measure_name, group_products_id, manufacturer_id, description) VALUES  (?,?,?,?,?,?,?,?)");
 
             preparedStatement.setString(1, product.getName());
@@ -96,14 +92,13 @@ public class ProductDAO implements DAO<Product> {
             return res != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public boolean update(Product product, String[] params) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE product SET name=?,price=?, amount=?, total_cost=?, measure_name=?, group_products_id=?, manufacturer_id=?, description=? WHERE id=?");
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
@@ -120,14 +115,13 @@ public class ProductDAO implements DAO<Product> {
             return res != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     @Override
     public boolean delete(long id) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getConnector().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM product WHERE id=?");
             preparedStatement.setLong(1, id);
 
@@ -135,11 +129,11 @@ public class ProductDAO implements DAO<Product> {
             return res != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
-            connection = null;
         }
     }
 
     public List<Product> filter(String name, String group, String manufacturer) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         Filter filter = new Filter() {
             @Override
             public ResultSet filterByName(String name) throws SQLException {
@@ -160,8 +154,6 @@ public class ProductDAO implements DAO<Product> {
                 return preparedStatement.executeQuery();
             }
         };
-
-        connection = DataBaseConnector.getConnector().getConnection();
 
         TreeMap<Product, Integer> productMap = new TreeMap<>();
         List<Product> productList = new ArrayList<>();

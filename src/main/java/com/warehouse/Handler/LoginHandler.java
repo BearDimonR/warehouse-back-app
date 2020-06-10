@@ -32,19 +32,20 @@ public class LoginHandler extends AbstractHandler {
                     login(exchange);
                     break;
                 case "OPTIONS":
+                    options(exchange);
                     break;
                 default:
                     logger.warn("Undefined request method!");
-                    exchange.sendResponseHeaders(400, -1);
+                    exchange.sendResponseHeaders(400, 0);
             }
         } catch (IOException e) {
-            exchange.sendResponseHeaders(500, -1);
+            exchange.sendResponseHeaders(500, 0);
             logger.error("Problem with login streams.\n\t" + e.getMessage());
         } catch (AuthWrongException e) {
-            exchange.sendResponseHeaders(401, -1);
+            exchange.sendResponseHeaders(401, 0);
             logger.error("Wrong login information.\n\t");
         } catch (SQLException e) {
-            exchange.sendResponseHeaders(500, -1);
+            exchange.sendResponseHeaders(500, 0);
             logger.error("Problem with server response.\n\t" + e.getMessage());
         } finally {
             exchange.close();

@@ -59,7 +59,7 @@ public class UserHandler extends AbstractHandler {
         if (!UserDAO.getInstance().update(user, null))
             throw new InvalidParameterException();
         else
-            exchange.sendResponseHeaders(200, -1);
+            exchange.sendResponseHeaders(200, 0);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class UserHandler extends AbstractHandler {
         User user = JsonProceed.getGson().fromJson(new String(input), User.class);
         if(!UserDAO.getInstance().save(user))
             throw new InvalidParameterException();
-        exchange.sendResponseHeaders(200, -1);
+        exchange.sendResponseHeaders(200, 0);
     }
 
     @Override
@@ -80,6 +80,6 @@ public class UserHandler extends AbstractHandler {
         if (!UserDAO.getInstance().delete(Long.parseLong(id.get())))
             throw new InvalidParameterException();
         else
-            exchange.sendResponseHeaders(200, -1);
+            exchange.sendResponseHeaders(200, 0);
     }
 }
