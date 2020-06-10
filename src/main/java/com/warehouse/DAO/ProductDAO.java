@@ -74,10 +74,12 @@ public class ProductDAO implements DAO<Product> {
     }
 
     @Override
-    public boolean save(Product product) throws SQLException {
+    public long save(Product product) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO product (name , price, amount, total_cost, measure_name, group_products_id, manufacturer_id, description) VALUES  (?,?,?,?,?,?,?,?)");
+            PreparedStatement preparedStatement = connection.prepareStatement
+                    ("INSERT INTO product (name , price, amount, total_cost, measure_name, group_products_id, manufacturer_id, description) " +
+                            "VALUES  (?,?,?,?,?,?,?,?) RETURNING id");
 
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
@@ -88,8 +90,9 @@ public class ProductDAO implements DAO<Product> {
             preparedStatement.setInt(7, product.getManufactureId());
             preparedStatement.setString(8, product.getDescription());
 
-            int res = preparedStatement.executeUpdate();
-            return res != 0;
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
         }

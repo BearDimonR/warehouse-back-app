@@ -63,14 +63,14 @@ public class GroupHandler extends AbstractHandler {
     }
 
     @Override
-    protected void create(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
+    protected long create(HttpExchange exchange) throws IOException, SQLException {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
             // decode input array
             Group group = JsonProceed.getGson().fromJson(new String(input), Group.class);
-            if(!GroupDAO.getInstance().save(group))
-                throw new InvalidParameterException();
+            long id = GroupDAO.getInstance().save(group);
             exchange.sendResponseHeaders(200, 0);
+            return id;
     }
 
     @Override

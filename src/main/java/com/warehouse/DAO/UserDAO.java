@@ -80,18 +80,18 @@ public class UserDAO implements DAO<User> {
     }
 
     @Override
-    public boolean save(User user) throws SQLException {
+    public long save(User user) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user_account (name , password, role_id) VALUES  (?,?,?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user_account (name , password, role_id) VALUES  (?,?,?) RETURNING id");
 
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setInt(3, user.getRoleId());
 
-            int res = preparedStatement.executeUpdate();
-            return res != 0;
-        } finally {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);        } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
         }
     }

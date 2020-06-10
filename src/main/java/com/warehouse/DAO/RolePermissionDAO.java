@@ -42,15 +42,17 @@ public class RolePermissionDAO {
         }
     }
 
-    public boolean save(RolePermissionConnection rolePermissionConnection) throws SQLException {
+    public long save(RolePermissionConnection rolePermissionConnection) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement =
                     connection.prepareStatement
-                            ("INSERT INTO role_permission_connection (role_id, permission_id) VALUES (?,?)");
+                            ("INSERT INTO role_permission_connection (role_id, permission_id) VALUES (?,?) RETURNING role_id");
             preparedStatement.setLong(1, rolePermissionConnection.getRoleId());
             preparedStatement.setLong(2, rolePermissionConnection.getPermissionId());
-            return preparedStatement.executeUpdate() != 0;
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
         }

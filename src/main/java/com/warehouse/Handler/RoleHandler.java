@@ -63,14 +63,14 @@ public class RoleHandler extends AbstractHandler {
     }
 
     @Override
-    protected void create(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
+    protected long create(HttpExchange exchange) throws IOException, SQLException {
         InputStream is = exchange.getRequestBody();
         byte[] input = is.readAllBytes();
         // decode input array
         Role role = JsonProceed.getGson().fromJson(new String(input), Role.class);
-        if(!RoleDAO.getInstance().save(role))
-            throw new InvalidParameterException();
+        long id = RoleDAO.getInstance().save(role);
         exchange.sendResponseHeaders(200, 0);
+        return id;
     }
 
     @Override

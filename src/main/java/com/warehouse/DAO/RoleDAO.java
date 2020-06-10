@@ -80,14 +80,16 @@ public class RoleDAO implements DAO<Role> {
     }
 
     @Override
-    public synchronized boolean save(Role role) throws SQLException {
+    public synchronized long save(Role role) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("INSERT INTO role (name, is_super) VALUES (?,?)");
+                    connection.prepareStatement("INSERT INTO role (name, is_super) VALUES (?,?) RETURNING id");
             preparedStatement.setString(1, role.getName());
             preparedStatement.setBoolean(2, role.is_super());
-            return preparedStatement.executeUpdate() != 0;
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
         }

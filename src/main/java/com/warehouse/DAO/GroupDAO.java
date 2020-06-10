@@ -61,15 +61,17 @@ public class GroupDAO implements DAO<Group> {
     }
 
     @Override
-    public boolean save(Group group) throws SQLException {
+    public long save(Group group) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("INSERT INTO group_products (name, description) VALUES (?,?)");
+                    connection.prepareStatement
+                            ("INSERT INTO group_products (name, description) VALUES (?,?) RETURNING id");
             preparedStatement.setString(1, group.getName());
             preparedStatement.setString(2, group.getDescription());
-            int res = preparedStatement.executeUpdate();
-            return res != 0;
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
         }

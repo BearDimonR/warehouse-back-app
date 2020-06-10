@@ -59,14 +59,14 @@ public class ManufacturerHandler extends AbstractHandler {
                 exchange.sendResponseHeaders(200, 0);
     }
     @Override
-    protected void create(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
+    protected long create(HttpExchange exchange) throws IOException, SQLException {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
             //TODO decode input array
             Manufacturer manufacturer = JsonProceed.getGson().fromJson(new String(input), Manufacturer.class);
-            if(!ManufacturerDAO.getInstance().save(manufacturer))
-                throw new InvalidParameterException();
+            long id = ManufacturerDAO.getInstance().save(manufacturer);
             exchange.sendResponseHeaders(200, 0);
+            return id;
 
     }
 

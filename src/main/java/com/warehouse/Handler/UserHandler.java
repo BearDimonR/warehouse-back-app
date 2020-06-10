@@ -63,14 +63,14 @@ public class UserHandler extends AbstractHandler {
     }
 
     @Override
-    protected void create(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
+    protected long create(HttpExchange exchange) throws IOException, SQLException {
         InputStream is = exchange.getRequestBody();
         byte[] input = is.readAllBytes();
         //TODO decode input array
         User user = JsonProceed.getGson().fromJson(new String(input), User.class);
-        if(!UserDAO.getInstance().save(user))
-            throw new InvalidParameterException();
+        long id = UserDAO.getInstance().save(user);
         exchange.sendResponseHeaders(200, 0);
+        return id;
     }
 
     @Override
