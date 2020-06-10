@@ -1,0 +1,79 @@
+<Configuration status="WARN">
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%-5p] - [%t] - (%d) %c - %m%n \t\t\t\t at %c.%M(%F:%L)%n"/>
+        </Console>
+
+        <RollingRandomAccessFile name="Files" fileName="logs/server.log"
+                                 filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>[%-5p] - [%t] - (%d) %c - %m%n \t\t\t\t at %c.%M(%F:%L)%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="1 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name= "com.warehouse.Handler.RoleHandler" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Files"/>
+        </Logger>
+
+        <Logger name= "com.warehouse.Handler.RolePermissionHandler" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Files"/>
+        </Logger>
+
+        <Logger name= "com.warehouse.Handler.GroupHandler" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Files"/>
+        </Logger>
+
+        <Logger name= "com.warehouse.Handler.UserHandler" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Files"/>
+        </Logger>
+
+        <Logger name= "com.warehouse.Handler.ManufacturerHandler" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Files"/>
+        </Logger>
+
+        <Logger name= "com.warehouse.Handler.PermissionHandler" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Files"/>
+        </Logger>
+
+        <Logger name= "com.warehouse.Handler.ProductHandler" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Files"/>
+        </Logger>
+
+        <Logger name= "com.warehouse.Handler.LoginHandler" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Files"/>
+        </Logger>
+
+        <Logger name= "com.warehouse.DAO.DataBaseConnector" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Files"/>
+        </Logger>
+
+        <Logger name= "com.warehouse.Authentication.Authentication" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Files"/>
+        </Logger>
+
+        <Root level="all">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Files"/>
+        </Root>
+    </Loggers>
+
+
+</Configuration>

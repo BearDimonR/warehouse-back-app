@@ -3,56 +3,79 @@ package com.warehouse;
 import com.warehouse.DAO.DataBaseConnector;
 import com.sun.net.httpserver.HttpServer;
 import com.warehouse.Handler.*;
-import com.warehouse.Model.Role;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Http server for storage app
- */
 public class Server {
+
+    public static Logger root = LogManager.getRootLogger();
 
     public static void main(String[] args) {
         new Server();
     }
 
-    private ThreadPoolExecutor pool;
-
     private Server() {
-        // Init pool
-        pool = new ThreadPoolExecutor(
-                4, Runtime.getRuntime().availableProcessors() + 1, 5, TimeUnit.SECONDS,
-                new ArrayBlockingQueue<Runnable>(100), Executors.defaultThreadFactory(),
-                new RejectedHandler()
-        );
-
-        // Init database connection
-        DataBaseConnector.initConnector();
-
-        // Server start-up
         try {
-            HttpServer server = HttpServer.create();
 
-            // Server contexts
-            // TODO Maybe Enum for this shit?
-            server.createContext("/warehouse/user/products", new ProductHandler());
-            server.createContext("/warehouse/user/groups", new GroupHandler());
-            server.createContext("/warehouse/admin/manufacturers", new ManufacturerHandler());
-            server.createContext("/warehouse/admin/users", new UserHandler());
-            server.createContext("/warehouse/admin/roles", new RoleHandler());
-            server.createContext("/warehouse/admin/permissions", new PermissionHandler());
+            root.info("Starting-up server...");
 
-            server.bind(new InetSocketAddress(8089), 0);
-            server.setExecutor(pool);
-            server.start();
-            System.out.println("Server was started: " + server.getAddress());
-        } catch (IOException e) {
-            e.printStackTrace();
+            // Init pool
+            ThreadPoolExecutor pool = new ThreadPoolExecutor(
+                    4, Runtime.getRuntime().availableProcessors() + 1, 5, TimeUnit.SECONDS,
+                    new ArrayBlockingQueue<>(100), Executors.defaultThreadFactory(),
+                    new RejectedHandler()
+            );
+
+            root.info("Thread pool initialized...");
+
+            // Init database connection
+            try {
+                DataBaseConnector.createConnector();
+            } catch (SQLException e) {
+                root.fatal("Problem with connection pool creation.");
+                throw e;
+            } catch (ClassNotFoundException e) {
+                root.fatal("Database drivers not found.");
+                throw e;
+            }
+
+            root.info("Database connected...");
+
+            // Server start-up
+            try {
+                HttpServer server = HttpServer.create();
+
+                //Server contexts
+                //TODO Maybe Enum for this shit?
+                server.createContext("/products", new ProductHandler());
+                server.createContext("/groups", new GroupHandler());
+                server.createContext("/manufacturers", new ManufacturerHandler());
+                server.createContext("/users", new UserHandler());
+                server.createContext("/roles", new RoleHandler());
+                server.createContext("/roles/permissions", new RolePermissionHandler());
+                server.createContext("/permissions", new PermissionHandler());
+                server.createContext("/measures", new MeasureHandler());
+                server.createContext("/login", new LoginHandler());
+
+                server.bind(new InetSocketAddress(8089), 0);
+                server.setExecutor(pool);
+                server.start();
+
+                root.info("Server start-up successful: " + server.getAddress());
+            } catch (IOException e) {
+                root.error("Server IO exception: " + e.getMessage());
+            }
+        } catch (Exception e) {
+            root.fatal("Critical server exception: " + e.getMessage());
+            System.exit(-1);
         }
     }
 }

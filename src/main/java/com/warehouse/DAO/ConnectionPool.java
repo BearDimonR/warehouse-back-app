@@ -1,4 +1,6 @@
-package com.warehouse;
+package com.warehouse.DAO;
+
+import com.warehouse.Server;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +16,7 @@ public class ConnectionPool {
     private List<Connection> usedConnections = new ArrayList<>();
     private static int INITIAL_POOL_SIZE = 10;
 
-    public static ConnectionPool create(
+    public synchronized static ConnectionPool create(
             String url, String user,
             String password) throws SQLException {
 
@@ -32,7 +34,7 @@ public class ConnectionPool {
         this.connectionPool = pool;
     }
 
-    public Connection getConnection() {
+    public synchronized Connection getConnection() {
         // wait until there are free connection
         while (connectionPool.size() == 0) Thread.yield();
         Connection connection = connectionPool.remove(connectionPool.size() - 1);
@@ -40,13 +42,13 @@ public class ConnectionPool {
         return connection;
     }
 
-    public void releaseConnection(Connection connection) throws SQLException {
+    public synchronized void releaseConnection(Connection connection) throws SQLException {
         connectionPool.add(connection);
         if(!usedConnections.remove(connection))
             throw new SQLException();
     }
 
-    private static Connection createConnection(String url, String user, String password) throws SQLException {
+    private synchronized static Connection createConnection(String url, String user, String password) throws SQLException {
         return DriverManager.getConnection(url, user, password);
     }
 

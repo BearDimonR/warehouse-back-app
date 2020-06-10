@@ -10,7 +10,7 @@ public interface DAO<T> {
 
     List<T> getAll() throws SQLException;
 
-    boolean save(T t) throws SQLException;
+    long save(T t) throws SQLException;
 
     boolean update(T t, String[] params) throws SQLException;
 
