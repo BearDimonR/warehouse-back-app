@@ -69,6 +69,12 @@
             <AppenderRef ref="Files"/>
         </Logger>
 
+        <Logger name= "com.warehouse.Handler.MeasureHandler" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Files"/>
+        </Logger>
+
+
         <Root level="all">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
