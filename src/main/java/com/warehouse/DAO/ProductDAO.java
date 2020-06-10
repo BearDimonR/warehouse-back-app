@@ -86,8 +86,8 @@ public class ProductDAO implements DAO<Product> {
             preparedStatement.setDouble(3, product.getAmount());
             preparedStatement.setDouble(4, product.getTotalCost());
             preparedStatement.setString(5, product.getMeasureName());
-            preparedStatement.setInt(6, product.getGroupProductId());
-            preparedStatement.setInt(7, product.getManufactureId());
+            preparedStatement.setInt(6, product.getGroupId());
+            preparedStatement.setInt(7, product.getManufacturerId());
             preparedStatement.setString(8, product.getDescription());
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -108,8 +108,8 @@ public class ProductDAO implements DAO<Product> {
             preparedStatement.setDouble(3, product.getAmount());
             preparedStatement.setDouble(4, product.getTotalCost());
             preparedStatement.setString(5, product.getMeasureName());
-            preparedStatement.setInt(6, product.getGroupProductId());
-            preparedStatement.setInt(7, product.getManufactureId());
+            preparedStatement.setInt(6, product.getGroupId());
+            preparedStatement.setInt(7, product.getManufacturerId());
             preparedStatement.setString(8, product.getDescription());
 
             preparedStatement.setLong(9, product.getId());

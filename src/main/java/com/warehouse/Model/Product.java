@@ -14,7 +14,7 @@ public class Product {
     private double amount;
     private double totalCost;
     private String measureName;
-    private int groupProductId;
-    private int manufactureId;
+    private int groupId;
+    private int manufacturerId;
     private String description;
 }
