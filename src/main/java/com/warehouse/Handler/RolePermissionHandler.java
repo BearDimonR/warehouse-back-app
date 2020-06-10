@@ -41,15 +41,15 @@ public class RolePermissionHandler extends AbstractHandler {
     }
 
     @Override
-    protected void create(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
+    protected long create(HttpExchange exchange) throws IOException, SQLException {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
             // decode input array
             RolePermissionConnection rolePermissionConnection =
                     JsonProceed.getGson().fromJson(new String(input), RolePermissionConnection.class);
-            if(!RolePermissionDAO.getInstance().save(rolePermissionConnection))
-                throw new InvalidParameterException();
+            long id = RolePermissionDAO.getInstance().save(rolePermissionConnection);
             exchange.sendResponseHeaders(200, 0);
+            return id;
     }
 
     @Override

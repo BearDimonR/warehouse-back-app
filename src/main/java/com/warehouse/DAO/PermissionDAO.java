@@ -76,15 +76,16 @@ public class PermissionDAO implements DAO<Permission> {
     }
 
     @Override
-    public boolean save(Permission permission) throws SQLException {
+    public long save(Permission permission) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO permission (name , is_super) VALUES  (?,?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO permission (name , is_super) VALUES  (?,?) RETURNING id");
             preparedStatement.setString(1, permission.getName());
             preparedStatement.setBoolean(2, permission.isSuper());
 
-            int res = preparedStatement.executeUpdate();
-            return res != 0;
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
         }

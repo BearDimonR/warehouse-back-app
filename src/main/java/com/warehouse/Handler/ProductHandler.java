@@ -62,14 +62,14 @@ public class ProductHandler extends AbstractHandler {
     }
 
     @Override
-    protected void create(HttpExchange exchange) throws IOException, SQLException, InvalidParameterException {
+    protected long create(HttpExchange exchange) throws IOException, SQLException {
             InputStream is = exchange.getRequestBody();
             byte[] input = is.readAllBytes();
             // decode input array
             Product product = JsonProceed.getGson().fromJson(new String(input), Product.class);
-            if(!ProductDAO.getInstance().save(product))
-                throw new InvalidParameterException();
+            long id = ProductDAO.getInstance().save(product);
             exchange.sendResponseHeaders(200, 0);
+            return id;
     }
 
     @Override

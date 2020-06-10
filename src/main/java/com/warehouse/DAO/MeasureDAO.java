@@ -2,7 +2,6 @@ package com.warehouse.DAO;
 
 
 import com.warehouse.Model.Measure;
-import com.warehouse.Model.Role;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,8 +46,8 @@ public class MeasureDAO implements DAO<Measure> {
     }
 
     @Override
-    public boolean save(Measure measure) throws SQLException {
-        return false;
+    public long save(Measure measure) throws SQLException {
+        return -1;
     }
 
     @Override
