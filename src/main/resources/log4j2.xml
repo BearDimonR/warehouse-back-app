@@ -19,42 +19,42 @@
     </Appenders>
 
     <Loggers>
-        <Logger name= "com.warehouse.Handler.RoleHandler" level="info" additivity="false">
+        <Logger name= "com.warehouse.Controller.RoleController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Handler.RolePermissionHandler" level="info" additivity="false">
+        <Logger name= "com.warehouse.Controller.RolePermissionController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Handler.GroupHandler" level="info" additivity="false">
+        <Logger name= "com.warehouse.Controller.GroupController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Handler.UserHandler" level="info" additivity="false">
+        <Logger name= "com.warehouse.Controller.UserController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Handler.ManufacturerHandler" level="info" additivity="false">
+        <Logger name= "com.warehouse.Controller.ManufacturerController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Handler.PermissionHandler" level="info" additivity="false">
+        <Logger name= "com.warehouse.Controller.PermissionController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Handler.ProductHandler" level="info" additivity="false">
+        <Logger name= "com.warehouse.Controller.ProductController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Handler.LoginHandler" level="info" additivity="false">
+        <Logger name= "com.warehouse.Controller.LoginController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
@@ -69,7 +69,7 @@
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Handler.MeasureHandler" level="info" additivity="false">
+        <Logger name= "com.warehouse.Controller.MeasureController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>

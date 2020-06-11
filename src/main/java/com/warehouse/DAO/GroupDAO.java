@@ -1,5 +1,6 @@
 package com.warehouse.DAO;
 
+import com.warehouse.Filter.Filter;
 import com.warehouse.Model.Group;
 
 import java.sql.Connection;
@@ -42,7 +43,7 @@ public class GroupDAO implements DAO<Group> {
     }
 
     @Override
-    public List<Group> getAll() throws SQLException {
+    public List<Group> getAll(int page, int size, Filter filter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM group_products");

@@ -1,5 +1,6 @@
 package com.warehouse.DAO;
 
+import com.warehouse.Filter.Filter;
 import com.warehouse.Model.Manufacturer;
 
 import java.sql.Connection;
@@ -41,7 +42,7 @@ public class ManufacturerDAO implements DAO<Manufacturer> {
     }
 
     @Override
-    public List<Manufacturer> getAll() throws SQLException {
+    public List<Manufacturer> getAll(int page, int size, Filter filter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM manufacturer");

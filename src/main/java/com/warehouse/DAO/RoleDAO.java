@@ -1,6 +1,7 @@
 package com.warehouse.DAO;
 
 
+import com.warehouse.Filter.Filter;
 import com.warehouse.Model.Role;
 
 import java.sql.Connection;
@@ -61,7 +62,7 @@ public class RoleDAO implements DAO<Role> {
     }
 
     @Override
-    public List<Role> getAll() throws SQLException {
+    public List<Role> getAll(int page, int size, Filter filter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM role");

@@ -1,6 +1,7 @@
 package com.warehouse.DAO;
 
-import com.warehouse.Model.auth.Credentials;
+import com.warehouse.Filter.Filter;
+import com.warehouse.Model.Credentials;
 import com.warehouse.Model.User;
 
 import java.sql.Connection;
@@ -45,7 +46,7 @@ public class UserDAO implements DAO<User> {
 
 
     @Override
-    public List<User> getAll() throws SQLException {
+    public List<User> getAll(int page, int size, Filter filter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account");

@@ -1,11 +1,15 @@
 package com.warehouse.DAO;
 
+import com.warehouse.Filter.Filter;
 import com.warehouse.Model.Permission;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PermissionDAO implements DAO<Permission> {
 
@@ -59,12 +63,17 @@ public class PermissionDAO implements DAO<Permission> {
     }
 
     @Override
-    public List<Permission> getAll() throws SQLException {
+    public List<Permission> getAll(int page, int size, Filter filter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
+        String query = Stream.of(
+                    filter.inIds("id")
+             ).filter(Objects::nonNull)
+                .collect(Collectors.joining(" AND "));
+        String where = query.isEmpty()?"":" WHERE " + query;
+        String sql = String.format("SELECT * FROM permission %s limit %d offset %d", where, size, page*size);
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM permission");
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet res = preparedStatement.executeQuery();
-
             List<Permission> permissions = new ArrayList<>();
             while (res.next()) {
                 permissions.add(new Permission(res.getLong(1), res.getString(2), res.getBoolean(3)));

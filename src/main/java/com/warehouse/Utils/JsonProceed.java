@@ -1,4 +1,4 @@
-package com.warehouse;
+package com.warehouse.Utils;
 
 import com.google.gson.Gson;
 

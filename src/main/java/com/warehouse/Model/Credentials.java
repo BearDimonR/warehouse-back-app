@@ -1,4 +1,4 @@
-package com.warehouse.Model.auth;
+package com.warehouse.Model;
 
 import lombok.Data;
 

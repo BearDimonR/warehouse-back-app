@@ -49,7 +49,7 @@ public class ProductDAO implements DAO<Product> {
     }
 
     @Override
-    public List<Product> getAll() throws SQLException {
+    public List<Product> getAll(int page, int size, com.warehouse.Filter.Filter filter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM product");

@@ -1,6 +1,7 @@
 package com.warehouse.DAO;
 
 
+import com.warehouse.Filter.Filter;
 import com.warehouse.Model.Measure;
 
 import java.sql.Connection;
@@ -25,7 +26,7 @@ public class MeasureDAO implements DAO<Measure> {
     }
 
     @Override
-    public List<Measure> getAll() throws SQLException {
+    public List<Measure> getAll(int page, int size, Filter filter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM measure");
