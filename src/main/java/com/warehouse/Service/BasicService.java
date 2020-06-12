@@ -2,6 +2,7 @@ package com.warehouse.Service;
 
 import com.warehouse.DAO.DAO;
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.PageFilter;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -17,13 +18,13 @@ public class BasicService<T> implements Service<T> {
     }
 
     @Override
-    public List<T> getAll(Filter filter) throws SQLException {
-        return dao.getAll(filter);
+    public List<T> getAll(Filter filter, PageFilter pageFilter) throws SQLException {
+        return dao.getAll(filter, pageFilter);
     }
 
     @Override
     public long count(Filter filter) throws SQLException {
-        return dao.getAll(filter).size();
+        return dao.getAll(filter, new PageFilter()).size();
     }
 
     @Override

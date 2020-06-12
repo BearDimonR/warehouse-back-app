@@ -1,15 +1,16 @@
 package com.warehouse.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 @ToString
 public class Manufacturer {
-private long id;
-private String name;
+    @NonNull
+    private Long id;
+    @NonNull
+    private String name;
+    private Float amount;
 }

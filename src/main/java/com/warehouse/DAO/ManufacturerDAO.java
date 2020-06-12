@@ -1,6 +1,7 @@
 package com.warehouse.DAO;
 
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Manufacturer;
 
 import java.sql.Connection;
@@ -45,7 +46,7 @@ public class ManufacturerDAO implements DAO<Manufacturer> {
     }
 
     @Override
-    public List<Manufacturer> getAll(Filter filter) throws SQLException {
+    public List<Manufacturer> getAll(Filter filter, PageFilter pageFilter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         String query = Stream.of(
                 filter.inKeys("id"),
@@ -53,7 +54,7 @@ public class ManufacturerDAO implements DAO<Manufacturer> {
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(" AND "));
         String where = query.isEmpty()?"":"WHERE " + query;
-        String sql = String.format("SELECT * FROM manufacturer %s %s", where, filter.page());
+        String sql = String.format("SELECT * FROM manufacturer %s %s", where, pageFilter.page());
         try {
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet res = preparedStatement.executeQuery();

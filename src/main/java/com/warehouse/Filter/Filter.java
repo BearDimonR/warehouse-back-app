@@ -1,42 +1,44 @@
 package com.warehouse.Filter;
 
+import com.warehouse.Utils.Pair;
 import lombok.*;
 
+import java.security.KeyPairGenerator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Filter {
     @Builder.Default
     boolean count = false;
-    List<String> ids = null;
-    Map<String, String> like = null;
-    @NonNull
     @Builder.Default
-    Integer page = 1;
-    @NonNull
+    List<Pair<String, String[]>> params = null;
     @Builder.Default
-    Integer size = 50;
+    List<Long> ids = null;
+    @Builder.Default
+    List<Pair<String, String>> like = null;
 
-    public String inKeys(String fieldname) {
-        if(ids == null || ids.isEmpty())
+
+    public String inKeys(String defaultField) {
+        if(!(ids == null || ids.isEmpty()))
+            return defaultField + " IN (" + ids.stream().map(String::valueOf).collect(Collectors.joining(", ")) + ")";
+        else if(!(params == null || params.isEmpty())) {
+             return params.stream()
+                     .map(x -> x.key += " IN (" + String.join(", ",  x.val) + ")")
+                     .collect(Collectors.joining(" AND "));
+        } else
             return null;
-        return fieldname + " IN (" + String.join(", ", ids) + ")";
     }
 
-    public String page() {
-        return String.format("LIMIT %d OFFSET %d", size, (page-1) * size);
-    }
 
     public String like() {
         if(like == null || like.isEmpty())
             return null;
-        return like.keySet().stream()
-                .map(x -> x += " LIKE '%" + like.get(x) + "%'").collect(Collectors.joining(" AND "));
+        return like.stream()
+                .map(x -> x.key += " LIKE '%" + x.val + "%'").collect(Collectors.joining(" AND "));
     }
 }

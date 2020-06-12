@@ -1,5 +1,7 @@
 package com.warehouse.DAO;
 
+import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Product;
 
 import java.sql.Connection;
@@ -48,17 +50,17 @@ public class ProductDAO implements DAO<Product> {
     }
 
     @Override
-    public List<Product> getAll(com.warehouse.Filter.Filter filter) throws SQLException {
+    public List<Product> getAll(Filter filter, PageFilter pageFilter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         String query = Stream.of(
                 filter.inKeys("id"),
                 filter.like())
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(" AND "));
-        String where = query.isEmpty()?"":"WHERE " + query;
-        String sql = String.format("SELECT * FROM product %s %s", where, filter.page());
+        String where = query.isEmpty() ? "" : "WHERE " + query;
+        String sql = String.format("SELECT * FROM product %s %s", where, pageFilter.page());
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM product");
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet res = preparedStatement.executeQuery();
             List<Product> product = new ArrayList<>();
             while (res.next()) {
@@ -140,107 +142,5 @@ public class ProductDAO implements DAO<Product> {
             DataBaseConnector.getConnector().releaseConnection(connection);
         }
     }
-
-    public List<Product> filter(String name, String group, String manufacturer) throws SQLException {
-        Connection connection = DataBaseConnector.getConnector().getConnection();
-        Filter filter = new Filter() {
-            @Override
-            public ResultSet filterByName(String name) throws SQLException {
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM product WHERE name LIKE '?%'");
-                return preparedStatement.executeQuery();
-            }
-
-            @Override
-            public ResultSet filterByGroup(int groupId) throws SQLException {
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM product WHERE group_products_id LIKE '" + groupId + "%'");
-                return preparedStatement.executeQuery();
-            }
-
-            @Override
-            public ResultSet filterByManufacturer(int manufacturerId) throws SQLException {
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM product WHERE manufacturer_id LIKE '" + manufacturerId + "%'");
-                preparedStatement.executeQuery();
-                return preparedStatement.executeQuery();
-            }
-        };
-
-        TreeMap<Product, Integer> productMap = new TreeMap<>();
-        List<Product> productList = new ArrayList<>();
-        List<ResultSet> resArr = new ArrayList<>();
-        int fields = 0, groupId = 0, manufacturerId = 0;
-
-        if (name != null) {
-            fields++;
-            resArr.add(filter.filterByName(name));
-        }
-        if (group != null) {
-            fields++;
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM group_products WHERE name=" + group);
-            ResultSet resultSet = ps.executeQuery();
-            groupId = resultSet.getInt(1);
-            resArr.add(filter.filterByGroup(groupId));
-        }
-        if (manufacturer != null) {
-            fields++;
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM manufacturer WHERE name=" + manufacturer);
-            ResultSet resultSet = ps.executeQuery();
-            manufacturerId = resultSet.getInt(1);
-            resArr.add(filter.filterByManufacturer(manufacturerId));
-        }
-//todo check is correct ? 'cycle while'
-        for (int i = 0; i < resArr.size(); i++) {
-            while (resArr.get(i).next()) {
-                Product product = new Product(
-                        resArr.get(i).getLong(1),
-                        resArr.get(i).getString(2),
-                        resArr.get(i).getFloat(3),
-                        resArr.get(i).getFloat(4),
-                        resArr.get(i).getFloat(5),
-                        resArr.get(i).getString(6),
-                        resArr.get(i).getInt(7),
-                        resArr.get(i).getInt(8),
-                        resArr.get(i).getString(9));
-                if (!productMap.containsKey(product)) productMap.put(product, 1);
-                else {
-                    productMap.replace(product, 1 + productMap.get(product));
-                    if (productMap.get(product) == fields) productList.add(product);
-                }
-            }
-        }
-        return productList;
-    }
-
-    public List<Product> getAllByGroup(long id) throws SQLException {
-        Connection connection = DataBaseConnector.getConnector().getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM product WHERE group_products_id = ?");
-            preparedStatement.setLong(1, id);
-            ResultSet res = preparedStatement.executeQuery();
-            List<Product> product = new ArrayList<>();
-            while (res.next()) {
-                product.add(new Product(
-                        res.getLong(1),
-                        res.getString(2),
-                        res.getFloat(3),
-                        res.getFloat(4),
-                        res.getFloat(5),
-                        res.getString(6),
-                        res.getInt(7),
-                        res.getInt(8),
-                        res.getString(9)));
-            }
-            return product;
-        } finally {
-            DataBaseConnector.getConnector().releaseConnection(connection);
-        }
-    }
-}
-
-interface Filter {
-    ResultSet filterByName(String name) throws SQLException;
-
-    ResultSet filterByGroup(int group) throws SQLException;
-
-    ResultSet filterByManufacturer(int manufacturer) throws SQLException;
 }
 

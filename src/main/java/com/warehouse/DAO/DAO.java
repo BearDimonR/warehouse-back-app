@@ -1,6 +1,7 @@
 package com.warehouse.DAO;
 
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.PageFilter;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -10,7 +11,7 @@ public interface DAO<T> {
 
     Optional<T> get(long id) throws SQLException;
 
-    List<T> getAll(Filter filter) throws SQLException;
+    List<T> getAll(Filter filter, PageFilter pageFilter) throws SQLException;
 
     long save(T t) throws SQLException;
 
