@@ -1,14 +1,18 @@
-package com.warehouse;
+package com.warehouse.Http;
 
-import com.warehouse.DAO.DataBaseConnector;
 import com.sun.net.httpserver.HttpServer;
-import com.warehouse.Handler.*;
+import com.warehouse.Controller.*;
+import com.warehouse.DAO.DataBaseConnector;
+import com.warehouse.Service.RolePermissionService;
+import com.warehouse.View.JsonView;
+import com.warehouse.View.View;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -18,8 +22,15 @@ public class Server {
 
     public static Logger root = LogManager.getRootLogger();
 
+    public final static View VIEW = new JsonView();
+
     public static void main(String[] args) {
         new Server();
+        try {
+            System.out.println(Arrays.toString(RolePermissionService.getInstance().getAllRolePermissions(2).toArray()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private Server() {
@@ -49,21 +60,24 @@ public class Server {
 
             root.info("Database connected...");
 
+            //Init view
+            AbstractController.setView(VIEW);
+
             // Server start-up
             try {
                 HttpServer server = HttpServer.create();
 
                 //Server contexts
                 //TODO Maybe Enum for this shit?
-                server.createContext("/products", new ProductHandler());
-                server.createContext("/groups", new GroupHandler());
-                server.createContext("/manufacturers", new ManufacturerHandler());
-                server.createContext("/users", new UserHandler());
-                server.createContext("/roles", new RoleHandler());
-                server.createContext("/roles/permissions", new RolePermissionHandler());
-                server.createContext("/permissions", new PermissionHandler());
-                server.createContext("/measures", new MeasureHandler());
-                server.createContext("/login", new LoginHandler());
+                server.createContext("/products", new ProductController());
+                server.createContext("/groups", new GroupController());
+                server.createContext("/manufacturers", new ManufacturerController());
+                server.createContext("/users", new UserController());
+                server.createContext("/roles", new RoleController());
+                server.createContext("/roles/permissions", new RolePermissionController());
+                server.createContext("/permissions", new PermissionController());
+                server.createContext("/measures", new MeasureController());
+                server.createContext("/login", new LoginController());
 
                 server.bind(new InetSocketAddress(8089), 0);
                 server.setExecutor(pool);

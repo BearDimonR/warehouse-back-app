@@ -1,5 +1,6 @@
 package com.warehouse.DAO;
 
+import com.warehouse.Filter.Filter;
 import com.warehouse.Model.Manufacturer;
 
 import java.sql.Connection;
@@ -8,7 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ManufacturerDAO implements DAO<Manufacturer> {
 
@@ -41,10 +45,17 @@ public class ManufacturerDAO implements DAO<Manufacturer> {
     }
 
     @Override
-    public List<Manufacturer> getAll() throws SQLException {
+    public List<Manufacturer> getAll(Filter filter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
+        String query = Stream.of(
+                filter.inKeys("id"),
+                filter.like())
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(" AND "));
+        String where = query.isEmpty()?"":"WHERE " + query;
+        String sql = String.format("SELECT * FROM manufacturer %s %s", where, filter.page());
         try {
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM manufacturer");
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet res = preparedStatement.executeQuery();
         List<Manufacturer> manufacturers = new ArrayList<>();
         while (res.next()) {
@@ -74,7 +85,7 @@ public class ManufacturerDAO implements DAO<Manufacturer> {
     }
 
     @Override
-    public synchronized boolean update(Manufacturer manufacturer, String[] params) throws SQLException {
+    public synchronized boolean update(Manufacturer manufacturer) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
         PreparedStatement preparedStatement =

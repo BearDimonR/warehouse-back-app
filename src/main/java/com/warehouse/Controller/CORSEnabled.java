@@ -1,4 +1,4 @@
-package com.warehouse.Handler;
+package com.warehouse.Controller;
 
 import com.sun.net.httpserver.HttpExchange;
 

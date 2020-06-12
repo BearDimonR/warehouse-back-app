@@ -1,6 +1,7 @@
 package com.warehouse.DAO;
 
 
+import com.warehouse.Filter.Filter;
 import com.warehouse.Model.Role;
 
 import java.sql.Connection;
@@ -9,7 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RoleDAO implements DAO<Role> {
 
@@ -28,7 +32,7 @@ public class RoleDAO implements DAO<Role> {
     public Optional<Role> get(long id) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM role WHERE id = ?");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM role WHERE id  = ?");
             preparedStatement.setLong(1, id);
             ResultSet res = preparedStatement.executeQuery();
             if (res.next())
@@ -61,10 +65,17 @@ public class RoleDAO implements DAO<Role> {
     }
 
     @Override
-    public List<Role> getAll() throws SQLException {
+    public List<Role> getAll(Filter filter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
+        String query = Stream.of(
+                filter.inKeys("id"),
+                filter.like())
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(" AND "));
+        String where = query.isEmpty()?"":"WHERE " + query;
+        String sql = String.format("SELECT * FROM role %s %s", where, filter.page());
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM role");
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet res = preparedStatement.executeQuery();
             List<Role> roles = new ArrayList<>();
             while (res.next()) {
@@ -96,7 +107,7 @@ public class RoleDAO implements DAO<Role> {
     }
 
     @Override
-    public synchronized boolean update(Role role, String[] params) throws SQLException {
+    public synchronized boolean update(Role role) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement =

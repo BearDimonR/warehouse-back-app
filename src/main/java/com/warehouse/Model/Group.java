@@ -1,15 +1,19 @@
 package com.warehouse.Model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 @Data
-@NoArgsConstructor
+@RequiredArgsConstructor(staticName = "of")
 @AllArgsConstructor
-public class Group {
-    private long id;
+@Builder
+public class Group  {
+    private Long id;
+    @NonNull
     private String name;
+    @NonNull
     private String description;
+    private Float totalCost;
+    private Float totalAmount;
 }

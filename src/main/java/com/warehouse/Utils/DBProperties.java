@@ -1,6 +1,6 @@
 package com.warehouse.Utils;
 
-import com.warehouse.Server;
+import com.warehouse.Http.Server;
 
 import java.io.FileInputStream;
 import java.io.IOException;

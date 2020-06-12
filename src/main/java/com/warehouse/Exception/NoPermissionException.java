@@ -1,4 +1,4 @@
-package com.warehouse.exceptions;
+package com.warehouse.Exception;
 
 
 public class NoPermissionException extends Exception {
