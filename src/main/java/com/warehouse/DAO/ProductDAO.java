@@ -6,10 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ProductDAO implements DAO<Product> {
     public static ProductDAO instance;
@@ -34,9 +33,9 @@ public class ProductDAO implements DAO<Product> {
                 return Optional.of(new Product(
                         res.getLong(1),
                         res.getString(2),
-                        res.getDouble(3),
-                        res.getDouble(4),
-                        res.getDouble(5),
+                        res.getFloat(3),
+                        res.getFloat(4),
+                        res.getFloat(5),
                         res.getString(6),
                         res.getInt(7),
                         res.getInt(8),
@@ -49,8 +48,15 @@ public class ProductDAO implements DAO<Product> {
     }
 
     @Override
-    public List<Product> getAll(int page, int size, com.warehouse.Filter.Filter filter) throws SQLException {
+    public List<Product> getAll(com.warehouse.Filter.Filter filter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
+        String query = Stream.of(
+                filter.inKeys("id"),
+                filter.like())
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(" AND "));
+        String where = query.isEmpty()?"":"WHERE " + query;
+        String sql = String.format("SELECT * FROM product %s %s", where, filter.page());
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM product");
             ResultSet res = preparedStatement.executeQuery();
@@ -59,9 +65,9 @@ public class ProductDAO implements DAO<Product> {
                 product.add(new Product(
                         res.getLong(1),
                         res.getString(2),
-                        res.getDouble(3),
-                        res.getDouble(4),
-                        res.getDouble(5),
+                        res.getFloat(3),
+                        res.getFloat(4),
+                        res.getFloat(5),
                         res.getString(6),
                         res.getInt(7),
                         res.getInt(8),
@@ -99,7 +105,7 @@ public class ProductDAO implements DAO<Product> {
     }
 
     @Override
-    public boolean update(Product product, String[] params) throws SQLException {
+    public boolean update(Product product) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE product SET name=?,price=?, amount=?, total_cost=?, measure_name=?, group_products_id=?, manufacturer_id=?, description=? WHERE id=?");
@@ -187,9 +193,9 @@ public class ProductDAO implements DAO<Product> {
                 Product product = new Product(
                         resArr.get(i).getLong(1),
                         resArr.get(i).getString(2),
-                        resArr.get(i).getDouble(3),
-                        resArr.get(i).getDouble(4),
-                        resArr.get(i).getDouble(5),
+                        resArr.get(i).getFloat(3),
+                        resArr.get(i).getFloat(4),
+                        resArr.get(i).getFloat(5),
                         resArr.get(i).getString(6),
                         resArr.get(i).getInt(7),
                         resArr.get(i).getInt(8),
@@ -204,6 +210,30 @@ public class ProductDAO implements DAO<Product> {
         return productList;
     }
 
+    public List<Product> getAllByGroup(long id) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM product WHERE group_products_id = ?");
+            preparedStatement.setLong(1, id);
+            ResultSet res = preparedStatement.executeQuery();
+            List<Product> product = new ArrayList<>();
+            while (res.next()) {
+                product.add(new Product(
+                        res.getLong(1),
+                        res.getString(2),
+                        res.getFloat(3),
+                        res.getFloat(4),
+                        res.getFloat(5),
+                        res.getString(6),
+                        res.getInt(7),
+                        res.getInt(8),
+                        res.getString(9)));
+            }
+            return product;
+        } finally {
+            DataBaseConnector.getConnector().releaseConnection(connection);
+        }
+    }
 }
 
 interface Filter {

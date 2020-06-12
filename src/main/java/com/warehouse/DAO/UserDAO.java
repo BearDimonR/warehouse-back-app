@@ -10,7 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class UserDAO implements DAO<User> {
 
@@ -46,10 +49,17 @@ public class UserDAO implements DAO<User> {
 
 
     @Override
-    public List<User> getAll(int page, int size, Filter filter) throws SQLException {
+    public List<User> getAll(Filter filter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
+        String query = Stream.of(
+                filter.inKeys("id"),
+                filter.like())
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(" AND "));
+        String where = query.isEmpty()?"":"WHERE " + query;
+        String sql = String.format("SELECT * FROM user_account %s %s", where, filter.page());
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account");
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet res = preparedStatement.executeQuery();
             List<User> user = new ArrayList<>();
             while (res.next()) {
@@ -98,7 +108,7 @@ public class UserDAO implements DAO<User> {
     }
 
     @Override
-    public boolean update(User user, String[] params) throws SQLException {
+    public boolean update(User user) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE user_account SET name=?,password=?,role_id=? WHERE id=?");

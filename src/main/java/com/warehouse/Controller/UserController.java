@@ -2,6 +2,7 @@ package com.warehouse.Controller;
 
 import com.warehouse.DAO.UserDAO;
 import com.warehouse.Model.User;
+import com.warehouse.Service.UserService;
 import org.apache.logging.log4j.LogManager;
 
 
@@ -13,7 +14,7 @@ public class UserController extends AbstractController<User> {
         updatePermission = "user_edit";
         createPermission = "user_create";
         deletePermission = "user_delete";
-        dao = UserDAO.getInstance();
+        service = UserService.getInstance();
 
         logger = LogManager.getLogger(UserController.class);
     }

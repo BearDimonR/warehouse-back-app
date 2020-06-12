@@ -1,7 +1,6 @@
 package com.warehouse.Controller;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.warehouse.DAO.RolePermissionDAO;
 import com.warehouse.Exception.NotImplementedException;
 import com.warehouse.Model.RolePermissionConnection;
 import com.warehouse.Service.RolePermissionService;
@@ -26,8 +25,8 @@ public class RolePermissionController extends AbstractController<RolePermissionC
 
     @Override
     protected Object get(HttpExchange exchange) throws SQLException {
-        Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
-        return RolePermissionService.getInstance().getRolePermissions(Long.parseLong(params.get("id")));
+        return RolePermissionService.getInstance().getAllRolePermissions(
+                Long.parseLong(QueryParser.parse(exchange.getRequestURI().getQuery()).get("id")));
     }
 
     @Override
@@ -41,7 +40,7 @@ public class RolePermissionController extends AbstractController<RolePermissionC
         RolePermissionConnection rpc = new RolePermissionConnection(
                 Long.parseLong(params.get("roleId")),
                 Long.parseLong(params.get("permissionId")));
-        if (!RolePermissionDAO.getInstance().delete(rpc))
+        if (!RolePermissionService.getInstance().delete(rpc))
             throw new InvalidParameterException();
         else
             return rpc;

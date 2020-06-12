@@ -4,10 +4,7 @@ import com.warehouse.Filter.Filter;
 import com.warehouse.Model.Permission;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -63,14 +60,15 @@ public class PermissionDAO implements DAO<Permission> {
     }
 
     @Override
-    public List<Permission> getAll(int page, int size, Filter filter) throws SQLException {
+    public List<Permission> getAll(Filter filter) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         String query = Stream.of(
-                    filter.inIds("id")
-             ).filter(Objects::nonNull)
+                filter.inKeys("id"),
+                filter.like())
+                .filter(Objects::nonNull)
                 .collect(Collectors.joining(" AND "));
-        String where = query.isEmpty()?"":" WHERE " + query;
-        String sql = String.format("SELECT * FROM permission %s limit %d offset %d", where, size, page*size);
+        String where = query.isEmpty()?"":"WHERE " + query;
+        String sql = String.format("SELECT * FROM permission %s %s", where, filter.page());
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet res = preparedStatement.executeQuery();
@@ -90,7 +88,7 @@ public class PermissionDAO implements DAO<Permission> {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO permission (name , is_super) VALUES  (?,?) RETURNING id");
             preparedStatement.setString(1, permission.getName());
-            preparedStatement.setBoolean(2, permission.isSuper());
+            preparedStatement.setBoolean(2, permission.getIsSuper());
 
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
@@ -101,12 +99,12 @@ public class PermissionDAO implements DAO<Permission> {
     }
 
     @Override
-    public boolean update(Permission permission, String[] params) throws SQLException {
+    public boolean update(Permission permission) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE permission SET name=?,is_super=? WHERE id=?");
             preparedStatement.setString(1, permission.getName());
-            preparedStatement.setBoolean(2, permission.isSuper());
+            preparedStatement.setBoolean(2, permission.getIsSuper());
             preparedStatement.setLong(3, permission.getId());
 
             int res = preparedStatement.executeUpdate();

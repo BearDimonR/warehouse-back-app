@@ -2,6 +2,7 @@ package com.warehouse.Controller;
 
 import com.warehouse.DAO.RoleDAO;
 import com.warehouse.Model.Role;
+import com.warehouse.Service.RoleService;
 import org.apache.logging.log4j.LogManager;
 
 public class RoleController extends AbstractController<Role> {
@@ -12,7 +13,7 @@ public class RoleController extends AbstractController<Role> {
         updatePermission = "role_edit";
         createPermission = "role_create";
         deletePermission = "role_delete";
-        dao = RoleDAO.getInstance();
+        service = RoleService.getInstance();
 
         logger = LogManager.getLogger(RoleController.class);
     }

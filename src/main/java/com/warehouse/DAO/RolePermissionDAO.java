@@ -1,8 +1,6 @@
 package com.warehouse.DAO;
 
-import com.warehouse.Model.Permission;
 import com.warehouse.Model.RolePermissionConnection;
-import com.warehouse.Model.RolePermissions;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 public class Product {
     private long id;
     private String name;
-    private double price;
-    private double amount;
-    private double totalCost;
+    private float price;
+    private float amount;
+    private float totalCost;
     private String measureName;
     private int groupId;
     private int manufacturerId;

@@ -3,12 +3,13 @@ package com.warehouse.Controller;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.warehouse.Authentication.Authentication;
-import com.warehouse.DAO.DAO;
 import com.warehouse.Exception.AuthRequiredException;
 import com.warehouse.Exception.NoPermissionException;
 import com.warehouse.Exception.NotImplementedException;
+import com.warehouse.Filter.Filter;
 import com.warehouse.Http.Response;
 import com.warehouse.Model.ResponseMessage;
+import com.warehouse.Service.Service;
 import com.warehouse.Utils.JsonProceed;
 import com.warehouse.Utils.QueryParser;
 import com.warehouse.View.View;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidParameterException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,7 +30,7 @@ public abstract class AbstractController<T> implements HttpHandler, CORSEnabled 
     protected String createPermission = "";
     protected String deletePermission = "";
     protected Logger logger;
-    protected DAO<T> dao;
+    protected Service<T> service;
 
     private Class<T> model;
 
@@ -122,12 +124,19 @@ public abstract class AbstractController<T> implements HttpHandler, CORSEnabled 
     }
 
     protected Object get(HttpExchange exchange)
-            throws SQLException, InvalidParameterException, NotImplementedException {
+            throws SQLException, InvalidParameterException, NotImplementedException, IOException {
         Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
-        if (params.isEmpty()) {
-            return dao.getAll(0,20, null);
+        if (params.containsKey("filter")) {
+            Filter obj;
+            if (params.get("filter").equals("undefined"))
+                obj = new Filter();
+            else
+                obj = JsonProceed.getGson().fromJson(params.get("filter"), Filter.class);
+            if (obj.isCount())
+                return service.count(obj);
+            return service.getAll(obj);
         } else {
-            Optional<T> optional = dao.get(Long.parseLong(params.get("id")));
+            Optional<T> optional = service.get(Long.parseLong(params.get("id")));
             if (optional.isEmpty())
                 throw new InvalidParameterException();
             return optional.get();
@@ -139,7 +148,7 @@ public abstract class AbstractController<T> implements HttpHandler, CORSEnabled 
         InputStream is = exchange.getRequestBody();
         byte[] input = is.readAllBytes();
         T obj = JsonProceed.getGson().fromJson(new String(input), model);
-        return dao.save(obj);
+        return service.create(obj);
     }
 
     protected Object update(HttpExchange exchange)
@@ -147,7 +156,7 @@ public abstract class AbstractController<T> implements HttpHandler, CORSEnabled 
         InputStream is = exchange.getRequestBody();
         byte[] input = is.readAllBytes();
         T obj = JsonProceed.getGson().fromJson(new String(input), model);
-        if (!dao.update(obj, null))
+        if (!service.update(obj))
             throw new InvalidParameterException();
         else
             return obj;
@@ -156,7 +165,7 @@ public abstract class AbstractController<T> implements HttpHandler, CORSEnabled 
     protected Object delete(HttpExchange exchange)
             throws SQLException, InvalidParameterException, NotImplementedException {
         long id = Long.parseLong(QueryParser.parse(exchange.getRequestURI().getQuery()).get("id"));
-        if (!dao.delete(id))
+        if (!service.delete(id))
             throw new InvalidParameterException();
         else
             return id;

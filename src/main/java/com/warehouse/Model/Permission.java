@@ -1,16 +1,17 @@
 package com.warehouse.Model;
 
-import java.util.Objects;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@RequiredArgsConstructor(staticName = "of")
 public class Permission {
-    private long id;
+    private Long id;
+    @NonNull
     private String name;
-    private boolean isSuper;
+    @NonNull
+    private Boolean isSuper;
+
 }

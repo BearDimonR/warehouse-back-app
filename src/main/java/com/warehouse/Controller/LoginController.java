@@ -2,7 +2,6 @@ package com.warehouse.Controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.warehouse.Authentication.Authentication;
-import com.warehouse.DAO.UserDAO;
 import com.warehouse.Exception.AuthWrongException;
 import com.warehouse.Exception.NotImplementedException;
 import com.warehouse.Http.Response;
@@ -10,6 +9,7 @@ import com.warehouse.Model.AuthenticatedUserDTO;
 import com.warehouse.Model.Credentials;
 import com.warehouse.Model.ResponseMessage;
 import com.warehouse.Model.User;
+import com.warehouse.Service.UserService;
 import com.warehouse.Utils.JsonProceed;
 import org.apache.logging.log4j.LogManager;
 
@@ -69,7 +69,7 @@ public class LoginController extends AbstractController<Credentials> {
     private Object login(HttpExchange exchange) throws IOException, SQLException, AuthWrongException {
         byte[] input = exchange.getRequestBody().readAllBytes();
         //TODO decode input array
-        Optional<User> userByCredentials = UserDAO.getInstance().getByCredentials(
+        Optional<User> userByCredentials = UserService.getInstance().getByCredentials(
                 JsonProceed.getGson().fromJson(new String(input), Credentials.class));
         if (userByCredentials.isPresent()) {
             Optional<AuthenticatedUserDTO> user = Authentication.generateLoginResponse(userByCredentials.get());

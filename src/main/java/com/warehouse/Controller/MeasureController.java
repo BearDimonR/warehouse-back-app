@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.warehouse.DAO.MeasureDAO;
 import com.warehouse.Exception.NotImplementedException;
 import com.warehouse.Model.Measure;
+import com.warehouse.Service.MeasureService;
 import org.apache.logging.log4j.LogManager;
 
 public class MeasureController extends AbstractController<Measure> {
@@ -14,7 +15,7 @@ public class MeasureController extends AbstractController<Measure> {
         updatePermission = "";
         createPermission = "";
         deletePermission = "";
-        dao = MeasureDAO.getInstance();
+        service = MeasureService.getInstance();
 
         logger = LogManager.getLogger(MeasureController.class);
     }
