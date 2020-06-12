@@ -30,4 +30,13 @@ public class ProductService extends BasicService<Product> {
         sId.add(field);
         return getAll(Filter.builder().params(sId).build(), new PageFilter());
     }
+
+    public List<Product> getAllByManufacturer(long id) throws SQLException {
+        List<Pair<String, String[]>> sId = new ArrayList<>(3);
+        Pair<String, String[]> field = new Pair<>();
+        field.key = "manufacturer_id";
+        field.val = new String[] {String.valueOf(id)};
+        sId.add(field);
+        return getAll(Filter.builder().params(sId).build(), new PageFilter());
+    }
 }
