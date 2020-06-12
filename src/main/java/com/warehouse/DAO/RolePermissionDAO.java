@@ -21,16 +21,16 @@ public class RolePermissionDAO {
 
     private RolePermissionDAO() {}
 
-    public List<Integer> get(long id) throws SQLException {
+    public List<Long> get(long id) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement
                     ("SELECT permission_id FROM role_permission_connection WHERE role_id = ?");
             preparedStatement.setLong(1, id);
             ResultSet res = preparedStatement.executeQuery();
-            ArrayList<Integer> permissions = new ArrayList<>();
+            ArrayList<Long> permissions = new ArrayList<>();
             while (res.next()) {
-                permissions.add(res.getInt(1));
+                permissions.add(res.getLong(1));
             }
             return permissions;
         } finally {
