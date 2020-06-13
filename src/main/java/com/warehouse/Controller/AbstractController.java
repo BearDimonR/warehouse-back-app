@@ -126,22 +126,23 @@ public abstract class AbstractController<T> implements HttpHandler, CORSEnabled 
     protected Object get(HttpExchange exchange)
             throws SQLException, InvalidParameterException, NotImplementedException {
         Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
-        if (params.containsKey("page") && params.containsKey("filter")) {
+        if (params.containsKey("page") || params.containsKey("filter")) {
             PageFilter pageFilter;
             Filter filter;
-            if (params.get("page").equals("undefined"))
+            if (!params.containsKey("page") || params.get("page").equals("undefined"))
                 pageFilter = new PageFilter();
             else
                 pageFilter = JsonProceed.getGson().fromJson(params.get("page"), PageFilter.class);
-            if (params.get("filter").equals("undefined"))
+
+            if (!params.containsKey("filter") || params.get("filter").equals("undefined"))
                 filter = new Filter();
             else {
-                System.err.println(params.get("filter"));
                 filter = JsonProceed.getGson().fromJson(params.get("filter"), Filter.class);
-
             }
-            if (filter.isCount())
-                return service.count(filter);
+            if (filter.isCount()) {
+                    return service.count(filter);
+            }
+
             return service.getAll(filter, pageFilter);
         } else if(params.containsKey("id")) {
             Optional<T> optional = service.get(Long.parseLong(params.get("id")));

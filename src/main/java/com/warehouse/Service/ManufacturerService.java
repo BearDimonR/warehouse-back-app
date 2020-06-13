@@ -3,7 +3,6 @@ package com.warehouse.Service;
 import com.warehouse.DAO.ManufacturerDAO;
 import com.warehouse.Filter.Filter;
 import com.warehouse.Filter.PageFilter;
-import com.warehouse.Model.Group;
 import com.warehouse.Model.Manufacturer;
 import com.warehouse.Model.Product;
 

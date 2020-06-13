@@ -9,12 +9,14 @@ import lombok.*;
 public class PageFilter {
     @NonNull
     @Builder.Default
-    Integer page = 1;
+    Integer page = null;
     @NonNull
     @Builder.Default
-    Integer size = 50;
+    Integer size = null;
 
     public String page() {
-        return String.format("LIMIT %d OFFSET %d", size, (page-1) * size);
+        if(page != null && size != null)
+            return String.format("LIMIT %d OFFSET %d", size, (page-1) * size);
+        return "";
     }
 }
