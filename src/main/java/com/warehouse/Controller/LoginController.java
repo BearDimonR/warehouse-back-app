@@ -2,19 +2,19 @@ package com.warehouse.Controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.warehouse.Authentication.Authentication;
+import com.warehouse.Exception.AuthRequiredException;
 import com.warehouse.Exception.AuthWrongException;
 import com.warehouse.Exception.NotImplementedException;
 import com.warehouse.Http.Response;
-import com.warehouse.Model.AuthenticatedUserDTO;
-import com.warehouse.Model.Credentials;
-import com.warehouse.Model.ResponseMessage;
-import com.warehouse.Model.User;
+import com.warehouse.Model.*;
 import com.warehouse.Service.UserService;
 import com.warehouse.Utils.JsonProceed;
+import com.warehouse.Utils.QueryParser;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Optional;
 
 public class LoginController extends AbstractController<Credentials> {
@@ -34,7 +34,7 @@ public class LoginController extends AbstractController<Credentials> {
             enableCORS(exchange);
             switch (exchange.getRequestMethod()) {
                 case "POST":
-                    resultBody = login(exchange);
+                    resultBody = receiveToken(exchange);
                     break;
                 case "OPTIONS":
                     resultBody = options(exchange);
@@ -42,7 +42,8 @@ public class LoginController extends AbstractController<Credentials> {
                 default:
                     resultBody = "Undefined request method";
                     status = 400;
-                    logger.error("Undefined request method: " + exchange.getRequestMethod() + ".");            }
+                    logger.error("Undefined request method: " + exchange.getRequestMethod() + ".");
+            }
         } catch (IOException e) {
             resultBody = ResponseMessage.of("Server IOException");
             status = 500;
@@ -66,6 +67,15 @@ public class LoginController extends AbstractController<Credentials> {
         }
     }
 
+    private Object receiveToken(HttpExchange exchange) throws IOException, SQLException, AuthWrongException {
+        Map<String,String> m = QueryParser.parse(exchange.getRequestURI().getQuery());
+        if (QueryParser.parse(exchange.getRequestURI().getQuery()).get("renovation").equals("true"))
+            return renovate(exchange);
+        else
+            return login(exchange);
+
+    }
+
     private Object login(HttpExchange exchange) throws IOException, SQLException, AuthWrongException {
         byte[] input = exchange.getRequestBody().readAllBytes();
         //TODO decode input array
@@ -80,6 +90,19 @@ public class LoginController extends AbstractController<Credentials> {
             }
         } else
             throw new AuthWrongException();
+        //TODO WHY IS THAT HAPPENING!!!
+        return ResponseMessage.of("WTF");
+    }
+
+    private Object renovate(HttpExchange exchange) throws IOException, AuthWrongException {
+        byte[] input = exchange.getRequestBody().readAllBytes();
+        //TODO decode input array
+        String token = JsonProceed.getGson().fromJson(new String(input), RenovationToken.class).getRenovateToken();
+        Optional<TokenRenovationDTO> renovationDTO = Authentication.generateRenovationResponse(token);
+        if (renovationDTO.isPresent()) {
+            logger.info("Successful renovated token");
+            return renovationDTO.get();
+        }
         //TODO WHY IS THAT HAPPENING!!!
         return ResponseMessage.of("WTF");
     }
