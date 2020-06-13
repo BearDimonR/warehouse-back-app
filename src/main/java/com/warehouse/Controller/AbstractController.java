@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidParameterException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
@@ -142,7 +143,6 @@ public abstract class AbstractController<T> implements HttpHandler, CORSEnabled 
             if (filter.isCount()) {
                     return service.count(filter);
             }
-
             return service.getAll(filter, pageFilter);
         } else if(params.containsKey("id")) {
             Optional<T> optional = service.get(Long.parseLong(params.get("id")));

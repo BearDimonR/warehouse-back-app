@@ -1,14 +1,18 @@
 package com.warehouse.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 public class Role {
+    @NonNull
     private long id;
+    @NonNull
     private String name;
-    private boolean is_super;
+    @NonNull
+    private boolean isSuper;
+    
+    private Integer userNumber = null;
 }

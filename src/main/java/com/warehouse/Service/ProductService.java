@@ -4,7 +4,7 @@ import com.warehouse.DAO.ProductDAO;
 import com.warehouse.Filter.Filter;
 import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Product;
-import com.warehouse.Utils.Pair;
+import com.warehouse.Model.Pair;
 
 import java.sql.SQLException;
 import java.util.*;

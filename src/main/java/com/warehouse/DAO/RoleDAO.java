@@ -98,7 +98,7 @@ public class RoleDAO implements DAO<Role> {
             PreparedStatement preparedStatement =
                     connection.prepareStatement("INSERT INTO role (name, is_super) VALUES (?,?) RETURNING id");
             preparedStatement.setString(1, role.getName());
-            preparedStatement.setBoolean(2, role.is_super());
+            preparedStatement.setBoolean(2, role.isSuper());
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return resultSet.getLong(1);
@@ -114,7 +114,7 @@ public class RoleDAO implements DAO<Role> {
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE role SET name = ?, is_super = ? WHERE id = ?");
             preparedStatement.setString(1, role.getName());
-            preparedStatement.setBoolean(2, role.is_super());
+            preparedStatement.setBoolean(2, role.isSuper());
             preparedStatement.setLong(3, role.getId());
             return preparedStatement.executeUpdate() != 0;
         } finally {

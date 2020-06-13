@@ -26,11 +26,6 @@ public class Server {
 
     public static void main(String[] args) {
         new Server();
-        try {
-            System.out.println(Arrays.toString(RolePermissionService.getInstance().getAllRolePermissions(2).toArray()));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     private Server() {

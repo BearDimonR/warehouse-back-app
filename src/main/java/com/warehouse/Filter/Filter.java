@@ -1,11 +1,9 @@
 package com.warehouse.Filter;
 
-import com.warehouse.Utils.Pair;
+import com.warehouse.Model.Pair;
 import lombok.*;
 
-import java.security.KeyPairGenerator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data

@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RolePermissionDAO {
 
@@ -38,7 +39,7 @@ public class RolePermissionDAO {
         }
     }
 
-    public long save(RolePermissionConnection rolePermissionConnection) throws SQLException {
+    public long create(RolePermissionConnection rolePermissionConnection) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement =
