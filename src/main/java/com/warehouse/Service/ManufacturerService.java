@@ -2,6 +2,7 @@ package com.warehouse.Service;
 
 import com.warehouse.DAO.ManufacturerDAO;
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.OrderBy;
 import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Manufacturer;
 import com.warehouse.Model.Product;
@@ -34,8 +35,8 @@ public class ManufacturerService extends BasicService<Manufacturer> {
     }
 
     @Override
-    public List<Manufacturer> getAll(Filter filter, PageFilter pageFilter) throws SQLException {
-        List<Manufacturer> manufacturers =  dao.getAll(filter, pageFilter);
+    public List<Manufacturer> getAll(Filter filter, PageFilter pageFilter, OrderBy order) throws SQLException {
+        List<Manufacturer> manufacturers =  dao.getAll(filter, pageFilter, order);
         for (Manufacturer manufacturer: manufacturers) {
             manufacturer.setAmount(getManufacturerAmount(manufacturer.getId()).orElse(0f));
         }

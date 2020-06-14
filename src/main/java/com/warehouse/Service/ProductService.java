@@ -2,6 +2,7 @@ package com.warehouse.Service;
 
 import com.warehouse.DAO.ProductDAO;
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.OrderBy;
 import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Product;
 import com.warehouse.Model.Pair;
@@ -28,7 +29,7 @@ public class ProductService extends BasicService<Product> {
         field.key = "group_products_id";
         field.val = new String[] {String.valueOf(id)};
         sId.add(field);
-        return getAll(Filter.builder().params(sId).build(), new PageFilter());
+        return getAll(Filter.builder().params(sId).build(), new PageFilter(), new OrderBy());
     }
 
     public List<Product> getAllByManufacturer(long id) throws SQLException {
@@ -37,6 +38,6 @@ public class ProductService extends BasicService<Product> {
         field.key = "manufacturer_id";
         field.val = new String[] {String.valueOf(id)};
         sId.add(field);
-        return getAll(Filter.builder().params(sId).build(), new PageFilter());
+        return getAll(Filter.builder().params(sId).build(), new PageFilter(), new OrderBy());
     }
 }

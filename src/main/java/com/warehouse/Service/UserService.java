@@ -2,6 +2,7 @@ package com.warehouse.Service;
 
 import com.warehouse.DAO.UserDAO;
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.OrderBy;
 import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Credentials;
 import com.warehouse.Model.User;
@@ -40,6 +41,6 @@ public class UserService extends BasicService<User> {
         return UserDAO.getInstance().getAll(Filter.builder()
                 .count(true)
                 .params(pairs)
-                .build(), new PageFilter()).size();
+                .build(), new PageFilter(), new OrderBy()).size();
     }
 }
