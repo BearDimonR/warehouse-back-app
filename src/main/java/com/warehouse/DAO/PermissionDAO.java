@@ -1,6 +1,7 @@
 package com.warehouse.DAO;
 
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.OrderBy;
 import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Permission;
 
@@ -61,7 +62,7 @@ public class PermissionDAO implements DAO<Permission> {
     }
 
     @Override
-    public List<Permission> getAll(Filter filter, PageFilter pageFilter) throws SQLException {
+    public List<Permission> getAll(Filter filter, PageFilter pageFilter, OrderBy order) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         String query = Stream.of(
                 filter.inKeys("id"),
@@ -69,7 +70,10 @@ public class PermissionDAO implements DAO<Permission> {
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(" AND "));
         String where = query.isEmpty()?"":"WHERE " + query;
-        String sql = String.format("SELECT * FROM permission %s %s", where, pageFilter.page());
+        String sql = String.format("SELECT * FROM permission %s %s %s",
+                where,
+                order.orderBy("id"),
+                pageFilter.page());
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet res = preparedStatement.executeQuery();

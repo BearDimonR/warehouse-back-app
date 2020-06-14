@@ -7,6 +7,7 @@ import com.warehouse.Exception.AuthRequiredException;
 import com.warehouse.Exception.NoPermissionException;
 import com.warehouse.Exception.NotImplementedException;
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.OrderBy;
 import com.warehouse.Filter.PageFilter;
 import com.warehouse.Http.Response;
 import com.warehouse.Model.ResponseMessage;
@@ -127,9 +128,10 @@ public abstract class AbstractController<T> implements HttpHandler, CORSEnabled 
     protected Object get(HttpExchange exchange)
             throws SQLException, InvalidParameterException, NotImplementedException {
         Map<String, String> params = QueryParser.parse(exchange.getRequestURI().getQuery());
-        if (params.containsKey("page") || params.containsKey("filter")) {
+        if (params.containsKey("page") || params.containsKey("filter") || params.containsKey("order")) {
             PageFilter pageFilter;
             Filter filter;
+            OrderBy order;
             if (!params.containsKey("page") || params.get("page").equals("undefined"))
                 pageFilter = new PageFilter();
             else
@@ -140,10 +142,16 @@ public abstract class AbstractController<T> implements HttpHandler, CORSEnabled 
             else {
                 filter = JsonProceed.getGson().fromJson(params.get("filter"), Filter.class);
             }
+
+            if (!params.containsKey("order") || params.get("order").equals("undefined"))
+                order = new OrderBy();
+            else {
+                order = JsonProceed.getGson().fromJson(params.get("order"), OrderBy.class);
+            }
             if (filter.isCount()) {
                     return service.count(filter);
             }
-            return service.getAll(filter, pageFilter);
+            return service.getAll(filter, pageFilter, order);
         } else if(params.containsKey("id")) {
             Optional<T> optional = service.get(Long.parseLong(params.get("id")));
             if (optional.isEmpty())

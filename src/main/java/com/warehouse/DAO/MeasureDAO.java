@@ -2,6 +2,7 @@ package com.warehouse.DAO;
 
 
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.OrderBy;
 import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Measure;
 
@@ -30,7 +31,7 @@ public class MeasureDAO implements DAO<Measure> {
     }
 
     @Override
-    public List<Measure> getAll(Filter filter, PageFilter pageFilter) throws SQLException {
+    public List<Measure> getAll(Filter filter, PageFilter pageFilter, OrderBy order) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         String query = Stream.of(
                 filter.inKeys("name"),
@@ -38,7 +39,10 @@ public class MeasureDAO implements DAO<Measure> {
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(" AND "));
         String where = query.isEmpty()?"":"WHERE " + query;
-        String sql = String.format("SELECT * FROM measure %s %s", where, pageFilter.page());
+        String sql = String.format("SELECT * FROM measure %s %s %s",
+                where,
+                order.orderBy("name"),
+                pageFilter.page());
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet res = preparedStatement.executeQuery();
