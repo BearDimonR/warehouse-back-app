@@ -1,7 +1,8 @@
 package com.warehouse.DAO;
 
-import com.warehouse.Model.Permission;
-import com.warehouse.Model.auth.Credentials;
+import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.PageFilter;
+import com.warehouse.Model.Credentials;
 import com.warehouse.Model.User;
 
 import java.sql.Connection;
@@ -10,7 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class UserDAO implements DAO<User> {
 
@@ -22,15 +26,13 @@ public class UserDAO implements DAO<User> {
         return instance;
     }
 
-    Connection connection;
-
     private UserDAO() {
     }
 
     @Override
     public Optional<User> get(long id) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account WHERE id = ?");
             preparedStatement.setLong(1, id);
             ResultSet res = preparedStatement.executeQuery();
@@ -42,17 +44,23 @@ public class UserDAO implements DAO<User> {
                         res.getInt(4)));
             return Optional.empty();
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
-            connection = null;
+            DataBaseConnector.getConnector().releaseConnection(connection);
         }
     }
 
 
     @Override
-    public List<User> getAll() throws SQLException {
+    public List<User> getAll(Filter filter, PageFilter pageFilter) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
+        String query = Stream.of(
+                filter.inKeys("id"),
+                filter.like())
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(" AND "));
+        String where = query.isEmpty()?"":"WHERE " + query;
+        String sql = String.format("SELECT * FROM user_account %s %s", where, pageFilter.page());
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account");
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet res = preparedStatement.executeQuery();
             List<User> user = new ArrayList<>();
             while (res.next()) {
@@ -60,14 +68,13 @@ public class UserDAO implements DAO<User> {
             }
             return user;
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
-            connection = null;
+            DataBaseConnector.getConnector().releaseConnection(connection);
         }
     }
 
     public Optional<User> getByCredentials(Credentials credentials) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_account WHERE name = ? AND password = ?");
             preparedStatement.setString(1, credentials.getName());
             preparedStatement.setString(2, credentials.getPassword());
@@ -80,33 +87,31 @@ public class UserDAO implements DAO<User> {
                         res.getInt(4)));
             return Optional.empty();
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
-            connection = null;
+            DataBaseConnector.getConnector().releaseConnection(connection);
         }
     }
 
     @Override
-    public boolean save(User user) throws SQLException {
+    public long save(User user) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user_account (name , password, role_id) VALUES  (?,?,?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user_account (name , password, role_id) VALUES  (?,?,?) RETURNING id");
 
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setInt(3, user.getRoleId());
 
-            int res = preparedStatement.executeUpdate();
-            return res != 0;
-        } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
-            connection = null;
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);        } finally {
+            DataBaseConnector.getConnector().releaseConnection(connection);
         }
     }
 
     @Override
-    public boolean update(User user, String[] params) throws SQLException {
+    public boolean update(User user) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE user_account SET name=?,password=?,role_id=? WHERE id=?");
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
@@ -116,25 +121,21 @@ public class UserDAO implements DAO<User> {
             int res = preparedStatement.executeUpdate();
             return res != 0;
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
-            connection = null;
+            DataBaseConnector.getConnector().releaseConnection(connection);
         }
     }
 
     @Override
     public boolean delete(long id) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM user_account WHERE id=?");
             preparedStatement.setLong(1, id);
 
             int res = preparedStatement.executeUpdate();
-            DataBaseConnector.getInstance().releaseConnection(connection);
-            connection = null;
             return res != 0;
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
-            connection = null;
+            DataBaseConnector.getConnector().releaseConnection(connection);
         }
     }
 }

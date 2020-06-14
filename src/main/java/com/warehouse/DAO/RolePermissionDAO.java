@@ -1,14 +1,14 @@
 package com.warehouse.DAO;
 
-import com.warehouse.Model.Permission;
 import com.warehouse.Model.RolePermissionConnection;
-import com.warehouse.Model.RolePermissions;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RolePermissionDAO {
 
@@ -20,57 +20,51 @@ public class RolePermissionDAO {
         return instance;
     }
 
-    private Connection connection;
-
     private RolePermissionDAO() {}
 
-    public RolePermissions get(long id) throws SQLException {
+    public List<Long> get(long id) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement
-                    ("SELECT * FROM permission WHERE id IN " +
-                            "(SELECT permission_id FROM role_permission_connection WHERE role_id = ?)");
+                    ("SELECT permission_id FROM role_permission_connection WHERE role_id = ?");
             preparedStatement.setLong(1, id);
             ResultSet res = preparedStatement.executeQuery();
-            ArrayList<Permission> permissions = new ArrayList<>();
+            ArrayList<Long> permissions = new ArrayList<>();
             while (res.next()) {
-                permissions.add(new Permission(res.getLong(1),
-                        res.getString(2),
-                        res.getBoolean(3)));
+                permissions.add(res.getLong(1));
             }
-            return new RolePermissions(id, permissions);
+            return permissions;
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
-            connection = null;
+            DataBaseConnector.getConnector().releaseConnection(connection);
         }
     }
 
-    public boolean save(RolePermissionConnection rolePermissionConnection) throws SQLException {
+    public long create(RolePermissionConnection rolePermissionConnection) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement
-                            ("INSERT INTO role_permission_connection (role_id, permission_id) VALUES (?,?)");
+                            ("INSERT INTO role_permission_connection (role_id, permission_id) VALUES (?,?) RETURNING role_id");
             preparedStatement.setLong(1, rolePermissionConnection.getRoleId());
             preparedStatement.setLong(2, rolePermissionConnection.getPermissionId());
-            return preparedStatement.executeUpdate() != 0;
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
-            connection = null;
+            DataBaseConnector.getConnector().releaseConnection(connection);
         }
     }
 
     public boolean delete(RolePermissionConnection rolePermissionConnection) throws SQLException {
+        Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            connection = DataBaseConnector.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement
                     ("DELETE FROM role_permission_connection WHERE (role_id=? AND permission_id = ?) ");
             preparedStatement.setLong(1, rolePermissionConnection.getRoleId());
             preparedStatement.setLong(2, rolePermissionConnection.getPermissionId());
             return preparedStatement.executeUpdate() != 0;
         } finally {
-            DataBaseConnector.getInstance().releaseConnection(connection);
-            connection = null;
+            DataBaseConnector.getConnector().releaseConnection(connection);
         }
     }
 }
