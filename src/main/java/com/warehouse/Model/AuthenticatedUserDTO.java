@@ -17,5 +17,7 @@ public class AuthenticatedUserDTO {
     private String renovationToken;
     private String expiration;
     private String renovationTokenExpiration;
+    private long roleId;
+    private boolean roleIsSuper;
     private List<String> permissions;
 }
