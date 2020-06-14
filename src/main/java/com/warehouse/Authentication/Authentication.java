@@ -62,7 +62,8 @@ public class Authentication {
     public static Optional<AuthenticatedUserDTO> generateLoginResponse(User user) throws SQLException {
         Instant now = Instant.now();
         Optional<List<Permission>> permissions = PermissionDAO.getInstance().getUsersPermissions(user.getId());
-        if (permissions.isPresent()) {
+        Optional<Role> role = RoleDAO.getInstance().getUserRole(user.getId());
+        if (role.isPresent()&&permissions.isPresent()) {
             return Optional.of(new AuthenticatedUserDTO(
                     user.getId(),
                     user.getName(),
@@ -84,6 +85,8 @@ public class Authentication {
                     ,
                     new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date.from(now.plus(1, ChronoUnit.SECONDS)))
                     ,
+                    user.getRoleId(),
+                    role.get().isSuper(),
                     permissions.get().stream().map(a -> a.getName()).collect(Collectors.toList()))
             );
         }
