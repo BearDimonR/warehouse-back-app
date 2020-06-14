@@ -98,8 +98,8 @@ public class GroupDAO implements DAO<Group> {
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE group_products SET name=?, description=? WHERE id = ?");
             preparedStatement.setString(1, t.getName());
-            preparedStatement.setString(1, t.getDescription());
-            preparedStatement.setLong(1, t.getId());
+            preparedStatement.setString(2, t.getDescription());
+            preparedStatement.setLong(3, t.getId());
             return preparedStatement.executeUpdate() != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
