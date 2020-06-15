@@ -34,7 +34,7 @@ public class RoleDAO implements DAO<Role> {
     public Optional<Role> get(long id) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM role WHERE id  = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM role WHERE id  = ?");
             preparedStatement.setLong(1, id);
             ResultSet res = preparedStatement.executeQuery();
             if (res.next())
@@ -46,7 +46,7 @@ public class RoleDAO implements DAO<Role> {
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
         }
-	}
+    }
 
     public Optional<Role> getUserRole(long userId) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
@@ -74,7 +74,7 @@ public class RoleDAO implements DAO<Role> {
                 filter.like())
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(" AND "));
-        String where = query.isEmpty()?"":"WHERE " + query;
+        String where = query.isEmpty() ? "" : "WHERE " + query;
         String sql = String.format("SELECT * FROM role %s %s %s",
                 where,
                 order.orderBy("id"),

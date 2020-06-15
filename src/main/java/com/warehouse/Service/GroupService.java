@@ -27,18 +27,19 @@ public class GroupService extends BasicService<Group> {
     @Override
     public Optional<Group> get(long id) throws SQLException {
         Optional<Group> group = dao.get(id);
-        if(group.isPresent()) {
+        if (group.isPresent()) {
             Group g = group.get();
             g.setTotalAmount(getGroupTotalAmount(id).orElse(0f));
             g.setTotalCost(getGroupTotalAmount(id).orElse(0f));
         }
-        return group;    }
+        return group;
+    }
 
     @Override
     public List<Group> getAll(Filter filter, PageFilter pageFilter, OrderBy order) throws SQLException {
-        List<Group> groups =  dao.getAll(filter, pageFilter, order);
+        List<Group> groups = dao.getAll(filter, pageFilter, order);
         Long id;
-        for (Group group: groups) {
+        for (Group group : groups) {
             id = group.getId();
             group.setTotalCost(getGroupTotalCost(id).orElse(0f));
             group.setTotalAmount(getGroupTotalAmount(id).orElse(0f));

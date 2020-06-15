@@ -15,8 +15,8 @@ public class PageFilter {
     Integer size = null;
 
     public String page() {
-        if(page != null && size != null)
-            return String.format("LIMIT %d OFFSET %d", size, (page-1) * size);
+        if (page != null && size != null)
+            return String.format("LIMIT %d OFFSET %d", size, (page - 1) * size);
         return "";
     }
 }

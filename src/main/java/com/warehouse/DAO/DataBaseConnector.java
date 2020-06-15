@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DataBaseConnector {
-    private final static  String URL = DBProperties.getProperty("db_url");
+    private final static String URL = DBProperties.getProperty("db_url");
     private final static String USERNAME = DBProperties.getProperty("username");
     private final static String PASSWORD = DBProperties.getProperty("password");
 
@@ -21,15 +21,15 @@ public class DataBaseConnector {
     }
 
     public static void createConnector() throws SQLException, ClassNotFoundException {
-        if(connector == null)
+        if (connector == null)
             connector = new DataBaseConnector();
     }
 
     private ConnectionPool pool;
 
     private DataBaseConnector() throws ClassNotFoundException, SQLException {
-            Class.forName("org.postgresql.Driver");
-            pool = ConnectionPool.create(URL, USERNAME, PASSWORD);
+        Class.forName("org.postgresql.Driver");
+        pool = ConnectionPool.create(URL, USERNAME, PASSWORD);
     }
 
     public Connection getConnection() {

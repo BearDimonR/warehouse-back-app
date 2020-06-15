@@ -1,6 +1,5 @@
 package com.warehouse.Controller;
 
-import com.warehouse.DAO.PermissionDAO;
 import com.warehouse.Model.Permission;
 import com.warehouse.Service.PermissionService;
 import org.apache.logging.log4j.LogManager;

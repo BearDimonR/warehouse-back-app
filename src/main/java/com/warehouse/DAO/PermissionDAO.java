@@ -5,8 +5,14 @@ import com.warehouse.Filter.OrderBy;
 import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Permission;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -69,7 +75,7 @@ public class PermissionDAO implements DAO<Permission> {
                 filter.like())
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(" AND "));
-        String where = query.isEmpty()?"":"WHERE " + query;
+        String where = query.isEmpty() ? "" : "WHERE " + query;
         String sql = String.format("SELECT * FROM permission %s %s %s",
                 where,
                 order.orderBy("id"),
@@ -88,7 +94,7 @@ public class PermissionDAO implements DAO<Permission> {
     }
 
     @Override
-    public long save(Permission permission) throws SQLException {
+    public synchronized long save(Permission permission) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO permission (name , is_super) VALUES  (?,?) RETURNING id");
@@ -104,7 +110,7 @@ public class PermissionDAO implements DAO<Permission> {
     }
 
     @Override
-    public boolean update(Permission permission) throws SQLException {
+    public synchronized boolean update(Permission permission) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE permission SET name=?,is_super=? WHERE id=?");
@@ -120,7 +126,7 @@ public class PermissionDAO implements DAO<Permission> {
     }
 
     @Override
-    public boolean delete(long id) throws SQLException {
+    public synchronized boolean delete(long id) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM permission WHERE id=?");

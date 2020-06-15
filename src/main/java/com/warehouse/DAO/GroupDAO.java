@@ -56,7 +56,7 @@ public class GroupDAO implements DAO<Group> {
                 filter.like())
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(" AND "));
-        String where = query.isEmpty()?"":"WHERE " + query;
+        String where = query.isEmpty() ? "" : "WHERE " + query;
         String sql = String.format("SELECT * FROM group_products %s %s %s",
                 where,
                 order.orderBy("id"),
@@ -80,7 +80,7 @@ public class GroupDAO implements DAO<Group> {
     }
 
     @Override
-    public long save(Group group) throws SQLException {
+    public synchronized long save(Group group) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement =
@@ -97,7 +97,7 @@ public class GroupDAO implements DAO<Group> {
     }
 
     @Override
-    public boolean update(Group t) throws SQLException {
+    public synchronized boolean update(Group t) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement =
@@ -112,7 +112,7 @@ public class GroupDAO implements DAO<Group> {
     }
 
     @Override
-    public boolean delete(long id) throws SQLException {
+    public synchronized boolean delete(long id) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM group_products WHERE id = ?");

@@ -1,6 +1,5 @@
 package com.warehouse.Controller;
 
-import com.warehouse.DAO.GroupDAO;
 import com.warehouse.Model.Group;
 import com.warehouse.Service.GroupService;
 import org.apache.logging.log4j.LogManager;

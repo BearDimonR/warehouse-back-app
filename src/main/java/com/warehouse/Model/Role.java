@@ -13,6 +13,6 @@ public class Role {
     private String name;
     @NonNull
     private boolean isSuper;
-    
+
     private Integer userNumber = null;
 }

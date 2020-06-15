@@ -1,7 +1,10 @@
 package com.warehouse.Filter;
 
 import com.warehouse.Model.Pair;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,19 +25,19 @@ public class Filter {
 
 
     public String inKeys(String defaultField) {
-        if(!(ids == null || ids.isEmpty()))
+        if (!(ids == null || ids.isEmpty()))
             return defaultField + " IN (" + ids.stream().map(String::valueOf).collect(Collectors.joining(", ")) + ")";
-        else if(!(params == null || params.isEmpty())) {
-             return params.stream()
-                     .map(x -> x.key += " IN (" + String.join(", ",  x.val) + ")")
-                     .collect(Collectors.joining(" AND "));
+        else if (!(params == null || params.isEmpty())) {
+            return params.stream()
+                    .map(x -> x.key += " IN (" + String.join(", ", x.val) + ")")
+                    .collect(Collectors.joining(" AND "));
         } else
             return null;
     }
 
 
     public String like() {
-        if(like == null || like.isEmpty())
+        if (like == null || like.isEmpty())
             return null;
         return like.stream()
                 .map(x -> x.key += " LIKE '%" + x.val + "%'").collect(Collectors.joining(" AND "));
