@@ -25,7 +25,7 @@ public class ConnectionPool {
         return new ConnectionPool(url, user, password, pool);
     }
 
-    private ConnectionPool(String url, String user, String password, List<Connection> pool){
+    private ConnectionPool(String url, String user, String password, List<Connection> pool) {
         this.url = url;
         this.user = user;
         this.password = password;
@@ -42,7 +42,7 @@ public class ConnectionPool {
 
     public synchronized void releaseConnection(Connection connection) throws SQLException {
         connectionPool.add(connection);
-        if(!usedConnections.remove(connection))
+        if (!usedConnections.remove(connection))
             throw new SQLException();
     }
 

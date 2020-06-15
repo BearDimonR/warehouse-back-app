@@ -8,7 +8,7 @@ import lombok.*;
 @RequiredArgsConstructor(staticName = "of")
 @AllArgsConstructor
 @Builder
-public class Group  {
+public class Group {
     private Long id;
     @NonNull
     private String name;

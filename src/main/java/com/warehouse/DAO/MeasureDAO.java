@@ -38,7 +38,7 @@ public class MeasureDAO implements DAO<Measure> {
                 filter.like())
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(" AND "));
-        String where = query.isEmpty()?"":"WHERE " + query;
+        String where = query.isEmpty() ? "" : "WHERE " + query;
         String sql = String.format("SELECT * FROM measure %s %s %s",
                 where,
                 order.orderBy("name"),

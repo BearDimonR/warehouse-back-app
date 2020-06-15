@@ -1,6 +1,9 @@
 package com.warehouse.Model;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @Builder

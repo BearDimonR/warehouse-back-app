@@ -10,9 +10,14 @@ import java.util.Optional;
 
 public interface Service<T> {
     Optional<T> get(long id) throws SQLException;
+
     List<T> getAll(Filter filter, PageFilter pageFilter, OrderBy order) throws SQLException;
+
     long count(Filter filter) throws SQLException;
+
     long create(T t) throws SQLException;
+
     boolean update(T t) throws SQLException;
+
     boolean delete(long id) throws SQLException;
 }

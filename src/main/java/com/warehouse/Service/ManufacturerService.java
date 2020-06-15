@@ -27,7 +27,7 @@ public class ManufacturerService extends BasicService<Manufacturer> {
     @Override
     public Optional<Manufacturer> get(long id) throws SQLException {
         Optional<Manufacturer> manufacturer = dao.get(id);
-        if(manufacturer.isPresent()) {
+        if (manufacturer.isPresent()) {
             Manufacturer g = manufacturer.get();
             g.setAmount(getManufacturerAmount(g.getId()).orElse(0f));
         }
@@ -36,8 +36,8 @@ public class ManufacturerService extends BasicService<Manufacturer> {
 
     @Override
     public List<Manufacturer> getAll(Filter filter, PageFilter pageFilter, OrderBy order) throws SQLException {
-        List<Manufacturer> manufacturers =  dao.getAll(filter, pageFilter, order);
-        for (Manufacturer manufacturer: manufacturers) {
+        List<Manufacturer> manufacturers = dao.getAll(filter, pageFilter, order);
+        for (Manufacturer manufacturer : manufacturers) {
             manufacturer.setAmount(getManufacturerAmount(manufacturer.getId()).orElse(0f));
         }
         return manufacturers;

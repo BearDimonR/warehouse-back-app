@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidParameterException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
@@ -149,10 +148,10 @@ public abstract class AbstractController<T> implements HttpHandler, CORSEnabled 
                 order = JsonProceed.getGson().fromJson(params.get("order"), OrderBy.class);
             }
             if (filter.isCount()) {
-                    return service.count(filter);
+                return service.count(filter);
             }
             return service.getAll(filter, pageFilter, order);
-        } else if(params.containsKey("id")) {
+        } else if (params.containsKey("id")) {
             Optional<T> optional = service.get(Long.parseLong(params.get("id")));
             if (optional.isEmpty())
                 throw new InvalidParameterException();

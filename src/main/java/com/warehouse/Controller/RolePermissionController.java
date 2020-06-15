@@ -34,16 +34,16 @@ public class RolePermissionController extends AbstractController<RolePermissionC
         Map<String, String> map = QueryParser.parse(exchange.getRequestURI().getQuery());
         PageFilter pageFilter = new PageFilter();
         OrderBy order = new OrderBy();
-        if(map.containsKey("page") && !map.get("page").equals("undefined")) {
+        if (map.containsKey("page") && !map.get("page").equals("undefined")) {
             pageFilter = JsonProceed.getGson().fromJson(map.get("page"), PageFilter.class);
         }
-        if(map.containsKey("filter") && !map.get("filter").equals("undefined")) {
+        if (map.containsKey("filter") && !map.get("filter").equals("undefined")) {
             Filter filter = JsonProceed.getGson().fromJson(map.get("filter"), Filter.class);
-            if(filter.isCount())
+            if (filter.isCount())
                 return RolePermissionService.getInstance().count(
                         Long.parseLong(QueryParser.parse(exchange.getRequestURI().getQuery()).get("id")));
         }
-        if(map.containsKey("order") && !map.get("order").equals("undefined")) {
+        if (map.containsKey("order") && !map.get("order").equals("undefined")) {
             order = JsonProceed.getGson().fromJson(map.get("order"), OrderBy.class);
         }
         return RolePermissionService.getInstance().getAllRolePermissions(

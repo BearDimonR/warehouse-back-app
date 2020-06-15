@@ -19,57 +19,57 @@
     </Appenders>
 
     <Loggers>
-        <Logger name= "com.warehouse.Controller.RoleController" level="info" additivity="false">
+        <Logger name="com.warehouse.Controller.RoleController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Controller.RolePermissionController" level="info" additivity="false">
+        <Logger name="com.warehouse.Controller.RolePermissionController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Controller.GroupController" level="info" additivity="false">
+        <Logger name="com.warehouse.Controller.GroupController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Controller.UserController" level="info" additivity="false">
+        <Logger name="com.warehouse.Controller.UserController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Controller.ManufacturerController" level="info" additivity="false">
+        <Logger name="com.warehouse.Controller.ManufacturerController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Controller.PermissionController" level="info" additivity="false">
+        <Logger name="com.warehouse.Controller.PermissionController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Controller.ProductController" level="info" additivity="false">
+        <Logger name="com.warehouse.Controller.ProductController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Controller.LoginController" level="info" additivity="false">
+        <Logger name="com.warehouse.Controller.LoginController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.DAO.DataBaseConnector" level="info" additivity="false">
+        <Logger name="com.warehouse.DAO.DataBaseConnector" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Authentication.Authentication" level="info" additivity="false">
+        <Logger name="com.warehouse.Authentication.Authentication" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>
 
-        <Logger name= "com.warehouse.Controller.MeasureController" level="info" additivity="false">
+        <Logger name="com.warehouse.Controller.MeasureController" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Files"/>
         </Logger>

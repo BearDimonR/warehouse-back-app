@@ -18,12 +18,12 @@ public class OrderBy {
     boolean isAscending = true;
 
     public String orderBy(String def) {
-        if(fields == null || fields.isEmpty())
+        if (fields == null || fields.isEmpty())
             return String.format("ORDER BY %s %s", def, order());
         return String.format("ORDER BY %s %s", String.join(", ", fields), order());
     }
 
     private String order() {
-        return isAscending?"ASC":"DESC";
+        return isAscending ? "ASC" : "DESC";
     }
 }

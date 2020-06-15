@@ -2,7 +2,6 @@ package com.warehouse.Controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.warehouse.Authentication.Authentication;
-import com.warehouse.Exception.AuthRequiredException;
 import com.warehouse.Exception.AuthWrongException;
 import com.warehouse.Exception.NotImplementedException;
 import com.warehouse.Http.Response;
@@ -67,8 +66,8 @@ public class LoginController extends AbstractController<Credentials> {
         }
     }
 
-    private Object receiveToken(HttpExchange exchange) throws IOException, SQLException, AuthWrongException {
-        Map<String,String> m = QueryParser.parse(exchange.getRequestURI().getQuery());
+    private synchronized Object receiveToken(HttpExchange exchange)
+            throws IOException, SQLException, AuthWrongException {
         if (QueryParser.parse(exchange.getRequestURI().getQuery()).get("renovation").equals("true"))
             return renovate(exchange);
         else

@@ -3,10 +3,10 @@ package com.warehouse.Authentication;
 import com.sun.net.httpserver.HttpExchange;
 import com.warehouse.DAO.PermissionDAO;
 import com.warehouse.DAO.RoleDAO;
-import com.warehouse.Exception.AuthWrongException;
-import com.warehouse.Model.*;
 import com.warehouse.Exception.AuthRequiredException;
+import com.warehouse.Exception.AuthWrongException;
 import com.warehouse.Exception.NoPermissionException;
+import com.warehouse.Model.*;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -63,7 +63,7 @@ public class Authentication {
         Instant now = Instant.now();
         Optional<List<Permission>> permissions = PermissionDAO.getInstance().getUsersPermissions(user.getId());
         Optional<Role> role = RoleDAO.getInstance().getUserRole(user.getId());
-        if (role.isPresent()&&permissions.isPresent()) {
+        if (role.isPresent() && permissions.isPresent()) {
             return Optional.of(new AuthenticatedUserDTO(
                     user.getId(),
                     user.getName(),
@@ -129,7 +129,7 @@ public class Authentication {
     }
 
     private static Map<String, Object> parseToken(String token, byte[] secret) {
-        try{
+        try {
             Map<String, Object> tokenParams = new HashMap<>();
             Jws<Claims> result = Jwts
                     .parser()
@@ -138,9 +138,9 @@ public class Authentication {
             tokenParams.put("id", result.getBody().get("id", Long.class));
             tokenParams.put("name", result.getBody().get("sub", String.class));
             return tokenParams;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-      return new HashMap<String, Object>();
+        return new HashMap<String, Object>();
     }
 }

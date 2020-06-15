@@ -1,6 +1,5 @@
 package com.warehouse.Controller;
 
-import com.warehouse.DAO.RoleDAO;
 import com.warehouse.Model.Role;
 import com.warehouse.Service.RoleService;
 import org.apache.logging.log4j.LogManager;
