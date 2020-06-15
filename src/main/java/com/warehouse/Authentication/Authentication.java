@@ -87,7 +87,9 @@ public class Authentication {
                     ,
                     user.getRoleId(),
                     role.get().isSuper(),
-                    permissions.get().stream().map(a -> a.getName()).collect(Collectors.toList()))
+                    permissions.get().stream().map(a -> a.getName()).filter(a->!a.endsWith("read")).collect(Collectors.toList()),
+                    permissions.get().stream().map(a -> a.getName()).filter(a->a.endsWith("read")).collect(Collectors.toList())
+                    )
             );
         }
         return Optional.empty();
