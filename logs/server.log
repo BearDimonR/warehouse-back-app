@@ -1,0 +1,344 @@
+[INFO ] - [main] - (2020-06-16 00:10:49,749)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 00:10:49,771)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 00:10:51,120)  - Database connected...
+ 				 at .<init>(Server.java:54)
+[INFO ] - [main] - (2020-06-16 00:10:51,671)  - Server start-up successful: /0:0:0:0:0:0:0:0:8089
+ 				 at .<init>(Server.java:79)
+[INFO ] - [main] - (2020-06-16 00:15:30,926)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 00:15:30,938)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 00:15:32,037)  - Database connected...
+ 				 at .<init>(Server.java:54)
+[INFO ] - [main] - (2020-06-16 00:15:32,514)  - Server start-up successful: /0:0:0:0:0:0:0:0:8089
+ 				 at .<init>(Server.java:79)
+[INFO ] - [main] - (2020-06-16 00:49:00,315)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 00:49:00,322)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 00:49:01,221)  - Database connected...
+ 				 at .<init>(Server.java:54)
+[INFO ] - [main] - (2020-06-16 00:49:01,713)  - Server start-up successful: /0:0:0:0:0:0:0:0:8089
+ 				 at .<init>(Server.java:79)
+[INFO ] - [main] - (2020-06-16 00:57:36,213)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 00:57:36,220)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 00:57:57,596)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 00:57:57,602)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 00:57:58,610)  - Database connected...
+ 				 at .<init>(Server.java:54)
+[INFO ] - [main] - (2020-06-16 00:57:59,069)  - Server start-up successful: /0:0:0:0:0:0:0:0:8089
+ 				 at .<init>(Server.java:79)
+[INFO ] - [main] - (2020-06-16 11:48:50,639)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 11:48:50,652)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[FATAL] - [main] - (2020-06-16 11:48:50,745)  - Problem with connection pool creation.
+ 				 at .<init>(Server.java:47)
+[FATAL] - [main] - (2020-06-16 11:48:50,745)  - Critical server exception: Ошибка при попытке подсоединения.
+ 				 at .<init>(Server.java:84)
+[INFO ] - [main] - (2020-06-16 11:51:11,480)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 11:51:11,486)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[FATAL] - [main] - (2020-06-16 11:51:11,564)  - Problem with connection pool creation.
+ 				 at .<init>(Server.java:47)
+[FATAL] - [main] - (2020-06-16 11:51:11,565)  - Critical server exception: Ошибка при попытке подсоединения.
+ 				 at .<init>(Server.java:84)
+[INFO ] - [main] - (2020-06-16 11:52:41,016)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 11:52:41,021)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[FATAL] - [main] - (2020-06-16 11:52:41,038)  - Problem with connection pool creation.
+ 				 at .<init>(Server.java:47)
+[FATAL] - [main] - (2020-06-16 11:52:41,038)  - Critical server exception: No suitable driver found for postgres://mdgcxgiglgpset:99a5ef1f536163577cfaa26db25d2015b4561065dacdee13b04d2df0b9df55e6@ec2-18-214-211-47.compute-1.amazonaws.com:5432/db5rfanllukevr?sslmode=require
+ 				 at .<init>(Server.java:84)
+[INFO ] - [main] - (2020-06-16 11:57:16,423)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 11:57:16,428)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[FATAL] - [main] - (2020-06-16 11:57:16,480)  - Problem with connection pool creation.
+ 				 at .<init>(Server.java:47)
+[FATAL] - [main] - (2020-06-16 11:57:16,481)  - Critical server exception: Ошибка при попытке подсоединения.
+ 				 at .<init>(Server.java:84)
+[INFO ] - [main] - (2020-06-16 11:58:53,185)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 11:58:53,190)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[FATAL] - [main] - (2020-06-16 11:58:53,241)  - Problem with connection pool creation.
+ 				 at .<init>(Server.java:47)
+[FATAL] - [main] - (2020-06-16 11:58:53,242)  - Critical server exception: Ошибка при попытке подсоединения.
+ 				 at .<init>(Server.java:84)
+[INFO ] - [main] - (2020-06-16 12:00:53,213)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 12:00:53,219)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[FATAL] - [main] - (2020-06-16 12:00:53,243)  - Critical server exception: null
+ 				 at .<init>(Server.java:84)
+[INFO ] - [main] - (2020-06-16 12:01:11,285)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 12:01:11,290)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[FATAL] - [main] - (2020-06-16 12:01:11,309)  - Critical server exception: null
+ 				 at .<init>(Server.java:84)
+[INFO ] - [main] - (2020-06-16 12:01:32,541)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 12:01:32,546)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[FATAL] - [main] - (2020-06-16 12:01:32,565)  - Critical server exception: null
+ 				 at .<init>(Server.java:84)
+[INFO ] - [main] - (2020-06-16 12:03:02,989)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 12:03:02,994)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[FATAL] - [main] - (2020-06-16 12:03:03,013)  - Critical server exception: null
+ 				 at .<init>(Server.java:84)
+[INFO ] - [main] - (2020-06-16 12:04:03,288)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 12:04:03,292)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[FATAL] - [main] - (2020-06-16 12:04:03,315)  - Critical server exception: null
+ 				 at .<init>(Server.java:84)
+[INFO ] - [main] - (2020-06-16 12:04:17,433)  - Starting-up server...
+ 				 at .<init>(Server.java:32)
+[INFO ] - [main] - (2020-06-16 12:04:17,439)  - Thread pool initialized...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 12:04:30,944)  - Database connected...
+ 				 at .<init>(Server.java:54)
+[INFO ] - [main] - (2020-06-16 12:04:31,307)  - Server start-up successful: /0:0:0:0:0:0:0:0:8089
+ 				 at .<init>(Server.java:79)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:04:47,278) com.warehouse.Controller.LoginController - Login request: OPTIONS
+ 				 at com.warehouse.Controller.LoginController.handle(LoginController.java:32)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:04:47,351) com.warehouse.Controller.LoginController - Login request: POST
+ 				 at com.warehouse.Controller.LoginController.handle(LoginController.java:32)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:04:47,354) com.warehouse.Controller.LoginController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.LoginController.handle(LoginController.java:64)
+[ERROR] - [pool-2-thread-2] - (2020-06-16 12:04:47,555) com.warehouse.Controller.LoginController - ResponseMessage(message=Server SQLException)
+	ERROR: relation "user_account" does not exist
+  Позиция: 15
+ 				 at com.warehouse.Controller.LoginController.handle(LoginController.java:58)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:04:47,559) com.warehouse.Controller.LoginController - Finish request: POST with 500
+ 				 at com.warehouse.Controller.LoginController.handle(LoginController.java:64)
+[INFO ] - [main] - (2020-06-16 12:09:52,199)  - Starting-up server...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 12:09:52,204)  - Thread pool initialized...
+ 				 at .<init>(Server.java:50)
+[INFO ] - [main] - (2020-06-16 12:10:05,934)  - Database connected...
+ 				 at .<init>(Server.java:63)
+[INFO ] - [main] - (2020-06-16 12:10:05,979)  - Server start-up successful: /0:0:0:0:0:0:0:0:8089
+ 				 at .<init>(Server.java:88)
+[INFO ] - [main] - (2020-06-16 12:12:47,979)  - Starting-up server...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 12:12:47,984)  - Thread pool initialized...
+ 				 at .<init>(Server.java:50)
+[INFO ] - [main] - (2020-06-16 12:13:43,890)  - Starting-up server...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 12:13:43,895)  - Thread pool initialized...
+ 				 at .<init>(Server.java:50)
+[INFO ] - [main] - (2020-06-16 12:38:49,683)  - Starting-up server...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 12:38:49,689)  - Thread pool initialized...
+ 				 at .<init>(Server.java:50)
+[FATAL] - [main] - (2020-06-16 12:38:49,705)  - Problem with connection pool creation.
+ 				 at .<init>(Server.java:56)
+[FATAL] - [main] - (2020-06-16 12:38:49,706)  - Critical server exception: No suitable driver found for ec2-52-87-135-240.compute-1.amazonaws.com
+ 				 at .<init>(Server.java:93)
+[INFO ] - [main] - (2020-06-16 12:39:20,323)  - Starting-up server...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 12:39:20,328)  - Thread pool initialized...
+ 				 at .<init>(Server.java:50)
+[FATAL] - [main] - (2020-06-16 12:39:20,342)  - Problem with connection pool creation.
+ 				 at .<init>(Server.java:56)
+[FATAL] - [main] - (2020-06-16 12:39:20,343)  - Critical server exception: No suitable driver found for ookrnrxztwprsc:3dc853671fffd9671aeaefc5021fa4bcbafbf2aa8ea2c646621f7ebda24f4f12@ec2-52-87-135-240.compute-1.amazonaws.com:5432
+ 				 at .<init>(Server.java:93)
+[INFO ] - [main] - (2020-06-16 12:40:26,741)  - Starting-up server...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 12:40:26,746)  - Thread pool initialized...
+ 				 at .<init>(Server.java:50)
+[FATAL] - [main] - (2020-06-16 12:40:26,761)  - Problem with connection pool creation.
+ 				 at .<init>(Server.java:56)
+[FATAL] - [main] - (2020-06-16 12:40:26,762)  - Critical server exception: No suitable driver found for ec2-52-87-135-240.compute-1.amazonaws.com/d8c8rr2sgose9e
+ 				 at .<init>(Server.java:93)
+[INFO ] - [main] - (2020-06-16 12:41:47,366)  - Starting-up server...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 12:41:47,371)  - Thread pool initialized...
+ 				 at .<init>(Server.java:50)
+[FATAL] - [main] - (2020-06-16 12:41:47,387)  - Problem with connection pool creation.
+ 				 at .<init>(Server.java:56)
+[FATAL] - [main] - (2020-06-16 12:41:47,388)  - Critical server exception: No suitable driver found for ec2-52-87-135-240.compute-1.amazonaws.com:5432/d8c8rr2sgose9e
+ 				 at .<init>(Server.java:93)
+[INFO ] - [main] - (2020-06-16 12:44:14,493)  - Starting-up server...
+ 				 at .<init>(Server.java:41)
+[INFO ] - [main] - (2020-06-16 12:44:14,499)  - Thread pool initialized...
+ 				 at .<init>(Server.java:50)
+[INFO ] - [main] - (2020-06-16 12:44:28,168)  - Database connected...
+ 				 at .<init>(Server.java:63)
+[INFO ] - [main] - (2020-06-16 12:44:28,215)  - Server start-up successful: /0:0:0:0:0:0:0:0:8089
+ 				 at .<init>(Server.java:88)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:44:50,340) com.warehouse.Controller.LoginController - Login request: OPTIONS
+ 				 at com.warehouse.Controller.LoginController.handle(LoginController.java:32)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:44:50,398) com.warehouse.Controller.LoginController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.LoginController.handle(LoginController.java:64)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:44:50,401) com.warehouse.Controller.LoginController - Login request: POST
+ 				 at com.warehouse.Controller.LoginController.handle(LoginController.java:32)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:44:51,180) com.warehouse.Controller.LoginController - Successful logged in: tester role: 7
+ 				 at com.warehouse.Controller.LoginController.login(LoginController.java:86)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:44:51,183) com.warehouse.Controller.LoginController - Finish request: POST with 200
+ 				 at com.warehouse.Controller.LoginController.handle(LoginController.java:64)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:44:51,342) com.warehouse.Controller.GroupController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:44:51,348) com.warehouse.Controller.GroupController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:44:51,355) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:44:55,059) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:44:55,074) com.warehouse.Controller.ManufacturerController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.ManufacturerController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:44:55,075) com.warehouse.Controller.ManufacturerController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.ManufacturerController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:44:55,081) com.warehouse.Controller.ManufacturerController - Got request: GET
+ 				 at com.warehouse.Controller.ManufacturerController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:45:11,300) com.warehouse.Controller.ManufacturerController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.ManufacturerController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:45:11,315) com.warehouse.Controller.ProductController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.ProductController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:45:11,317) com.warehouse.Controller.ProductController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.ProductController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:45:11,327) com.warehouse.Controller.ProductController - Got request: GET
+ 				 at com.warehouse.Controller.ProductController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:45:11,979) com.warehouse.Controller.ProductController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.ProductController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:45:11,993) com.warehouse.Controller.ProductController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.ProductController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:45:11,993) com.warehouse.Controller.ProductController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.ProductController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:45:12,009) com.warehouse.Controller.ProductController - Got request: GET
+ 				 at com.warehouse.Controller.ProductController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:45:12,332) com.warehouse.Controller.ProductController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.ProductController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:45:12,371) com.warehouse.Controller.GroupController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:45:12,372) com.warehouse.Controller.GroupController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:45:12,378) com.warehouse.Controller.GroupController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:45:12,379) com.warehouse.Controller.GroupController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:45:12,380) com.warehouse.Controller.GroupController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:45:12,382) com.warehouse.Controller.GroupController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:45:12,387) com.warehouse.Controller.GroupController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:45:12,389) com.warehouse.Controller.GroupController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:45:12,393) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:45:12,397) com.warehouse.Controller.GroupController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:45:12,401) com.warehouse.Controller.GroupController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:45:12,402) com.warehouse.Controller.GroupController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:45:12,404) com.warehouse.Controller.GroupController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:45:12,406) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:45:12,420) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:45:12,432) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:45:13,090) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:45:13,091) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:45:13,104) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:45:13,105) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:45:13,109) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:45:13,119) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:45:13,726) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:45:13,740) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:46:11,979) com.warehouse.Controller.GroupController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:46:11,981) com.warehouse.Controller.GroupController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:46:11,986) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:46:12,319) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:46:12,334) com.warehouse.Controller.GroupController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:46:12,335) com.warehouse.Controller.GroupController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:46:12,341) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:46:14,623) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:46:15,917) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:46:16,271) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:46:16,284) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:46:18,531) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:46:36,115) com.warehouse.Controller.GroupController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:46:36,116) com.warehouse.Controller.GroupController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:46:36,123) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:46:37,737) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:46:39,501) com.warehouse.Controller.GroupController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:46:39,502) com.warehouse.Controller.GroupController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:46:39,508) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:46:41,799) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:47:51,556) com.warehouse.Controller.GroupController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-1] - (2020-06-16 12:47:51,557) com.warehouse.Controller.GroupController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:47:51,562) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-4] - (2020-06-16 12:47:53,158) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:47:54,239) com.warehouse.Controller.GroupController - Got request: OPTIONS
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-3] - (2020-06-16 12:47:54,240) com.warehouse.Controller.GroupController - Finish request: OPTIONS with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:47:54,246) com.warehouse.Controller.GroupController - Got request: GET
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:50)
+[INFO ] - [pool-2-thread-2] - (2020-06-16 12:47:56,554) com.warehouse.Controller.GroupController - Finish request: GET with 200
+ 				 at com.warehouse.Controller.GroupController.handle(AbstractController.java:116)
+[INFO ] - [main] - (2020-06-16 13:00:21,649)  - Starting-up server...
+ 				 at .<init>(Server.java:39)
+[INFO ] - [main] - (2020-06-16 13:00:21,665)  - Thread pool initialized...
+ 				 at .<init>(Server.java:48)
+[INFO ] - [main] - (2020-06-16 13:00:35,596)  - Database connected...
+ 				 at .<init>(Server.java:61)
+[INFO ] - [main] - (2020-06-16 13:00:36,021)  - Server start-up successful: /0:0:0:0:0:0:0:0:8089
+ 				 at .<init>(Server.java:86)
+[INFO ] - [main] - (2020-06-16 13:37:48,433)  - Starting-up server...
+ 				 at .<init>(Server.java:39)
+[INFO ] - [main] - (2020-06-16 13:37:48,449)  - Thread pool initialized...
+ 				 at .<init>(Server.java:48)
+[INFO ] - [main] - (2020-06-16 13:43:09,189)  - Starting-up server...
+ 				 at .<init>(Server.java:39)
+[INFO ] - [main] - (2020-06-16 13:43:09,208)  - Thread pool initialized...
+ 				 at .<init>(Server.java:48)
