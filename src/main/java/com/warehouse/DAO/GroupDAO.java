@@ -61,7 +61,6 @@ public class GroupDAO implements DAO<Group> {
                 where,
                 order.orderBy("id"),
                 pageFilter.page());
-        System.err.println(sql);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet res = preparedStatement.executeQuery();

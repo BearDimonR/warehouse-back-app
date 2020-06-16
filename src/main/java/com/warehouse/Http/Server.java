@@ -24,6 +24,13 @@ public class Server {
 
     public static void main(String[] args) {
         new Server();
+        try {
+            while (System.in.available() == 0) Thread.yield();
+            System.exit(200);
+        } catch (IOException e) {
+            root.fatal("Input fatal error.\n\t" + e.getMessage());
+            System.exit(-1);
+        }
     }
 
     private Server() {

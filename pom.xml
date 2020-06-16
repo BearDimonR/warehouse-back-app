@@ -87,6 +87,28 @@
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>appassembler-maven-plugin</artifactId>
+          <version>1.1.1</version>
+          <configuration>
+            <assembleDirectory>target</assembleDirectory>
+            <programs>
+              <program>
+                <mainClass>com.warehouse.Http.Server</mainClass>
+                <name>server</name>
+              </program>
+            </programs>
+          </configuration>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>assemble</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.1.0</version>
           <executions>
@@ -144,6 +166,18 @@
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>com.heroku.sdk</groupId>
+          <artifactId>heroku-maven-plugin</artifactId>
+          <version>3.0.2</version>
+          <configuration>
+            <appName>warehouse-project</appName>
+            <jdkVersion>11</jdkVersion>
+            <processTypes>
+              <web>java $JAVA_OPTS -cp target/classes:target/dependency/* com.warehouse.Http.Server</web>
+            </processTypes>
+          </configuration>
         </plugin>
         <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
         <plugin>
