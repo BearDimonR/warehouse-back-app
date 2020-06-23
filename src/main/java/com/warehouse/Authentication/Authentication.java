@@ -75,19 +75,19 @@ public class Authentication {
                                     .setSubject(user.getName())
                                     .claim("id", user.getId())
                                     .setIssuedAt(Date.from(now))
-                                    .setExpiration(Date.from(now.plus(60, ChronoUnit.MINUTES)))
+                                    .setExpiration(Date.from(now.plus(1, ChronoUnit.MINUTES)))
                                     .signWith(Keys.hmacShaKeyFor(SECRET))
                                     .compact(),
                             RENOVATION_STORAGE_TOKEN_PREFIX + Jwts.builder()
                                     .setSubject(user.getName())
                                     .claim("id", user.getId())
                                     .setIssuedAt(Date.from(now))
-                                    .setExpiration(Date.from(now.plus(1, ChronoUnit.SECONDS)))
+                                    .setExpiration(Date.from(now.plus(300, ChronoUnit.MINUTES)))
                                     .signWith(Keys.hmacShaKeyFor(RENOVATION_SECRET))
                                     .compact(),
-                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date.from(now.plus(60, ChronoUnit.MINUTES)))
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date.from(now.plus(1, ChronoUnit.MINUTES)))
                             ,
-                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date.from(now.plus(1, ChronoUnit.SECONDS)))
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date.from(now.plus(300, ChronoUnit.MINUTES)))
                             ,
                             user.getRoleId(),
                             role.get().isSuper(),
@@ -137,6 +137,7 @@ public class Authentication {
             Map<String, Object> tokenParams = new HashMap<>();
             Jws<Claims> result = Jwts
                     .parser()
+                    .setAllowedClockSkewSeconds(120)
                     .setSigningKey(secret)
                     .parseClaimsJws(token);
             tokenParams.put("id", result.getBody().get("id", Long.class));
