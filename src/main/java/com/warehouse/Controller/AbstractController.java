@@ -21,11 +21,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidParameterException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public abstract class AbstractController<T> implements HttpHandler, CORSEnabled {
 
+    protected List<String> viewPermissions = new ArrayList<>();
     protected String getPermission = "";
     protected String updatePermission = "";
     protected String createPermission = "";
@@ -54,7 +57,7 @@ public abstract class AbstractController<T> implements HttpHandler, CORSEnabled 
             enableCORS(exchange);
             switch (exchange.getRequestMethod()) {
                 case "GET":
-                    if (Authentication.hasPermission(exchange, getPermission))
+                    if (Authentication.hasOneOfPermissions(exchange, getPermission, viewPermissions))
                         resultBody = get(exchange);
                     break;
                 case "PUT":

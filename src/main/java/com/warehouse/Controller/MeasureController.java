@@ -6,10 +6,14 @@ import com.warehouse.Model.Measure;
 import com.warehouse.Service.MeasureService;
 import org.apache.logging.log4j.LogManager;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class MeasureController extends AbstractController<Measure> {
 
     public MeasureController() {
         super(Measure.class);
+        viewPermissions = new ArrayList<>(Arrays.asList("product_page_view","product_page_view"));
         getPermission = "measure_read";
         updatePermission = "";
         createPermission = "";

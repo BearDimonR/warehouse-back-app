@@ -19,5 +19,5 @@ public class AuthenticatedUserDTO {
     private long roleId;
     private boolean roleIsSuper;
     private List<String> permissions;
-    private List<String> readPermissions;
+    private List<String> viewPermissions;
 }
