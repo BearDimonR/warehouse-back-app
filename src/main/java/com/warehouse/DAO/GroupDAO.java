@@ -1,6 +1,7 @@
 package com.warehouse.DAO;
 
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.OrderBy;
 import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Group;
 
@@ -48,15 +49,19 @@ public class GroupDAO implements DAO<Group> {
     }
 
     @Override
-    public List<Group> getAll(Filter filter, PageFilter pageFilter) throws SQLException {
+    public List<Group> getAll(Filter filter, PageFilter pageFilter, OrderBy order) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         String query = Stream.of(
                 filter.inKeys("id"),
                 filter.like())
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(" AND "));
-        String where = query.isEmpty()?"":"WHERE " + query;
-        String sql = String.format("SELECT * FROM group_products %s %s", where, pageFilter.page());
+        String where = query.isEmpty() ? "" : "WHERE " + query;
+        String sql = String.format("SELECT * FROM group_products %s %s %s",
+                where,
+                order.orderBy("id"),
+                pageFilter.page());
+        System.err.println(sql);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet res = preparedStatement.executeQuery();
@@ -75,7 +80,7 @@ public class GroupDAO implements DAO<Group> {
     }
 
     @Override
-    public long save(Group group) throws SQLException {
+    public synchronized long save(Group group) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement =
@@ -92,14 +97,14 @@ public class GroupDAO implements DAO<Group> {
     }
 
     @Override
-    public boolean update(Group t) throws SQLException {
+    public synchronized boolean update(Group t) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE group_products SET name=?, description=? WHERE id = ?");
             preparedStatement.setString(1, t.getName());
-            preparedStatement.setString(1, t.getDescription());
-            preparedStatement.setLong(1, t.getId());
+            preparedStatement.setString(2, t.getDescription());
+            preparedStatement.setLong(3, t.getId());
             return preparedStatement.executeUpdate() != 0;
         } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
@@ -107,7 +112,7 @@ public class GroupDAO implements DAO<Group> {
     }
 
     @Override
-    public boolean delete(long id) throws SQLException {
+    public synchronized boolean delete(long id) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM group_products WHERE id = ?");

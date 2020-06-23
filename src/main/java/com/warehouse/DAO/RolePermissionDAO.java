@@ -8,19 +8,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RolePermissionDAO {
 
     public static RolePermissionDAO instance;
 
     public synchronized static RolePermissionDAO getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new RolePermissionDAO();
         return instance;
     }
 
-    private RolePermissionDAO() {}
+    private RolePermissionDAO() {
+    }
 
     public List<Long> get(long id) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
@@ -39,7 +39,7 @@ public class RolePermissionDAO {
         }
     }
 
-    public long create(RolePermissionConnection rolePermissionConnection) throws SQLException {
+    public synchronized long create(RolePermissionConnection rolePermissionConnection) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement =
@@ -55,7 +55,7 @@ public class RolePermissionDAO {
         }
     }
 
-    public boolean delete(RolePermissionConnection rolePermissionConnection) throws SQLException {
+    public synchronized boolean delete(RolePermissionConnection rolePermissionConnection) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement

@@ -1,6 +1,7 @@
 package com.warehouse.DAO;
 
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.OrderBy;
 import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Credentials;
 import com.warehouse.Model.User;
@@ -50,15 +51,18 @@ public class UserDAO implements DAO<User> {
 
 
     @Override
-    public List<User> getAll(Filter filter, PageFilter pageFilter) throws SQLException {
+    public List<User> getAll(Filter filter, PageFilter pageFilter, OrderBy order) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         String query = Stream.of(
                 filter.inKeys("id"),
                 filter.like())
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(" AND "));
-        String where = query.isEmpty()?"":"WHERE " + query;
-        String sql = String.format("SELECT * FROM user_account %s %s", where, pageFilter.page());
+        String where = query.isEmpty() ? "" : "WHERE " + query;
+        String sql = String.format("SELECT * FROM user_account %s %s %s",
+                where,
+                order.orderBy("id"),
+                pageFilter.page());
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet res = preparedStatement.executeQuery();
@@ -92,7 +96,7 @@ public class UserDAO implements DAO<User> {
     }
 
     @Override
-    public long save(User user) throws SQLException {
+    public synchronized long save(User user) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user_account (name , password, role_id) VALUES  (?,?,?) RETURNING id");
@@ -103,13 +107,14 @@ public class UserDAO implements DAO<User> {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            return resultSet.getLong(1);        } finally {
+            return resultSet.getLong(1);
+        } finally {
             DataBaseConnector.getConnector().releaseConnection(connection);
         }
     }
 
     @Override
-    public boolean update(User user) throws SQLException {
+    public synchronized boolean update(User user) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE user_account SET name=?,password=?,role_id=? WHERE id=?");
@@ -126,7 +131,7 @@ public class UserDAO implements DAO<User> {
     }
 
     @Override
-    public boolean delete(long id) throws SQLException {
+    public synchronized boolean delete(long id) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM user_account WHERE id=?");

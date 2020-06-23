@@ -2,6 +2,7 @@ package com.warehouse.Service;
 
 import com.warehouse.DAO.RoleDAO;
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.OrderBy;
 import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Role;
 
@@ -32,8 +33,8 @@ public class RoleService extends BasicService<Role> {
     }
 
     @Override
-    public List<Role> getAll(Filter filter, PageFilter pageFilter) throws SQLException {
-        List<Role> roles = dao.getAll(filter, pageFilter);
+    public List<Role> getAll(Filter filter, PageFilter pageFilter, OrderBy order) throws SQLException {
+        List<Role> roles = dao.getAll(filter, pageFilter, order);
         for (Role role : roles) {
             role.setUserNumber(UserService.getInstance().getUsersCountByRole(role.getId()));
         }

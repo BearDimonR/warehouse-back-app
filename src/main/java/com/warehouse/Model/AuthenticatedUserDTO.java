@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -20,4 +19,5 @@ public class AuthenticatedUserDTO {
     private long roleId;
     private boolean roleIsSuper;
     private List<String> permissions;
+    private List<String> readPermissions;
 }

@@ -4,21 +4,24 @@ import com.warehouse.Http.Server;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 
 public class DBProperties {
     static Properties appProps;
-    static String appConfigPath =
-            Objects.requireNonNull
-                    (Thread.currentThread().getContextClassLoader().getResource("db.properties")).getPath();
+
 
 
     public static String getProperty(String key) {
         try {
             if (appProps == null) {
+                String resourceName = "db.properties"; // could also be a constant
+                ClassLoader loader = Thread.currentThread().getContextClassLoader();
                 appProps = new Properties();
-                appProps.load(new FileInputStream(appConfigPath));
+                try(InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
+                    appProps.load(resourceStream);
+                }
             }
             return appProps.getProperty(key);
         } catch (IOException e) {

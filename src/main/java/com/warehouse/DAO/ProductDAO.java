@@ -1,6 +1,7 @@
 package com.warehouse.DAO;
 
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.OrderBy;
 import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Product;
 
@@ -8,7 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -50,7 +54,7 @@ public class ProductDAO implements DAO<Product> {
     }
 
     @Override
-    public List<Product> getAll(Filter filter, PageFilter pageFilter) throws SQLException {
+    public List<Product> getAll(Filter filter, PageFilter pageFilter, OrderBy order) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         String query = Stream.of(
                 filter.inKeys("id"),
@@ -58,7 +62,10 @@ public class ProductDAO implements DAO<Product> {
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(" AND "));
         String where = query.isEmpty() ? "" : "WHERE " + query;
-        String sql = String.format("SELECT * FROM product %s %s", where, pageFilter.page());
+        String sql = String.format("SELECT * FROM product %s %s %s",
+                where,
+                order.orderBy("id"),
+                pageFilter.page());
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet res = preparedStatement.executeQuery();
@@ -82,7 +89,7 @@ public class ProductDAO implements DAO<Product> {
     }
 
     @Override
-    public long save(Product product) throws SQLException {
+    public synchronized long save(Product product) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement
@@ -107,7 +114,7 @@ public class ProductDAO implements DAO<Product> {
     }
 
     @Override
-    public boolean update(Product product) throws SQLException {
+    public synchronized boolean update(Product product) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE product SET name=?,price=?, amount=?, total_cost=?, measure_name=?, group_products_id=?, manufacturer_id=?, description=? WHERE id=?");
@@ -130,7 +137,7 @@ public class ProductDAO implements DAO<Product> {
     }
 
     @Override
-    public boolean delete(long id) throws SQLException {
+    public synchronized boolean delete(long id) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM product WHERE id=?");

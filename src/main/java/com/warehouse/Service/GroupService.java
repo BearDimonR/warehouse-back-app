@@ -2,6 +2,7 @@ package com.warehouse.Service;
 
 import com.warehouse.DAO.GroupDAO;
 import com.warehouse.Filter.Filter;
+import com.warehouse.Filter.OrderBy;
 import com.warehouse.Filter.PageFilter;
 import com.warehouse.Model.Group;
 import com.warehouse.Model.Product;
@@ -26,18 +27,19 @@ public class GroupService extends BasicService<Group> {
     @Override
     public Optional<Group> get(long id) throws SQLException {
         Optional<Group> group = dao.get(id);
-        if(group.isPresent()) {
+        if (group.isPresent()) {
             Group g = group.get();
             g.setTotalAmount(getGroupTotalAmount(id).orElse(0f));
             g.setTotalCost(getGroupTotalAmount(id).orElse(0f));
         }
-        return group;    }
+        return group;
+    }
 
     @Override
-    public List<Group> getAll(Filter filter, PageFilter pageFilter) throws SQLException {
-        List<Group> groups =  dao.getAll(filter, pageFilter);
+    public List<Group> getAll(Filter filter, PageFilter pageFilter, OrderBy order) throws SQLException {
+        List<Group> groups = dao.getAll(filter, pageFilter, order);
         Long id;
-        for (Group group: groups) {
+        for (Group group : groups) {
             id = group.getId();
             group.setTotalCost(getGroupTotalCost(id).orElse(0f));
             group.setTotalAmount(getGroupTotalAmount(id).orElse(0f));
@@ -47,7 +49,7 @@ public class GroupService extends BasicService<Group> {
 
     @Override
     public long count(Filter filter) throws SQLException {
-        return dao.getAll(filter, new PageFilter()).size();
+        return dao.getAll(filter, new PageFilter(), new OrderBy()).size();
     }
 
     private Optional<Float> getGroupTotalCost(long id) throws SQLException {

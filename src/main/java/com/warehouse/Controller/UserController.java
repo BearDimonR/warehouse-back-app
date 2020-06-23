@@ -1,6 +1,5 @@
 package com.warehouse.Controller;
 
-import com.warehouse.DAO.UserDAO;
 import com.warehouse.Model.User;
 import com.warehouse.Service.UserService;
 import org.apache.logging.log4j.LogManager;
