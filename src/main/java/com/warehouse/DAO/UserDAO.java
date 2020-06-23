@@ -117,11 +117,10 @@ public class UserDAO implements DAO<User> {
     public synchronized boolean update(User user) throws SQLException {
         Connection connection = DataBaseConnector.getConnector().getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE user_account SET name=?,password=?,role_id=? WHERE id=?");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE user_account SET name=?,role_id=? WHERE id=?");
             preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setInt(3, user.getRoleId());
-            preparedStatement.setLong(4, user.getId());
+            preparedStatement.setInt(2, user.getRoleId());
+            preparedStatement.setLong(3, user.getId());
 
             int res = preparedStatement.executeUpdate();
             return res != 0;
