@@ -13,7 +13,6 @@ import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Map;
 import java.util.Optional;
 
 public class LoginController extends AbstractController<Credentials> {
@@ -78,8 +77,11 @@ public class LoginController extends AbstractController<Credentials> {
     private Object login(HttpExchange exchange) throws IOException, SQLException, AuthWrongException {
         byte[] input = exchange.getRequestBody().readAllBytes();
         //TODO decode input array
-        Optional<User> userByCredentials = UserService.getInstance().getByCredentials(
-                JsonProceed.getGson().fromJson(new String(input), Credentials.class));
+        var credentials = JsonProceed.getGson().fromJson(new String(input), Credentials.class);
+        if (credentials == null)
+            throw new AuthWrongException();
+        credentials.setPassword(Authentication.encodePasswordMD5(credentials.getPassword()));
+        Optional<User> userByCredentials = UserService.getInstance().getByCredentials(credentials);
         if (userByCredentials.isPresent()) {
             Optional<AuthenticatedUserDTO> user = Authentication.generateLoginResponse(userByCredentials.get());
             if (user.isPresent()) {
@@ -89,8 +91,7 @@ public class LoginController extends AbstractController<Credentials> {
             }
         } else
             throw new AuthWrongException();
-        //TODO WHY IS THAT HAPPENING!!!
-        return ResponseMessage.of("WTF");
+        return ResponseMessage.of("OK");
     }
 
     private Object renovate(HttpExchange exchange) throws IOException, AuthWrongException {
@@ -102,8 +103,7 @@ public class LoginController extends AbstractController<Credentials> {
             logger.info("Successful renovated token");
             return renovationDTO.get();
         }
-        //TODO WHY IS THAT HAPPENING!!!
-        return ResponseMessage.of("WTF");
+        return ResponseMessage.of("Wrong auth info");
     }
 
     @Override
