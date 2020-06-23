@@ -50,13 +50,15 @@ public class Authentication {
         throw new NoPermissionException("User do not have permission '" + permission + "'");
     }
 
-    public static boolean hasPermissions(HttpExchange exchange, List<String> permissionsToCheck) throws SQLException, AuthRequiredException, NoPermissionException {
+    public static boolean hasOneOfPermissions(HttpExchange exchange, String permission, List<String> viewPermissionsToCheck) throws SQLException, AuthRequiredException, NoPermissionException {
         Optional<List<String>> userPermissions = Authentication.getUserPermissions(exchange);
+        viewPermissionsToCheck.add(permission);
         if (userPermissions.isPresent()) {
-            if (permissionsToCheck.stream().filter(a -> !userPermissions.get().contains(a)).count() != 0) return false;
+            if (viewPermissionsToCheck.stream().filter(a -> userPermissions.get().contains(a)).count() == 0)
+                return false;
             return true;
         }
-        throw new NoPermissionException("User do not have permissions: '" + permissionsToCheck.stream().collect(Collectors.joining(" , ")));
+        throw new NoPermissionException("User do not have permissions: '" + viewPermissionsToCheck.stream().collect(Collectors.joining(" , ")));
     }
 
     public static Optional<AuthenticatedUserDTO> generateLoginResponse(User user) throws SQLException {
@@ -65,30 +67,30 @@ public class Authentication {
         Optional<Role> role = RoleDAO.getInstance().getUserRole(user.getId());
         if (role.isPresent() && permissions.isPresent()) {
             return Optional.of(new AuthenticatedUserDTO(
-                    user.getId(),
-                    user.getName(),
-                    STORAGE_TOKEN_PREFIX + Jwts.builder()
-                            .setSubject(user.getName())
-                            .claim("id", user.getId())
-                            .setIssuedAt(Date.from(now))
-                            .setExpiration(Date.from(now.plus(60, ChronoUnit.MINUTES)))
-                            .signWith(Keys.hmacShaKeyFor(SECRET))
-                            .compact(),
-                    RENOVATION_STORAGE_TOKEN_PREFIX + Jwts.builder()
-                            .setSubject(user.getName())
-                            .claim("id", user.getId())
-                            .setIssuedAt(Date.from(now))
-                            .setExpiration(Date.from(now.plus(1, ChronoUnit.SECONDS)))
-                            .signWith(Keys.hmacShaKeyFor(RENOVATION_SECRET))
-                            .compact(),
-                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date.from(now.plus(60, ChronoUnit.MINUTES)))
-                    ,
-                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date.from(now.plus(1, ChronoUnit.SECONDS)))
-                    ,
-                    user.getRoleId(),
-                    role.get().isSuper(),
-                    permissions.get().stream().map(a -> a.getName()).filter(a->!a.endsWith("read")).collect(Collectors.toList()),
-                    permissions.get().stream().map(a -> a.getName()).filter(a->a.endsWith("read")).collect(Collectors.toList())
+                            user.getId(),
+                            user.getName(),
+                            STORAGE_TOKEN_PREFIX + Jwts.builder()
+                                    .setSubject(user.getName())
+                                    .claim("id", user.getId())
+                                    .setIssuedAt(Date.from(now))
+                                    .setExpiration(Date.from(now.plus(60, ChronoUnit.MINUTES)))
+                                    .signWith(Keys.hmacShaKeyFor(SECRET))
+                                    .compact(),
+                            RENOVATION_STORAGE_TOKEN_PREFIX + Jwts.builder()
+                                    .setSubject(user.getName())
+                                    .claim("id", user.getId())
+                                    .setIssuedAt(Date.from(now))
+                                    .setExpiration(Date.from(now.plus(1, ChronoUnit.SECONDS)))
+                                    .signWith(Keys.hmacShaKeyFor(RENOVATION_SECRET))
+                                    .compact(),
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date.from(now.plus(60, ChronoUnit.MINUTES)))
+                            ,
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date.from(now.plus(1, ChronoUnit.SECONDS)))
+                            ,
+                            user.getRoleId(),
+                            role.get().isSuper(),
+                            permissions.get().stream().map(a -> a.getName()).filter(a -> !a.endsWith("_page_view")).collect(Collectors.toList()),
+                            permissions.get().stream().map(a -> a.getName()).filter(a -> a.endsWith("_page_view")).collect(Collectors.toList())
                     )
             );
         }
