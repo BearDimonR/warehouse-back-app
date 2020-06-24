@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Server {
 
+    private static final String HTTPS_PASSWORD = "server";
     public static Logger root = LogManager.getRootLogger();
 
     public final static View VIEW = new JsonView();
@@ -100,7 +101,7 @@ public class Server {
             SSLContext sslContext = SSLContext.getInstance("TLS");
 
             // initialise the keystore
-            char[] password = "server".toCharArray();
+            char[] password = HTTPS_PASSWORD.toCharArray();
             KeyStore ks = KeyStore.getInstance("JKS");
             FileInputStream fis = new FileInputStream("server.jks");
             ks.load(fis, password);
