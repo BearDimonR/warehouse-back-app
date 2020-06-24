@@ -10,6 +10,7 @@ import com.warehouse.Model.Permission;
 import com.warehouse.Model.RolePermissionConnection;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,8 @@ public class RolePermissionService {
     public List<Permission> getAllRolePermissions(long id, PageFilter pageFilter, OrderBy order) throws SQLException {
         List<Long> ids =
                 RolePermissionDAO.getInstance().get(id).stream().collect(Collectors.toList());
+        if (ids.size() == 0)
+            return new ArrayList<>();
         return PermissionDAO.getInstance().getAll(
                 Filter.builder()
                         .ids(ids)

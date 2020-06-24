@@ -4,7 +4,7 @@ import com.warehouse.DAO.UserDAO;
 import com.warehouse.Filter.Filter;
 import com.warehouse.Filter.OrderBy;
 import com.warehouse.Filter.PageFilter;
-import com.warehouse.Model.Credentials;
+import com.warehouse.Model.auth.Credentials;
 import com.warehouse.Model.Pair;
 import com.warehouse.Model.User;
 

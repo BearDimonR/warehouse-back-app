@@ -7,6 +7,7 @@ import com.warehouse.Exception.AuthRequiredException;
 import com.warehouse.Exception.AuthWrongException;
 import com.warehouse.Exception.NoPermissionException;
 import com.warehouse.Model.*;
+import com.warehouse.Model.auth.AuthenticatedUserDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;

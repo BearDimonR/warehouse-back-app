@@ -17,7 +17,6 @@ public class QueryParser {
         if (query.matches("(\\w+=[\\S\\s]+)(&\\w+=[\\S\\s]+)*")) {
             Arrays.stream(query.split("&")).forEach(a -> params.put(a.split("=")[0], a.split("=")[1]));
         } else {
-            //TODO add exception throwing
             root.warn("Bad params in query.");
         }
 

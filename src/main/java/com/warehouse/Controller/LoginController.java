@@ -6,6 +6,8 @@ import com.warehouse.Exception.AuthWrongException;
 import com.warehouse.Exception.NotImplementedException;
 import com.warehouse.Http.Response;
 import com.warehouse.Model.*;
+import com.warehouse.Model.auth.AuthenticatedUserDTO;
+import com.warehouse.Model.auth.Credentials;
 import com.warehouse.Service.UserService;
 import com.warehouse.Utils.JsonProceed;
 import com.warehouse.Utils.QueryParser;

@@ -15,6 +15,7 @@ import com.warehouse.Service.Service;
 import com.warehouse.Utils.JsonProceed;
 import com.warehouse.Utils.QueryParser;
 import com.warehouse.View.View;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -102,6 +103,10 @@ public abstract class AbstractController<T> implements HttpHandler, CORSEnabled 
             resultBody = ResponseMessage.of("No permission");
             status = 403;
             logger.error("Not enough permissions.\n\t" + e.getMessage());
+        } catch (ExpiredJwtException e) {
+            resultBody = ResponseMessage.of("Expired token");
+            status = 403;
+            logger.error("Expired token.\n\t" + e.getMessage());
         } catch (AuthRequiredException e) {
             resultBody = ResponseMessage.of("Authentication required");
             status = 401;
