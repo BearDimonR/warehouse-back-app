@@ -7,10 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-
-    private long id;
+public class Measure {
     private String name;
-    private String password;
-    private int roleId;
 }

@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-
-    private long id;
-    private String name;
-    private String password;
-    private int roleId;
+public class RolePermissionConnection {
+    private long roleId;
+    private long permissionId;
 }

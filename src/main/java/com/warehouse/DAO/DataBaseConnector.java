@@ -1,13 +1,18 @@
 package com.warehouse.DAO;
 
+import com.warehouse.Utils.DBProperties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DataBaseConnector {
-    private final static  String URL = "jdbc:postgresql://localhost:5432/storage";
-    private final static String USERNAME = "server";
-    private final static String PASSWORD = "admin";
+    private final static String URL = DBProperties.getProperty("db_url");
+    private final static String USERNAME = DBProperties.getProperty("username");
+    private final static String PASSWORD = DBProperties.getProperty("password");
+
+    private static Logger logger = LogManager.getLogger(DataBaseConnector.class);
 
     private static DataBaseConnector connector;
 
@@ -15,25 +20,27 @@ public class DataBaseConnector {
         return connector;
     }
 
-    public static void initConnector() throws ClassNotFoundException {
-        if(connector == null)
+    public static void createConnector() throws SQLException, ClassNotFoundException {
+        if (connector == null)
             connector = new DataBaseConnector();
     }
 
-    private DataBaseConnector() throws ClassNotFoundException {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            System.err.println("Database driver loading problem!");
-            throw e;
-        }
+    private ConnectionPool pool;
+
+    private DataBaseConnector() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+        pool = ConnectionPool.create(URL, USERNAME, PASSWORD);
     }
 
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() {
+        return pool.getConnection();
+    }
+
+    public void releaseConnection(Connection connection) throws SQLException {
         try {
-            return DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException e){
-            System.err.println("Database connection problem!");
+            pool.releaseConnection(connection);
+        } catch (SQLException e) {
+            logger.error("Problem with releasing connection:" + e.getMessage());
             throw e;
         }
     }

@@ -1,4 +1,6 @@
-package com.warehouse.Handler;
+package com.warehouse.Controller;
+
+import com.warehouse.Http.Server;
 
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -6,8 +8,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class RejectedHandler implements RejectedExecutionHandler {
     @Override
     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-        System.out.println(
-                "Rejected"
-        );
+        Server.root.warn("Rejected!");
     }
 }
